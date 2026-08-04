@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>营销管理 - 企税康协同工作平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="./assets/responsive.css">
+  <script src="./assets/responsive.js" defer></script>
+  <link rel="stylesheet" href="./assets/design-system.css">
+  <style>
+    body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; }
+    .mkt-tab-active { border-bottom-color: #2563eb; color: #2563eb; font-weight: 600; }
+    .table-mkt-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    .table-mkt {
+      table-layout: fixed;
+      width: 100%;
+      min-width: 1100px;
+      border-collapse: collapse;
+    }
+    .table-mkt th,
+    .table-mkt td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: middle;
+      padding: 0.75rem 0.75rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .table-mkt thead th {
+      font-size: 12px;
+      line-height: 1.4;
+      color: #64748b;
+      font-weight: 500;
+      background: #f8fafc;
+      border-bottom-color: #e2e8f0;
+    }
+    .table-mkt tbody td { font-size: 14px; line-height: 1.5; color: #1e293b; }
+    .table-mkt tbody tr:hover { background: #f8fafc; }
+  </style>
+</head>
+<body class="bg-[#f5f7fa] text-slate-700">
+  <div id="sidebar-backdrop" class="fixed inset-0 z-[150] bg-slate-900/40 hidden lg:hidden"></div>
+  <div class="min-h-screen w-full flex flex-col lg:flex-row relative">
+    <aside id="app-sidebar" class="w-64 max-w-[min(18rem,88vw)] bg-slate-900 text-slate-200 flex flex-col shrink-0 fixed lg:static inset-y-0 left-0 z-[160] h-screen lg:h-auto -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-out overflow-y-auto lg:overflow-visible shadow-xl lg:shadow-none">
+      <div class="h-16 px-3 flex items-center border-b border-slate-800">
+        <div class="w-full rounded-lg bg-white px-2 py-1.5 flex items-center justify-center">
+          <img src="./assets/qishuikang-logo.png" alt="企税康Logo" class="h-8 w-full max-h-8 object-contain object-center mix-blend-multiply">
+        </div>
+      </div>
+      <nav class="flex-1 py-4 text-sm overflow-y-auto">
+        <a class="mx-3 mb-1 h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center" href="index.html"><i class="fa-solid fa-table-columns w-5 mr-2"></i>工作台</a>
+        <details class="mx-3 mb-1 group" open>
+          <summary class="list-none cursor-pointer h-10 px-4 rounded-lg bg-slate-800/80 flex items-center justify-between text-white [&::-webkit-details-marker]:hidden">
+            <span class="flex items-center"><i class="fa-solid fa-chart-line w-5 mr-2"></i>销售中心</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="mt-1 ml-2 pl-3 border-l border-slate-700 space-y-0.5">
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="sales-target.html">销售目标</a>
+            <a class="block py-2 px-3 rounded-lg text-sm bg-blue-600 text-white font-medium" href="marketing-management.html">营销管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="lead-management.html">线索管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="opportunity-management.html">商机管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="customer-management.html">客户管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="sales-performance.html">销售业绩</a>
+          </div>
+        </details>
+        <details class="mx-3 mb-1 group">
+          <summary class="list-none cursor-pointer h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center justify-between text-slate-200 [&::-webkit-details-marker]:hidden">
+            <span class="flex items-center"><i class="fa-solid fa-building-user w-5 mr-2"></i>客户中心</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="mt-1 ml-2 pl-3 border-l border-slate-700 space-y-0.5">
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="government-affairs.html">政务服务</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="accounting-customer-management.html">代账服务</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="address-management.html">地址管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="customer-items.html">客户物品</a>
+          </div>
+        </details>
+        <a class="mx-3 mb-1 h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center" href="supply-chain-management.html"><i class="fa-solid fa-truck-fast w-5 mr-2"></i>供应链中心</a>
+        <a class="mx-3 mb-1 h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center" href="knowledge-base.html"><i class="fa-solid fa-book-open w-5 mr-2"></i>知识库</a>
+        <details class="mx-3 mb-1 group">
+          <summary class="list-none cursor-pointer h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center justify-between text-slate-200 [&::-webkit-details-marker]:hidden">
+            <span class="flex items-center"><i class="fa-solid fa-file-signature w-5 mr-2"></i>合同订单</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="mt-1 ml-2 pl-3 border-l border-slate-700 space-y-0.5">
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="contract-management.html">合同管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="order-management.html">订单管理</a>
+          </div>
+        </details>
+        <details class="mx-3 mb-1 group">
+          <summary class="list-none cursor-pointer h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center justify-between text-slate-200 [&::-webkit-details-marker]:hidden">
+            <span class="flex items-center"><i class="fa-solid fa-wallet w-5 mr-2"></i>运营中心</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="mt-1 ml-2 pl-3 border-l border-slate-700 space-y-0.5">
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="payment-request.html">财务报销</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="financial-reports.html">经营报表</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="hr-request.html">人事管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="salary-management.html">薪资管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="department-employees.html">员工管理</a>
+          </div>
+        </details>
+        <details class="mx-3 mb-1 group">
+          <summary class="list-none cursor-pointer h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center justify-between text-slate-200 [&::-webkit-details-marker]:hidden">
+            <span class="flex items-center"><i class="fa-solid fa-gear w-5 mr-2"></i>系统管理</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="mt-1 ml-2 pl-3 border-l border-slate-700 space-y-0.5">
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="role-permissions.html">角色权限</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="dictionary-management.html">字典管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="menu-management.html">菜单管理</a>
+          </div>
+        </details>
+      </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col min-w-0 w-full">
+      <header class="h-16 bg-white border-b border-slate-200 px-4 sm:px-6 gap-2 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2 min-w-0 flex-1">
+          <button type="button" id="btn-sidebar-toggle" class="lg:hidden shrink-0 w-10 h-10 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 flex items-center justify-center" aria-expanded="false" aria-controls="app-sidebar" aria-label="打开导航菜单"><i class="fa-solid fa-bars text-lg"></i></button>
+          <div class="text-sm text-slate-500 min-w-0 truncate">销售中心 / <span class="text-slate-700 font-medium">营销管理</span></div>
+        </div>
+        <div class="flex items-center gap-3 shrink-0">
+          <button type="button" class="w-9 h-9 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200"><i class="fa-regular fa-bell"></i></button>
+          <div class="flex items-center">
+            <img class="w-9 h-9 rounded-full object-cover" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=80&q=80" alt="用户头像">
+            <div class="ml-2 hidden sm:block">
+              <p class="text-sm font-medium text-slate-700">朱总</p>
+              <p class="text-xs text-slate-400">企业端</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="p-4 sm:p-6">
+        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+          <div class="mb-4 text-sm text-slate-500">销售中心 / 营销管理</div>
+
+          <form id="mkt-search-form" class="mb-5" onsubmit="return false">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 items-end">
+              <label class="text-xs text-slate-500">来源渠道
+                <div class="relative mt-1">
+                  <select id="filter-channel" class="w-full h-9 pl-3 pr-8 rounded-md border border-slate-200 bg-white text-sm text-slate-600 appearance-none">
+                    <option value="">请选择</option>
+                    <option>视频号</option>
+                    <option>抖音1</option>
+                    <option>抖音2</option>
+                    <option>小红书1</option>
+                    <option>小红书2</option>
+                    <option>58同城</option>
+                  </select>
+                  <i class="fa-solid fa-angle-down absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 pointer-events-none"></i>
+                </div>
+              </label>
+              <label class="text-xs text-slate-500">添加微信
+                <div class="relative mt-1">
+                  <select id="filter-wechat" class="w-full h-9 pl-3 pr-8 rounded-md border border-slate-200 bg-white text-sm text-slate-600 appearance-none">
+                    <option value="">请选择</option>
+                    <option>是</option>
+                    <option>否</option>
+                  </select>
+                  <i class="fa-solid fa-angle-down absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 pointer-events-none"></i>
+                </div>
+              </label>
+              <label class="text-xs text-slate-500">所属区域
+                <div class="relative mt-1">
+                  <select id="filter-region" class="w-full h-9 pl-3 pr-8 rounded-md border border-slate-200 bg-white text-sm text-slate-600 appearance-none">
+                    <option value="">请选择</option>
+                    <option>苏州</option>
+                    <option>上海</option>
+                    <option>南京</option>
+                    <option>杭州</option>
+                    <option>无锡</option>
+                  </select>
+                  <i class="fa-solid fa-angle-down absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 pointer-events-none"></i>
+                </div>
+              </label>
+              <label class="text-xs text-slate-500">所属部门
+                <div class="relative mt-1">
+                  <select id="filter-dept" class="w-full h-9 pl-3 pr-8 rounded-md border border-slate-200 bg-white text-sm text-slate-600 appearance-none">
+                    <option value="">请选择</option>
+                    <option>销售一部</option>
+                    <option>销售二部</option>
+                    <option>销售三部</option>
+                    <option>销售四部</option>
+                  </select>
+                  <i class="fa-solid fa-angle-down absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 pointer-events-none"></i>
+                </div>
+              </label>
+              <label class="text-xs text-slate-500">销售顾问
+                <div class="relative mt-1">
+                  <select id="filter-sales" class="w-full h-9 pl-3 pr-8 rounded-md border border-slate-200 bg-white text-sm text-slate-600 appearance-none">
+                    <option value="">请选择</option>
+                    <option>陈利</option>
+                    <option>曹颖</option>
+                  </select>
+                  <i class="fa-solid fa-angle-down absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 pointer-events-none"></i>
+                </div>
+              </label>
+              <label class="text-xs text-slate-500">企业类型
+                <div class="relative mt-1">
+                  <select id="filter-enterprise" class="w-full h-9 pl-3 pr-8 rounded-md border border-slate-200 bg-white text-sm text-slate-600 appearance-none">
+                    <option value="">请选择</option>
+                    <option>小规模纳税人</option>
+                    <option>个体户</option>
+                    <option>一般纳税人</option>
+                  </select>
+                  <i class="fa-solid fa-angle-down absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 pointer-events-none"></i>
+                </div>
+              </label>
+              <label class="text-xs text-slate-500 col-span-2">创建时间
+                <div class="mt-1 flex items-center gap-1.5">
+                  <input type="date" id="filter-created-start" class="h-9 flex-1 min-w-0 rounded-md border border-slate-200 px-2.5 text-sm text-slate-600">
+                  <span class="text-slate-400 text-xs shrink-0">至</span>
+                  <input type="date" id="filter-created-end" class="h-9 flex-1 min-w-0 rounded-md border border-slate-200 px-2.5 text-sm text-slate-600">
+                </div>
+              </label>
+              <div class="col-span-2 lg:col-span-4 flex flex-wrap items-center gap-2">
+                <button type="button" id="btn-mkt-search" class="h-9 px-5 rounded-md bg-blue-600 text-sm text-white hover:bg-blue-700 cursor-pointer">查询</button>
+                <button type="button" id="btn-mkt-reset" class="h-9 px-5 rounded-md border border-slate-200 bg-white text-sm text-slate-600 hover:bg-slate-50 cursor-pointer">重置</button>
+                <button type="button" id="btn-mkt-export" class="h-9 px-4 rounded-md border border-slate-200 bg-white text-sm text-slate-600 hover:bg-slate-50 cursor-pointer inline-flex items-center gap-1.5"><i class="fa-solid fa-file-export text-xs text-slate-400"></i>导出</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm mb-5 border-b border-slate-200 pb-3" id="mkt-tabs">
+            <button type="button" data-tab="following" class="mkt-tab pb-2 border-b-2 border-blue-600 text-blue-600 font-medium mkt-tab-active">跟进中<span class="tab-count ml-0.5">（3）</span></button>
+            <button type="button" data-tab="invalid" class="mkt-tab pb-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700">无效<span class="tab-count ml-0.5">（2）</span></button>
+            <button type="button" data-tab="abandoned" class="mkt-tab pb-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700">已放弃<span class="tab-count ml-0.5">（5）</span></button>
+            <button type="button" data-tab="intent" class="mkt-tab pb-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700">意向<span class="tab-count ml-0.5">（2）</span></button>
+            <button type="button" data-tab="won" class="mkt-tab pb-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700">成交<span class="tab-count ml-0.5">（2）</span></button>
+            <button type="button" data-tab="lost" class="mkt-tab pb-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700">流失<span class="tab-count ml-0.5">（2）</span></button>
+          </div>
+
+          <div class="table-mkt-wrap table-scroll w-full rounded border border-slate-200">
+            <table class="table-mkt w-full text-slate-700">
+              <thead>
+                <tr id="mkt-thead-row"></tr>
+              </thead>
+              <tbody id="mkt-tbody"></tbody>
+            </table>
+          </div>
+
+          <div id="mkt-empty" class="hidden py-16 text-center text-sm text-slate-400">暂无数据</div>
+
+          <div class="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-500">
+            <span>共 <span id="mkt-total">0</span> 条</span>
+            <div class="flex items-center gap-1">
+              <button type="button" class="h-8 min-w-[2rem] px-2 rounded border border-slate-200 bg-white text-slate-600">1</button>
+              <button type="button" class="h-8 min-w-[2rem] px-2 rounded border border-transparent text-slate-500 hover:bg-slate-50">2</button>
+              <button type="button" class="h-8 min-w-[2rem] px-2 rounded border border-transparent text-slate-500 hover:bg-slate-50">3</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast-mkt" class="fixed top-6 left-1/2 -translate-x-1/2 z-[130] hidden rounded-lg bg-slate-800 px-5 py-2 text-sm text-white shadow-lg">操作成功</div>
+
+  <script>
+    (function () {
+      var rows = [
+        { tab: 'following', name: '王小', phone: '13800111200', company: '苏州匠心膜界材料有限公司', enterprise: '小规模纳税人', wechat: '是', dept: '销售一部', sales: '陈利', lastFollow: '2026-04-20 14:22', createdAt: '2026-04-18 09:12', channel: '抖音1', region: '苏州' },
+        { tab: 'following', name: '刘洋', phone: '13900112233', company: '上海云启科技有限公司', enterprise: '一般纳税人', wechat: '是', dept: '销售二部', sales: '曹颖', lastFollow: '2026-04-21 10:05', createdAt: '2026-04-19 11:30', channel: '小红书1', region: '上海' },
+        { tab: 'following', name: '张敏', phone: '13766554433', company: '南京恒信贸易有限公司', enterprise: '个体户', wechat: '否', dept: '销售三部', sales: '陈利', lastFollow: '2026-04-22 16:40', createdAt: '2026-04-20 08:45', channel: '视频号', region: '南京' },
+
+        { tab: 'invalid', name: '赵强', phone: '13699887766', company: '杭州绿野餐饮店', enterprise: '个体户', wechat: '否', dept: '销售一部', sales: '曹颖', invalidReason: '空号/停机，无法联系', createdAt: '2026-04-10 15:20', channel: '58同城', region: '杭州' },
+        { tab: 'invalid', name: '孙丽', phone: '13511223344', company: '无锡海川机电有限公司', enterprise: '小规模纳税人', wechat: '否', dept: '销售四部', sales: '陈利', invalidReason: '非目标客户，无代账需求', createdAt: '2026-04-12 09:08', channel: '抖音2', region: '无锡' },
+
+        { tab: 'abandoned', name: '周杰', phone: '13455667788', company: '苏州博远咨询有限公司', enterprise: '一般纳税人', wechat: '是', dept: '销售二部', sales: '曹颖', abandonReason: '价格不接受，暂缓合作', createdAt: '2026-03-28 13:15', channel: '小红书2', region: '苏州' },
+        { tab: 'abandoned', name: '吴芳', phone: '13344556677', company: '上海景程电子商务有限公司', enterprise: '小规模纳税人', wechat: '是', dept: '销售一部', sales: '陈利', abandonReason: '已有长期代账服务商', createdAt: '2026-03-30 10:42', channel: '视频号', region: '上海' },
+        { tab: 'abandoned', name: '郑凯', phone: '13233445566', company: '南京星河广告工作室', enterprise: '个体户', wechat: '否', dept: '销售三部', sales: '曹颖', abandonReason: '多次未接听，客户主动拒绝', createdAt: '2026-04-01 17:05', channel: '抖音1', region: '南京' },
+        { tab: 'abandoned', name: '冯婷', phone: '13122334455', company: '杭州启明设计工作室', enterprise: '小规模纳税人', wechat: '是', dept: '销售四部', sales: '陈利', abandonReason: '预算不足，下季度再议', createdAt: '2026-04-03 11:28', channel: '小红书1', region: '杭州' },
+        { tab: 'abandoned', name: '陈浩', phone: '13011223344', company: '无锡联创包装有限公司', enterprise: '一般纳税人', wechat: '否', dept: '销售二部', sales: '曹颖', abandonReason: '决策人变更，项目搁置', createdAt: '2026-04-05 14:50', channel: '58同城', region: '无锡' },
+
+        { tab: 'intent', name: '林悦', phone: '15800112233', company: '苏州智汇软件有限公司', enterprise: '一般纳税人', wechat: '是', dept: '销售一部', sales: '陈利', lastFollow: '2026-04-23 09:30', createdAt: '2026-04-15 16:18', channel: '抖音2', region: '苏州' },
+        { tab: 'intent', name: '黄磊', phone: '15911223344', company: '上海安达物流有限公司', enterprise: '小规模纳税人', wechat: '是', dept: '销售三部', sales: '曹颖', lastFollow: '2026-04-23 15:12', createdAt: '2026-04-16 10:05', channel: '视频号', region: '上海' },
+
+        { tab: 'won', name: '徐静', phone: '18666778899', company: '南京金桥建筑装饰有限公司', enterprise: '一般纳税人', wechat: '是', dept: '销售二部', sales: '陈利', contractType: '代理记账', receiveAmount: '¥12,000', createdAt: '2026-03-18 11:40', channel: '小红书2', region: '南京' },
+        { tab: 'won', name: '何伟', phone: '18777889900', company: '杭州优品服饰有限公司', enterprise: '小规模纳税人', wechat: '是', dept: '销售四部', sales: '曹颖', contractType: '地址注册+代账', receiveAmount: '¥8,600', createdAt: '2026-03-22 14:05', channel: '抖音1', region: '杭州' },
+
+        { tab: 'lost', name: '罗敏', phone: '18888990011', company: '无锡宏达机电设备有限公司', enterprise: '一般纳税人', wechat: '是', dept: '销售一部', sales: '陈利', lostReason: '选择竞品报价更低', createdAt: '2026-03-08 09:55', channel: '58同城', region: '无锡' },
+        { tab: 'lost', name: '谢娜', phone: '18999001122', company: '苏州清源环保科技有限公司', enterprise: '个体户', wechat: '否', dept: '销售三部', sales: '曹颖', lostReason: '公司注销，需求终止', createdAt: '2026-03-12 16:33', channel: '小红书1', region: '苏州' }
+      ];
+
+      var currentTab = 'following';
+      var toast = document.getElementById('toast-mkt');
+      var toastTimer = null;
+      var theadRow = document.getElementById('mkt-thead-row');
+      var tbody = document.getElementById('mkt-tbody');
+      var emptyEl = document.getElementById('mkt-empty');
+      var totalEl = document.getElementById('mkt-total');
+
+      var filterIds = [
+        'filter-channel', 'filter-wechat', 'filter-region', 'filter-dept',
+        'filter-sales', 'filter-enterprise', 'filter-created-start', 'filter-created-end'
+      ];
+
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.remove('hidden');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toast.classList.add('hidden'); }, 1800);
+      }
+
+      function escapeHtml(s) {
+        return String(s == null ? '' : s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function rowDateKey(createdAt) {
+        return String(createdAt || '').slice(0, 10);
+      }
+
+      function getFilters() {
+        return {
+          channel: document.getElementById('filter-channel').value,
+          wechat: document.getElementById('filter-wechat').value,
+          region: document.getElementById('filter-region').value,
+          dept: document.getElementById('filter-dept').value,
+          sales: document.getElementById('filter-sales').value,
+          enterprise: document.getElementById('filter-enterprise').value,
+          createdStart: document.getElementById('filter-created-start').value,
+          createdEnd: document.getElementById('filter-created-end').value
+        };
+      }
+
+      function matchFilters(row, f) {
+        if (f.channel && row.channel !== f.channel) return false;
+        if (f.wechat && row.wechat !== f.wechat) return false;
+        if (f.region && row.region !== f.region) return false;
+        if (f.dept && row.dept !== f.dept) return false;
+        if (f.sales && row.sales !== f.sales) return false;
+        if (f.enterprise && row.enterprise !== f.enterprise) return false;
+        var d = rowDateKey(row.createdAt);
+        if (f.createdStart && d < f.createdStart) return false;
+        if (f.createdEnd && d > f.createdEnd) return false;
+        return true;
+      }
+
+      function columnsForTab(tab) {
+        var base = [
+          { key: 'name', label: '客户姓名' },
+          { key: 'phone', label: '手机号码' },
+          { key: 'region', label: '所属区域' },
+          { key: 'enterprise', label: '企业类型' },
+          { key: 'wechat', label: '添加微信' },
+          { key: 'dept', label: '所属部门' },
+          { key: 'sales', label: '销售顾问' }
+        ];
+        if (tab === 'following' || tab === 'intent') {
+          base.push({ key: 'lastFollow', label: '最后一次跟进' });
+        } else if (tab === 'invalid') {
+          base.push({ key: 'invalidReason', label: '无效说明' });
+        } else if (tab === 'abandoned') {
+          base.push({ key: 'abandonReason', label: '放弃说明' });
+        } else if (tab === 'won') {
+          base.push({ key: 'contractType', label: '合同类型' });
+          base.push({ key: 'receiveAmount', label: '收款金额' });
+        } else if (tab === 'lost') {
+          base.push({ key: 'lostReason', label: '流失说明' });
+        }
+        base.push({ key: 'createdAt', label: '创建时间' });
+        return base;
+      }
+
+      function renderTable() {
+        var cols = columnsForTab(currentTab);
+        var f = getFilters();
+        var list = rows.filter(function (r) {
+          return r.tab === currentTab && matchFilters(r, f);
+        });
+
+        theadRow.innerHTML = cols.map(function (c) {
+          return '<th class="text-left">' + escapeHtml(c.label) + '</th>';
+        }).join('');
+
+        if (!list.length) {
+          tbody.innerHTML = '';
+          emptyEl.classList.remove('hidden');
+        } else {
+          emptyEl.classList.add('hidden');
+          tbody.innerHTML = list.map(function (row) {
+            return '<tr>' + cols.map(function (c) {
+              var val = row[c.key];
+              if (val == null || val === '') val = '--';
+              var cls = (c.key === 'lastFollow' && val !== '--') ? ' class="text-amber-600 font-medium"' : '';
+              return '<td' + cls + '>' + escapeHtml(val) + '</td>';
+            }).join('') + '</tr>';
+          }).join('');
+        }
+        totalEl.textContent = String(list.length);
+      }
+
+      function setTab(tab) {
+        currentTab = tab;
+        document.querySelectorAll('#mkt-tabs .mkt-tab').forEach(function (btn) {
+          var on = btn.getAttribute('data-tab') === tab;
+          btn.classList.toggle('border-blue-600', on);
+          btn.classList.toggle('text-blue-600', on);
+          btn.classList.toggle('font-medium', on);
+          btn.classList.toggle('mkt-tab-active', on);
+          btn.classList.toggle('border-transparent', !on);
+          btn.classList.toggle('text-slate-500', !on);
+        });
+        renderTable();
+      }
+
+      document.querySelectorAll('#mkt-tabs .mkt-tab').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          setTab(btn.getAttribute('data-tab'));
+        });
+      });
+
+      document.getElementById('btn-mkt-search').addEventListener('click', function () {
+        renderTable();
+        showToast('查询完成');
+      });
+
+      document.getElementById('btn-mkt-reset').addEventListener('click', function () {
+        filterIds.forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        renderTable();
+        showToast('已重置');
+      });
+
+      document.getElementById('btn-mkt-export').addEventListener('click', function () {
+        showToast('导出成功');
+      });
+
+      setTab('following');
+    })();
+  </script>
+  <script src="./assets/menu-data.js"></script>
+  <script src="./assets/app-shell.js"></script>
+</body>
+</html>
