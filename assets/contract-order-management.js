@@ -154,6 +154,7 @@
     '202604140001': {
       status: 'paid',
       orderNo: '202604140001',
+      tradeNo: 'TXN202604140001',
       createdAt: '2026-04-14 10:11:11',
       payMethod: '年付',
       amount: '24000',
@@ -168,6 +169,7 @@
     '202604140002': {
       status: 'unpaid',
       orderNo: '202604140002',
+      tradeNo: null,
       createdAt: '2026-03-21 18:03:00',
       payMethod: '年付',
       amount: '1600',
@@ -182,6 +184,7 @@
     '202604140003': {
       status: 'unpaid',
       orderNo: '202604140003',
+      tradeNo: null,
       createdAt: '2026-03-22 09:15:00',
       payMethod: '年付',
       amount: '1800',
@@ -196,6 +199,7 @@
     '202604140004': {
       status: 'partial',
       orderNo: '202604140004',
+      tradeNo: 'TXN202604140004',
       createdAt: '2026-04-16 14:00:00',
       payMethod: '年付',
       amount: '36000',
@@ -213,6 +217,7 @@
     '202604140006': {
       status: 'paid',
       orderNo: '202604140006',
+      tradeNo: 'TXN202604140006',
       createdAt: '2026-04-18 15:00:00',
       payMethod: '年付',
       amount: '15000',
@@ -227,6 +232,7 @@
     '202604140007': {
       status: 'paid',
       orderNo: '202604140007',
+      tradeNo: 'TXN202604140007',
       createdAt: '2026-04-20 09:00:00',
       payMethod: '半年付',
       amount: '5200',
@@ -246,6 +252,7 @@
     orderDetails[r.orderId] = {
       status: st,
       orderNo: r.orderId,
+      tradeNo: (st === 'paid' || st === 'partial') ? ('TXN' + r.orderId) : null,
       createdAt: r.createdAt,
       payMethod: r.payMethod || '年付',
       amount: String(r.amount),
@@ -600,7 +607,9 @@
   var invDetailModal = document.getElementById('modal-inv-detail');
   var paymentQrModal = document.getElementById('modal-payment-qrcode');
   var orderRemarkModal = document.getElementById('modal-order-remark');
-  var orderRemarkOrderNo = document.getElementById('order-remark-order-no');
+  var orderRemarkTradeNo = document.getElementById('order-remark-trade-no');
+  var orderRemarkPayTimeStart = document.getElementById('order-remark-pay-time-start');
+  var orderRemarkPayTimeEnd = document.getElementById('order-remark-pay-time-end');
   var orderRemarkInput = document.getElementById('order-remark-input');
   var btnOrderRemarkSubmit = document.getElementById('btn-order-remark-submit');
   var currentRemarkOrderId = null;
@@ -668,16 +677,28 @@
     paymentQrModal.setAttribute('aria-hidden', 'false');
   }
 
+  function toDatetimeLocalValue(str) {
+    if (!str) return '';
+    return String(str).replace(' ', 'T').slice(0, 16);
+  }
+
+  function fromDatetimeLocalValue(str) {
+    if (!str) return '';
+    return String(str).replace('T', ' ') + (str.length === 16 ? ':00' : '');
+  }
+
   function openOrderRemarkModal(orderId) {
     var d = orderDetails[orderId];
     if (!d || !orderRemarkModal) return;
     currentRemarkOrderId = orderId;
-    if (orderRemarkOrderNo) orderRemarkOrderNo.textContent = d.orderNo;
+    if (orderRemarkTradeNo) orderRemarkTradeNo.value = d.tradeNo || '';
+    if (orderRemarkPayTimeStart) orderRemarkPayTimeStart.value = toDatetimeLocalValue(d.payTimeStart || '');
+    if (orderRemarkPayTimeEnd) orderRemarkPayTimeEnd.value = toDatetimeLocalValue(d.payTimeEnd || '');
     if (orderRemarkInput) orderRemarkInput.value = d.remark || '';
     orderRemarkModal.classList.remove('hidden');
     orderRemarkModal.classList.add('flex');
     orderRemarkModal.setAttribute('aria-hidden', 'false');
-    if (orderRemarkInput) orderRemarkInput.focus();
+    if (orderRemarkTradeNo) orderRemarkTradeNo.focus();
   }
 
   function closeOrderRemarkModal() {
@@ -686,6 +707,9 @@
     orderRemarkModal.classList.remove('flex');
     orderRemarkModal.setAttribute('aria-hidden', 'true');
     currentRemarkOrderId = null;
+    if (orderRemarkTradeNo) orderRemarkTradeNo.value = '';
+    if (orderRemarkPayTimeStart) orderRemarkPayTimeStart.value = '';
+    if (orderRemarkPayTimeEnd) orderRemarkPayTimeEnd.value = '';
     if (orderRemarkInput) orderRemarkInput.value = '';
   }
 
@@ -703,7 +727,7 @@
 
     currentDetailOrderId = orderId;
 
-    setText('od-order-no', d.orderNo);
+    setText('od-order-no', (d.status === 'paid' || d.status === 'partial') ? (d.tradeNo || null) : null);
     setText('od-created', d.createdAt);
     setText('od-pay-method', d.payMethod);
     setText('od-amount', d.amount);
@@ -922,6 +946,30 @@
     if (btnOrderRemarkSubmit) {
       btnOrderRemarkSubmit.addEventListener('click', function () {
         if (!currentRemarkOrderId) return;
+        var tradeNo = orderRemarkTradeNo ? orderRemarkTradeNo.value.trim() : '';
+        if (!tradeNo) {
+          showToast('请填写交易单号');
+          if (orderRemarkTradeNo) orderRemarkTradeNo.focus();
+          return;
+        }
+        if (tradeNo.length > 30) {
+          showToast('交易单号不能超过30个字符');
+          if (orderRemarkTradeNo) orderRemarkTradeNo.focus();
+          return;
+        }
+        var payStart = orderRemarkPayTimeStart ? orderRemarkPayTimeStart.value : '';
+        var payEnd = orderRemarkPayTimeEnd ? orderRemarkPayTimeEnd.value : '';
+        if (!payStart || !payEnd) {
+          showToast('请选择收款起止时间');
+          if (!payStart && orderRemarkPayTimeStart) orderRemarkPayTimeStart.focus();
+          else if (orderRemarkPayTimeEnd) orderRemarkPayTimeEnd.focus();
+          return;
+        }
+        if (payStart > payEnd) {
+          showToast('收款开始时间不能晚于结束时间');
+          if (orderRemarkPayTimeStart) orderRemarkPayTimeStart.focus();
+          return;
+        }
         var text = orderRemarkInput ? orderRemarkInput.value.trim() : '';
         if (!text) {
           showToast('请填写订单备注');
@@ -929,10 +977,16 @@
           return;
         }
         var d = orderDetails[currentRemarkOrderId];
-        if (d) d.remark = text;
+        if (d) {
+          d.tradeNo = tradeNo;
+          d.payTimeStart = fromDatetimeLocalValue(payStart);
+          d.payTimeEnd = fromDatetimeLocalValue(payEnd);
+          d.remark = text;
+        }
         showToast('订单备注已保存');
-        if (currentDetailOrderId === currentRemarkOrderId) {
+        if (currentDetailOrderId === currentRemarkOrderId && d) {
           setText('od-remark', text);
+          setText('od-order-no', (d.status === 'paid' || d.status === 'partial') ? (d.tradeNo || null) : null);
         }
         closeOrderRemarkModal();
       });

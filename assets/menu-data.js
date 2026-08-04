@@ -22,13 +22,15 @@
 
         { id: 'sales-target', type: 'link', name: '销售目标', icon: '', href: 'sales-target.html', enabled: true, sort: 1 },
 
-        { id: 'lead-mgmt', type: 'link', name: '线索管理', icon: '', href: 'lead-management.html', enabled: true, sort: 2 },
+        { id: 'marketing-mgmt', type: 'link', name: '营销管理', icon: '', href: 'marketing-management.html', enabled: true, sort: 2 },
 
-        { id: 'opp-mgmt', type: 'link', name: '商机管理', icon: '', href: 'opportunity-management.html', enabled: true, sort: 3 },
+        { id: 'lead-mgmt', type: 'link', name: '线索管理', icon: '', href: 'lead-management.html', enabled: true, sort: 3 },
 
-        { id: 'customer-mgmt', type: 'link', name: '客户管理', icon: '', href: 'customer-management.html', enabled: true, sort: 4 },
+        { id: 'opp-mgmt', type: 'link', name: '商机管理', icon: '', href: 'opportunity-management.html', enabled: true, sort: 4 },
 
-        { id: 'sales-perf', type: 'link', name: '销售业绩', icon: '', href: 'sales-performance.html', enabled: true, sort: 5 }
+        { id: 'customer-mgmt', type: 'link', name: '客户管理', icon: '', href: 'customer-management.html', enabled: true, sort: 5 },
+
+        { id: 'sales-perf', type: 'link', name: '销售业绩', icon: '', href: 'sales-performance.html', enabled: true, sort: 6 }
 
       ]
 
