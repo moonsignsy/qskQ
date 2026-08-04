@@ -91,9 +91,11 @@ function toPdf(htmlPath, pdfPath) {
 
 fs.mkdirSync(tmpDir, { recursive: true });
 
-const files = fs.readdirSync(prdDir)
-  .filter((f) => f.endsWith('.md'))
-  .sort();
+const argFiles = process.argv.slice(2).filter((f) => f.endsWith('.md'));
+const files = (argFiles.length
+  ? argFiles
+  : fs.readdirSync(prdDir).filter((f) => f.endsWith('.md'))
+).sort();
 
 const results = [];
 
