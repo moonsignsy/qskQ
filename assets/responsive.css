@@ -48,16 +48,36 @@ main,
   z-index: 180 !important;
 }
 
-/* 查看合同弹窗：内部滚动，避免整面板被全局规则改成 overflow-y:auto */
+/* 查看合同侧滑抽屉：与创建合同一致，小屏全屏 / ≥768 右侧抽屉 */
+#modal-view-contract:not(.hidden) {
+  padding: 0 !important;
+  justify-content: stretch !important;
+  align-items: stretch !important;
+}
+
 #modal-view-contract .vc-panel {
   overflow: hidden !important;
-  max-width: min(100%, 1100px) !important;
-  max-height: min(92dvh, 92vh) !important;
-  height: min(92dvh, 920px);
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  max-height: 100dvh !important;
+  border-left: none !important;
+  border-radius: 0 !important;
 }
 
 #modal-view-contract #vc-doc-scroll {
   -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 768px) {
+  #modal-view-contract:not(.hidden) {
+    justify-content: flex-end !important;
+  }
+
+  #modal-view-contract .vc-panel {
+    max-width: 860px !important;
+    border-left: 1px solid #e2e8f0 !important;
+  }
 }
 
 body.qsk-modal-open #app-sidebar,

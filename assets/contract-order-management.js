@@ -444,6 +444,13 @@
     return val == null || val === '' ? PLACEHOLDER : val;
   }
 
+  function escapeAttr(val) {
+    return String(val == null ? '' : val)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;');
+  }
+
   function canApplyInvoice(rec) {
     return rec.payStatus === '已支付' && rec.invoiceFlag === '否';
   }
@@ -457,7 +464,20 @@
     if (rec.orderId) {
       parts.push('<button type="button" class="text-blue-600 hover:underline cursor-pointer js-view-order" data-order-id="' + rec.orderId + '">查看订单</button>');
     }
-    parts.push('<button type="button" class="text-blue-600 hover:underline cursor-pointer js-view-contract" data-contract-no="' + rec.contractNo + '">查看合同</button>');
+    parts.push(
+      '<button type="button" class="text-blue-600 hover:underline cursor-pointer js-view-contract"' +
+      ' data-contract-no="' + escapeAttr(rec.contractNo) + '"' +
+      ' data-party-a="' + escapeAttr(rec.companyName) + '"' +
+      ' data-party-a-contact="' + escapeAttr(rec.contactPhone || '') + '"' +
+      ' data-amount="' + escapeAttr(typeof rec.amount === 'number' ? rec.amount.toFixed(2) : rec.amount) + '"' +
+      ' data-status="' + escapeAttr(
+        rec.contractStatus === '未签约' ? '未签约' :
+        rec.contractStatus === '已作废' ? '已作废' :
+        (rec.payStatus === '已支付' ? '已签约已支付' : '已签约未支付')
+      ) + '"' +
+      ' data-signed-at="' + escapeAttr(rec.signedAt || '—') + '"' +
+      '>查看合同</button>'
+    );
     if (rec.orderId) {
       parts.push('<button type="button" class="text-blue-600 hover:underline cursor-pointer js-add-order-remark" data-order-id="' + rec.orderId + '">添加订单备注</button>');
     }
@@ -607,12 +627,26 @@
   var invDetailModal = document.getElementById('modal-inv-detail');
   var paymentQrModal = document.getElementById('modal-payment-qrcode');
   var orderRemarkModal = document.getElementById('modal-order-remark');
+  var orderRemarkPayMethod = document.getElementById('order-remark-pay-method');
+  var orderRemarkFieldsWecom = document.getElementById('order-remark-fields-wecom');
+  var orderRemarkFieldsVoucher = document.getElementById('order-remark-fields-voucher');
+  var orderRemarkFieldsCommon = document.getElementById('order-remark-fields-common');
   var orderRemarkTradeNo = document.getElementById('order-remark-trade-no');
   var orderRemarkPayTimeStart = document.getElementById('order-remark-pay-time-start');
   var orderRemarkPayTimeEnd = document.getElementById('order-remark-pay-time-end');
   var orderRemarkInput = document.getElementById('order-remark-input');
+  var orderRemarkUploadArea = document.getElementById('order-remark-upload-area');
+  var orderRemarkUploadEmpty = document.getElementById('order-remark-upload-empty');
+  var orderRemarkUploadPreview = document.getElementById('order-remark-upload-preview');
+  var orderRemarkVoucherFile = document.getElementById('order-remark-voucher-file');
+  var orderRemarkVoucherImg = document.getElementById('order-remark-voucher-img');
+  var orderRemarkVoucherName = document.getElementById('order-remark-voucher-name');
+  var orderRemarkVoucherClear = document.getElementById('order-remark-voucher-clear');
   var btnOrderRemarkSubmit = document.getElementById('btn-order-remark-submit');
   var currentRemarkOrderId = null;
+  var currentRemarkVoucherUrl = null;
+  var currentRemarkVoucherName = '';
+  var PAY_METHOD_LABEL = { wecom: '企业微信', bank: '对公转账', alipay: '支付宝' };
   var currentDetailOrderId = null;
   /** 「所有合同」Tab 列表前三条对应的订单（详情弹窗显示「发送收款码」） */
   var topThreeOrderIds = records.slice(0, 3).map(function (r) { return r.orderId; }).filter(Boolean);
@@ -687,18 +721,70 @@
     return String(str).replace('T', ' ') + (str.length === 16 ? ':00' : '');
   }
 
+  function clearRemarkVoucher() {
+    if (currentRemarkVoucherUrl) {
+      try { URL.revokeObjectURL(currentRemarkVoucherUrl); } catch (e) { /* ignore */ }
+    }
+    currentRemarkVoucherUrl = null;
+    currentRemarkVoucherName = '';
+    if (orderRemarkVoucherFile) orderRemarkVoucherFile.value = '';
+    if (orderRemarkVoucherImg) orderRemarkVoucherImg.removeAttribute('src');
+    if (orderRemarkVoucherName) orderRemarkVoucherName.textContent = '';
+    if (orderRemarkUploadEmpty) orderRemarkUploadEmpty.classList.remove('hidden');
+    if (orderRemarkUploadPreview) orderRemarkUploadPreview.classList.add('hidden');
+  }
+
+  function setRemarkVoucherPreview(file) {
+    if (!file) {
+      clearRemarkVoucher();
+      return;
+    }
+    if (currentRemarkVoucherUrl) {
+      try { URL.revokeObjectURL(currentRemarkVoucherUrl); } catch (e) { /* ignore */ }
+    }
+    currentRemarkVoucherUrl = URL.createObjectURL(file);
+    currentRemarkVoucherName = file.name || '支付凭证';
+    if (orderRemarkVoucherImg) orderRemarkVoucherImg.src = currentRemarkVoucherUrl;
+    if (orderRemarkVoucherName) orderRemarkVoucherName.textContent = currentRemarkVoucherName;
+    if (orderRemarkUploadEmpty) orderRemarkUploadEmpty.classList.add('hidden');
+    if (orderRemarkUploadPreview) orderRemarkUploadPreview.classList.remove('hidden');
+  }
+
+  function syncOrderRemarkFieldsByPayMethod() {
+    var method = orderRemarkPayMethod ? orderRemarkPayMethod.value : '';
+    var isWecom = method === 'wecom';
+    var isVoucher = method === 'bank' || method === 'alipay';
+    if (orderRemarkFieldsWecom) orderRemarkFieldsWecom.classList.toggle('hidden', !isWecom);
+    if (orderRemarkFieldsVoucher) orderRemarkFieldsVoucher.classList.toggle('hidden', !isVoucher);
+    if (orderRemarkFieldsCommon) orderRemarkFieldsCommon.classList.toggle('hidden', !(isWecom || isVoucher));
+    if (!isVoucher) clearRemarkVoucher();
+  }
+
   function openOrderRemarkModal(orderId) {
     var d = orderDetails[orderId];
     if (!d || !orderRemarkModal) return;
     currentRemarkOrderId = orderId;
+    if (orderRemarkPayMethod) orderRemarkPayMethod.value = d.remarkPayMethod || '';
     if (orderRemarkTradeNo) orderRemarkTradeNo.value = d.tradeNo || '';
     if (orderRemarkPayTimeStart) orderRemarkPayTimeStart.value = toDatetimeLocalValue(d.payTimeStart || '');
     if (orderRemarkPayTimeEnd) orderRemarkPayTimeEnd.value = toDatetimeLocalValue(d.payTimeEnd || '');
     if (orderRemarkInput) orderRemarkInput.value = d.remark || '';
+    clearRemarkVoucher();
+    if (d.voucherName) {
+      currentRemarkVoucherName = d.voucherName;
+      if (orderRemarkVoucherName) orderRemarkVoucherName.textContent = d.voucherName;
+      if (d.voucherUrl && orderRemarkVoucherImg) {
+        orderRemarkVoucherImg.src = d.voucherUrl;
+        currentRemarkVoucherUrl = null;
+        if (orderRemarkUploadEmpty) orderRemarkUploadEmpty.classList.add('hidden');
+        if (orderRemarkUploadPreview) orderRemarkUploadPreview.classList.remove('hidden');
+      }
+    }
+    syncOrderRemarkFieldsByPayMethod();
     orderRemarkModal.classList.remove('hidden');
     orderRemarkModal.classList.add('flex');
     orderRemarkModal.setAttribute('aria-hidden', 'false');
-    if (orderRemarkTradeNo) orderRemarkTradeNo.focus();
+    if (orderRemarkPayMethod) orderRemarkPayMethod.focus();
   }
 
   function closeOrderRemarkModal() {
@@ -707,10 +793,13 @@
     orderRemarkModal.classList.remove('flex');
     orderRemarkModal.setAttribute('aria-hidden', 'true');
     currentRemarkOrderId = null;
+    if (orderRemarkPayMethod) orderRemarkPayMethod.value = '';
     if (orderRemarkTradeNo) orderRemarkTradeNo.value = '';
     if (orderRemarkPayTimeStart) orderRemarkPayTimeStart.value = '';
     if (orderRemarkPayTimeEnd) orderRemarkPayTimeEnd.value = '';
     if (orderRemarkInput) orderRemarkInput.value = '';
+    clearRemarkVoucher();
+    syncOrderRemarkFieldsByPayMethod();
   }
 
   function closePaymentQrModal() {
@@ -916,8 +1005,6 @@
           return;
         }
         if (e.target.closest('.js-view-contract')) {
-          var cno = e.target.closest('.js-view-contract').getAttribute('data-contract-no');
-          showToast('演示：打开合同 ' + cno);
           return;
         }
         if (e.target.closest('.js-apply-invoice') && orderId) {
@@ -943,20 +1030,75 @@
         el.addEventListener('click', closeOrderRemarkModal);
       });
     }
+    if (orderRemarkPayMethod) {
+      orderRemarkPayMethod.addEventListener('change', syncOrderRemarkFieldsByPayMethod);
+    }
+    if (orderRemarkUploadArea && orderRemarkVoucherFile) {
+      orderRemarkUploadArea.addEventListener('click', function (e) {
+        if (e.target && e.target.closest && e.target.closest('#order-remark-voucher-clear')) return;
+        orderRemarkVoucherFile.click();
+      });
+      orderRemarkUploadArea.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          orderRemarkVoucherFile.click();
+        }
+      });
+      orderRemarkVoucherFile.addEventListener('change', function () {
+        var file = orderRemarkVoucherFile.files && orderRemarkVoucherFile.files[0];
+        if (!file) return;
+        if (!/^image\/(png|jpeg|jpg)$/i.test(file.type) && !/\.(png|jpe?g)$/i.test(file.name || '')) {
+          showToast('请上传 JPG 或 PNG 图片');
+          orderRemarkVoucherFile.value = '';
+          return;
+        }
+        if (file.size > 10 * 1024 * 1024) {
+          showToast('图片不能超过 10MB');
+          orderRemarkVoucherFile.value = '';
+          return;
+        }
+        setRemarkVoucherPreview(file);
+      });
+    }
+    if (orderRemarkVoucherClear) {
+      orderRemarkVoucherClear.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        clearRemarkVoucher();
+      });
+    }
     if (btnOrderRemarkSubmit) {
       btnOrderRemarkSubmit.addEventListener('click', function () {
         if (!currentRemarkOrderId) return;
-        var tradeNo = orderRemarkTradeNo ? orderRemarkTradeNo.value.trim() : '';
-        if (!tradeNo) {
-          showToast('请填写交易单号');
-          if (orderRemarkTradeNo) orderRemarkTradeNo.focus();
+        var method = orderRemarkPayMethod ? orderRemarkPayMethod.value : '';
+        if (!method) {
+          showToast('请选择支付方式');
+          if (orderRemarkPayMethod) orderRemarkPayMethod.focus();
           return;
         }
-        if (tradeNo.length > 30) {
-          showToast('交易单号不能超过30个字符');
-          if (orderRemarkTradeNo) orderRemarkTradeNo.focus();
-          return;
+
+        var tradeNo = '';
+        if (method === 'wecom') {
+          tradeNo = orderRemarkTradeNo ? orderRemarkTradeNo.value.trim() : '';
+          if (!tradeNo) {
+            showToast('请填写交易单号');
+            if (orderRemarkTradeNo) orderRemarkTradeNo.focus();
+            return;
+          }
+          if (tradeNo.length > 30) {
+            showToast('交易单号不能超过30个字符');
+            if (orderRemarkTradeNo) orderRemarkTradeNo.focus();
+            return;
+          }
+        } else {
+          var hasFile = orderRemarkVoucherFile && orderRemarkVoucherFile.files && orderRemarkVoucherFile.files[0];
+          var hasSaved = !!currentRemarkVoucherName;
+          if (!hasFile && !hasSaved) {
+            showToast('请上传支付凭证');
+            return;
+          }
         }
+
         var payStart = orderRemarkPayTimeStart ? orderRemarkPayTimeStart.value : '';
         var payEnd = orderRemarkPayTimeEnd ? orderRemarkPayTimeEnd.value : '';
         if (!payStart || !payEnd) {
@@ -978,10 +1120,25 @@
         }
         var d = orderDetails[currentRemarkOrderId];
         if (d) {
-          d.tradeNo = tradeNo;
+          d.remarkPayMethod = method;
+          d.remarkPayMethodLabel = PAY_METHOD_LABEL[method] || method;
           d.payTimeStart = fromDatetimeLocalValue(payStart);
           d.payTimeEnd = fromDatetimeLocalValue(payEnd);
           d.remark = text;
+          if (method === 'wecom') {
+            d.tradeNo = tradeNo;
+            d.voucherName = '';
+            d.voucherUrl = '';
+          } else {
+            d.tradeNo = d.tradeNo || null;
+            if (orderRemarkVoucherFile && orderRemarkVoucherFile.files && orderRemarkVoucherFile.files[0]) {
+              d.voucherName = orderRemarkVoucherFile.files[0].name;
+              d.voucherUrl = currentRemarkVoucherUrl || '';
+              currentRemarkVoucherUrl = null;
+            } else if (currentRemarkVoucherName) {
+              d.voucherName = currentRemarkVoucherName;
+            }
+          }
         }
         showToast('订单备注已保存');
         if (currentDetailOrderId === currentRemarkOrderId && d) {
