@@ -413,7 +413,10 @@
         </div>
 
         <div id="cost-form-wrap" class="space-y-4">
-          <p id="cost-form-label" class="text-slate-600 font-medium hidden">继续添加</p>
+          <div id="cost-form-label-row" class="hidden flex items-center justify-between gap-2">
+            <p id="cost-form-label" class="text-slate-600 font-medium">继续添加</p>
+            <button type="button" id="btn-cost-cancel-edit" class="hidden text-xs text-blue-600 hover:text-blue-700 hover:underline cursor-pointer">取消修改</button>
+          </div>
           <label class="block">
             <span class="text-slate-600"><span class="text-red-500">*</span> 客户成本类型</span>
             <input type="text" id="cost-type" placeholder="请输入成本类型，如审计费、刻章费" class="mt-1 w-full h-9 px-3 rounded-md border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
