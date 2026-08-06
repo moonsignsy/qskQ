@@ -403,44 +403,38 @@
         </div>
         <button type="button" class="text-slate-400 hover:text-slate-600" data-close="customer-cost" aria-label="关闭"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
-      <div class="px-6 py-4 text-sm space-y-4">
-        <label class="block">
-          <span class="text-slate-600"><span class="text-red-500">*</span> 客户成本类型</span>
-          <div class="relative mt-1">
-            <select id="cost-type" class="w-full h-9 pl-3 pr-8 rounded-md border border-slate-200 bg-white appearance-none text-sm">
-              <option value="audit">审计费</option>
-              <option value="address">第三方地址费</option>
-              <option value="seal">刻章费</option>
-              <option value="other">其他费用</option>
-            </select>
-            <i class="fa-solid fa-angle-down absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+      <div class="px-6 py-4 text-sm space-y-4 max-h-[min(70vh,560px)] overflow-y-auto">
+        <div id="cost-existing-wrap" class="hidden">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-slate-600 font-medium">已添加成本</span>
+            <span id="cost-existing-total" class="text-xs text-slate-400"></span>
           </div>
-        </label>
-        <label class="block">
-          <span class="text-slate-600"><span class="text-red-500">*</span> 客户成本金额（元）</span>
-          <input type="number" id="cost-amount" min="0" step="0.01" placeholder="请输入金额" class="mt-1 w-full h-9 px-3 rounded-md border border-slate-200 text-sm">
-        </label>
-        <label class="block">
-          <span class="text-slate-600">备注说明</span>
-          <textarea id="cost-remark" rows="3" placeholder="请输入备注说明" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm resize-y"></textarea>
-        </label>
-        <div>
-          <span class="text-slate-600 block mb-1">附件上传</span>
-          <input type="file" id="cost-attachment" class="hidden" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
-          <div id="cost-upload-area" class="h-24 rounded-md border border-dashed border-slate-300 bg-slate-50 flex flex-col items-center justify-center text-slate-500 cursor-pointer hover:border-blue-300 hover:bg-blue-50/50 transition-colors" role="button" tabindex="0">
-            <i class="fa-solid fa-cloud-arrow-up mb-2 text-lg text-slate-400"></i>
-            <span class="text-xs">点击上传附件</span>
-            <span id="cost-attachment-name" class="mt-1 text-xs text-blue-600 max-w-[90%] truncate"></span>
-          </div>
-          <p class="mt-1 text-xs text-slate-400">支持 pdf、jpg、png、doc 等格式</p>
+          <div id="cost-existing-list" class="rounded-md border border-slate-200 divide-y divide-slate-100 overflow-hidden"></div>
+        </div>
+
+        <div id="cost-form-wrap" class="space-y-4">
+          <p id="cost-form-label" class="text-slate-600 font-medium hidden">继续添加</p>
+          <label class="block">
+            <span class="text-slate-600"><span class="text-red-500">*</span> 客户成本类型</span>
+            <input type="text" id="cost-type" placeholder="请输入成本类型，如审计费、刻章费" class="mt-1 w-full h-9 px-3 rounded-md border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+          </label>
+          <label class="block">
+            <span class="text-slate-600"><span class="text-red-500">*</span> 客户成本金额（元）</span>
+            <input type="number" id="cost-amount" min="0" step="0.01" placeholder="请输入金额" class="mt-1 w-full h-9 px-3 rounded-md border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+          </label>
+          <label class="block">
+            <span class="text-slate-600">备注说明</span>
+            <textarea id="cost-remark" rows="3" placeholder="请输入备注说明" class="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 resize-y focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"></textarea>
+          </label>
         </div>
       </div>
       <div class="flex justify-center gap-3 border-t border-slate-100 px-6 py-4">
-        <button type="button" id="btn-cost-ok" class="h-9 px-8 rounded-md bg-blue-600 text-sm font-medium text-white hover:bg-blue-700 cursor-pointer">确认</button>
-        <button type="button" class="h-9 px-8 rounded-md border border-slate-200 bg-white text-sm text-slate-600 hover:bg-slate-50 cursor-pointer" data-close="customer-cost">取消</button>
+        <button type="button" id="btn-cost-ok" class="h-9 px-8 rounded-md bg-blue-600 text-sm font-medium text-white hover:bg-blue-700 cursor-pointer">确认添加</button>
+        <button type="button" class="h-9 px-8 rounded-md border border-slate-200 bg-white text-sm text-slate-600 hover:bg-slate-50 cursor-pointer" data-close="customer-cost">关闭</button>
       </div>
     </div>
   </div>
+  <div id="toast-customer-cost" class="fixed top-6 left-1/2 z-[200] hidden -translate-x-1/2 rounded-lg bg-slate-800 px-5 py-2.5 text-sm text-white shadow-lg" role="status"></div>
 
   <script src="./assets/customer-supplement-modal.js"></script>
   <script>

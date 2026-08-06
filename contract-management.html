@@ -12,7 +12,8 @@
   <style>
     body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; }
     #modal-payment-qrcode:not(.hidden),
-    #modal-order-remark:not(.hidden) { display: flex; }
+    #modal-order-remark:not(.hidden),
+    #modal-view-contract:not(.hidden) { display: flex; }
   </style>
 </head>
 <body class="bg-[#f5f7fa] text-slate-700">
@@ -324,21 +325,58 @@
       </div>
       <div class="px-6 py-5 text-sm space-y-4">
         <label class="block">
-          <span class="text-slate-600">交易单号 <span class="text-red-500">*</span></span>
-          <input id="order-remark-trade-no" type="text" maxlength="30" placeholder="请输入交易单号" class="mt-1.5 w-full h-9 rounded-md border border-slate-200 px-3 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+          <span class="text-slate-600">支付方式 <span class="text-red-500">*</span></span>
+          <div class="relative mt-1.5">
+            <select id="order-remark-pay-method" class="w-full h-9 pl-3 pr-8 rounded-md border border-slate-200 bg-white appearance-none text-slate-700 cursor-pointer focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+              <option value="">请选择支付方式</option>
+              <option value="wecom">企业微信</option>
+              <option value="bank">对公转账</option>
+              <option value="alipay">支付宝</option>
+            </select>
+            <i class="fa-solid fa-angle-down absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+          </div>
         </label>
-        <div>
-          <span class="text-slate-600">收款时间 <span class="text-red-500">*</span></span>
-          <div class="mt-1.5 flex items-center gap-2">
-            <input id="order-remark-pay-time-start" type="datetime-local" class="h-9 flex-1 min-w-0 rounded-md border border-slate-200 px-2 text-sm text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-            <span class="shrink-0 text-slate-400">至</span>
-            <input id="order-remark-pay-time-end" type="datetime-local" class="h-9 flex-1 min-w-0 rounded-md border border-slate-200 px-2 text-sm text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+
+        <div id="order-remark-fields-wecom" class="hidden space-y-4">
+          <label class="block">
+            <span class="text-slate-600">交易单号 <span class="text-red-500">*</span></span>
+            <input id="order-remark-trade-no" type="text" maxlength="30" placeholder="请输入交易单号" class="mt-1.5 w-full h-9 rounded-md border border-slate-200 px-3 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+          </label>
+        </div>
+
+        <div id="order-remark-fields-voucher" class="hidden space-y-4">
+          <div>
+            <span class="text-slate-600">支付凭证 <span class="text-red-500">*</span></span>
+            <div id="order-remark-upload-area" class="mt-1.5 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-center cursor-pointer hover:border-blue-300 hover:bg-blue-50/40 transition-colors" role="button" tabindex="0">
+              <div id="order-remark-upload-empty">
+                <i class="fa-solid fa-cloud-arrow-up text-2xl text-slate-400 mb-2"></i>
+                <p class="text-sm text-slate-500">点击上传支付凭证图片</p>
+                <p class="text-xs text-slate-400 mt-1">支持 JPG、PNG，单文件不超过 10MB</p>
+              </div>
+              <div id="order-remark-upload-preview" class="hidden">
+                <img id="order-remark-voucher-img" src="" alt="支付凭证预览" class="mx-auto max-h-40 rounded-md border border-slate-200 object-contain bg-white">
+                <p id="order-remark-voucher-name" class="mt-2 text-xs text-slate-600 truncate"></p>
+                <button type="button" id="order-remark-voucher-clear" class="mt-2 text-xs text-red-500 hover:text-red-600">移除并重新上传</button>
+              </div>
+            </div>
+            <input type="file" id="order-remark-voucher-file" class="hidden" accept="image/png,image/jpeg,image/jpg,.png,.jpg,.jpeg">
           </div>
         </div>
-        <label class="block">
-          <span class="text-slate-600">订单备注</span>
-          <textarea id="order-remark-input" rows="5" class="mt-1.5 w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 resize-y min-h-[120px]" placeholder="请输入订单备注"></textarea>
-        </label>
+
+        <div id="order-remark-fields-common" class="hidden space-y-4">
+          <div>
+            <span class="text-slate-600">收款时间 <span class="text-red-500">*</span></span>
+            <div class="mt-1.5 flex items-center gap-2">
+              <input id="order-remark-pay-time-start" type="datetime-local" class="h-9 flex-1 min-w-0 rounded-md border border-slate-200 px-2 text-sm text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+              <span class="shrink-0 text-slate-400">至</span>
+              <input id="order-remark-pay-time-end" type="datetime-local" class="h-9 flex-1 min-w-0 rounded-md border border-slate-200 px-2 text-sm text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+            </div>
+          </div>
+          <label class="block">
+            <span class="text-slate-600">订单备注</span>
+            <textarea id="order-remark-input" rows="5" class="mt-1.5 w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 resize-y min-h-[120px]" placeholder="请输入订单备注"></textarea>
+          </label>
+        </div>
       </div>
       <div class="flex justify-center gap-3 border-t border-slate-100 px-6 py-4">
         <button type="button" id="btn-order-remark-submit" class="h-9 min-w-[5.5rem] rounded-md bg-blue-600 px-5 text-sm font-medium text-white hover:bg-blue-700 cursor-pointer">确认</button>
@@ -386,8 +424,10 @@
   </div>
 
   <script src="./assets/create-contract-modal.js"></script>
+  <script src="./assets/view-contract-modal.js"></script>
   <script>
     window.mountCreateContractModal({ openSelectors: ['#btn-open-create-contract'] });
+    window.mountViewContractModal({ openSelectors: ['.js-view-contract'] });
   </script>
   <script src="./assets/contract-order-management.js"></script>
   <script src="./assets/app-shell.js"></script>

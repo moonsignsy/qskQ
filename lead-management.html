@@ -17,8 +17,18 @@
     .table-leads {
       table-layout: fixed;
       width: 100%;
-      min-width: 1280px;
+      min-width: 1480px;
       border-collapse: collapse;
+    }
+    .table-leads td.lead-follow-content {
+      white-space: normal;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-height: 1.4;
+      font-size: 13px;
+      color: #334155;
     }
     .table-leads th,
     .table-leads td {
@@ -247,20 +257,21 @@
             <table class="table-leads w-full text-slate-700">
               <colgroup>
                 <col style="width:2.25rem">
+                <col style="width:5.5%">
                 <col style="width:6.5%">
                 <col style="width:7%">
-                <col style="width:7.5%">
-                <col style="width:7.5%">
+                <col style="width:6.5%">
+                <col style="width:7%">
+                <col style="width:5%">
+                <col style="width:3.5%">
+                <col style="width:5%">
+                <col style="width:8.5%">
+                <col style="width:5%">
+                <col style="width:12%">
                 <col style="width:8%">
-                <col style="width:5.5%">
-                <col style="width:4%">
-                <col style="width:5.5%">
-                <col style="width:9.5%">
-                <col style="width:5.5%">
-                <col style="width:9%">
-                <col style="width:9%">
-                <col style="width:5.5%">
-                <col style="width:16%">
+                <col style="width:8%">
+                <col style="width:5%">
+                <col style="width:14%">
               </colgroup>
               <thead class="bg-slate-50">
                 <tr>
@@ -275,6 +286,7 @@
                   <th class="text-left pl-2 pr-4 py-2.5 border-b border-slate-200 whitespace-nowrap align-middle">线索有效</th>
                   <th class="text-left pl-4 pr-2 py-2.5 border-b border-slate-200 align-middle">创建时间</th>
                   <th class="text-left px-2 py-2.5 border-b border-slate-200 align-middle">销售顾问</th>
+                  <th class="text-left px-2 py-2.5 border-b border-slate-200 align-middle">最后一次跟进内容</th>
                   <th class="text-left px-2 py-2.5 border-b border-slate-200 align-middle">最后一次跟进</th>
                   <th id="col-extra-header" class="text-left px-2 py-2.5 border-b border-slate-200 align-middle">下次跟进</th>
                   <th class="text-left px-2 py-2.5 border-b border-slate-200 align-middle">跟进日志</th>
@@ -295,6 +307,7 @@
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap"><span class="text-emerald-600 font-medium">有效</span></td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-04-18 09:12</td>
                   <td class="px-2 py-2.5 align-middle">丽丽</td>
+                  <td class="px-2 py-2.5 align-middle lead-follow-content text-slate-400" title="">--</td>
                   <td class="px-2 py-2.5 align-middle text-slate-400">--</td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap lead-col-extra">2026年6月3日</td>
                   <td class="px-2 py-2.5 align-middle"><a href="lead-follow-detail.html?id=lead-1" class="text-blue-600 hover:underline">查看详情</a></td>
@@ -318,6 +331,7 @@
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap"><span class="text-emerald-600 font-medium">有效</span></td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-04-05 11:30</td>
                   <td class="px-2 py-2.5 align-middle">周方林</td>
+                  <td class="px-2 py-2.5 align-middle lead-follow-content" title="已沟通代账套餐与报价区间，客户需内部确认后再回复">已沟通代账套餐与报价区间，客户需内部确认后再回复</td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-04-12 15:00</td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap text-amber-600 font-medium lead-col-extra">2026年4月20日</td>
                   <td class="px-2 py-2.5 align-middle"><a href="lead-follow-detail.html?id=lead-6" class="text-blue-600 hover:underline">查看详情</a></td>
@@ -344,6 +358,7 @@
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap"><span class="text-emerald-600 font-medium">有效</span></td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-04-17 14:20</td>
                   <td class="px-2 py-2.5 align-middle">周方林</td>
+                  <td class="px-2 py-2.5 align-middle lead-follow-content" title="客户有注册地址及代账需求，意向明确，约定下周出方案">客户有注册地址及代账需求，意向明确，约定下周出方案</td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-04-19 10:00</td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap lead-col-extra">2026年6月5日</td>
                   <td class="px-2 py-2.5 align-middle"><a href="lead-follow-detail.html?id=lead-2" class="text-blue-600 hover:underline">查看详情</a></td>
@@ -371,6 +386,7 @@
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap"><span class="text-emerald-600 font-medium">有效</span></td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-04-16 11:05</td>
                   <td class="px-2 py-2.5 align-middle">周方林</td>
+                  <td class="px-2 py-2.5 align-middle lead-follow-content" title="已发送报价单，客户表示需与财务核对后再确认">已发送报价单，客户表示需与财务核对后再确认</td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-04-18 16:30</td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap lead-col-extra">2026年6月10日</td>
                   <td class="px-2 py-2.5 align-middle"><a href="lead-follow-detail.html?id=lead-3" class="text-blue-600 hover:underline">查看详情</a></td>
@@ -399,6 +415,7 @@
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap"><span class="text-emerald-600 font-medium">有效</span></td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-03-28 15:22</td>
                   <td class="px-2 py-2.5 align-middle">周方林</td>
+                  <td class="px-2 py-2.5 align-middle lead-follow-content" title="跟进确认竞品对比后，客户表示暂缓合作">跟进确认竞品对比后，客户表示暂缓合作</td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-03-29 10:15</td>
                   <td class="px-2 py-2.5 align-middle text-sm text-slate-700 lead-col-extra">客户已选择其他服务商，暂不考虑合作</td>
                   <td class="px-2 py-2.5 align-middle"><a href="lead-follow-detail.html?id=lead-5" class="text-blue-600 hover:underline">查看详情</a></td>
@@ -417,6 +434,7 @@
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap"><span class="text-slate-500 font-medium">无效</span></td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-04-10 08:40</td>
                   <td class="px-2 py-2.5 align-middle">周方林</td>
+                  <td class="px-2 py-2.5 align-middle lead-follow-content" title="多次拨打均提示停机，无法取得有效联系">多次拨打均提示停机，无法取得有效联系</td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-04-15 09:00</td>
                   <td class="px-2 py-2.5 align-middle text-sm text-slate-700 lead-col-extra">空号无法联系，多次拨打均提示停机</td>
                   <td class="px-2 py-2.5 align-middle"><a href="lead-follow-detail.html?id=lead-4" class="text-blue-600 hover:underline">查看详情</a></td>
@@ -434,6 +452,7 @@
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap"><span class="text-slate-500 font-medium">无效</span></td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-04-12 14:25</td>
                   <td class="px-2 py-2.5 align-middle">周方林</td>
+                  <td class="px-2 py-2.5 align-middle lead-follow-content" title="确认非本人号码，对方表示无合作意向">确认非本人号码，对方表示无合作意向</td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-04-12 14:25</td>
                   <td class="px-2 py-2.5 align-middle text-sm text-slate-700 lead-col-extra">联系方式错误，非本人号码，确认无合作意向</td>
                   <td class="px-2 py-2.5 align-middle"><a href="lead-follow-detail.html?id=lead-9" class="text-blue-600 hover:underline">查看详情</a></td>
@@ -452,6 +471,7 @@
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap"><span class="text-emerald-600 font-medium">有效</span></td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-03-15 10:08</td>
                   <td class="px-2 py-2.5 align-middle">周方林</td>
+                  <td class="px-2 py-2.5 align-middle lead-follow-content" title="完成需求确认与方案讲解，客户同意转商机推进">完成需求确认与方案讲解，客户同意转商机推进</td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-04-02 14:20</td>
                   <td class="px-2 py-2.5 align-middle text-slate-400 lead-col-extra">--</td>
                   <td class="px-2 py-2.5 align-middle"><a href="lead-follow-detail.html?id=lead-7" class="text-blue-600 hover:underline">查看详情</a></td>
@@ -469,6 +489,7 @@
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap"><span class="text-emerald-600 font-medium">有效</span></td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-04-08 09:45</td>
                   <td class="px-2 py-2.5 align-middle">周方林</td>
+                  <td class="px-2 py-2.5 align-middle lead-follow-content" title="已出具代账加注册地址打包报价，客户表示认可">已出具代账加注册地址打包报价，客户表示认可</td>
                   <td class="px-2 py-2.5 align-middle whitespace-nowrap">2026-04-14 16:20</td>
                   <td class="px-2 py-2.5 align-middle text-slate-400 lead-col-extra">--</td>
                   <td class="px-2 py-2.5 align-middle"><a href="lead-follow-detail.html?id=lead-8" class="text-blue-600 hover:underline">查看详情</a></td>
