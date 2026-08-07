@@ -169,7 +169,7 @@
         <a class="mx-3 mb-1 h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center" href="supply-chain-management.html"><i class="fa-solid fa-truck-fast w-5 mr-2"></i>供应链中心</a>
 
         <a class="mx-3 mb-1 h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center" href="knowledge-base.html">
-          <i class="fa-solid fa-book-open w-5 mr-2"></i>知识库
+          <i class="fa-solid fa-book-open w-5 mr-2"></i>问一问
         </a>
         <details class="mx-3 mb-1 group">
           <summary class="list-none cursor-pointer h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center justify-between text-slate-200 [&::-webkit-details-marker]:hidden">
@@ -708,6 +708,17 @@
                   <span class="mt-1 block text-xs text-slate-400">支持 zip、rar 压缩包及 jpg、png 等图片格式，可多选</span>
                 </label>
                 <ul id="supp-ic-file-list" class="mt-3 space-y-1.5 hidden"></ul>
+              </div>
+              <div class="mt-5">
+                <span class="field-label">工单流转</span>
+                <div class="relative mt-1">
+                  <select id="supp-work-order-flow" class="w-full h-9 pl-3 pr-8 rounded-md border border-slate-200 bg-white appearance-none text-sm text-slate-700 cursor-pointer focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                    <option value="">请选择工单流转方式</option>
+                    <option value="工商办理">工商办理</option>
+                    <option value="销售自办">销售自办</option>
+                  </select>
+                  <i class="fa-solid fa-angle-down absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+                </div>
               </div>
             </div>
           </div>

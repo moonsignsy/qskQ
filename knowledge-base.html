@@ -64,7 +64,7 @@
         </details>
         <a class="mx-3 mb-1 h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center" href="supply-chain-management.html"><i class="fa-solid fa-truck-fast w-5 mr-2"></i>供应链中心</a>
 
-        <a class="mx-3 mb-1 h-10 px-4 rounded-lg bg-blue-600 text-white flex items-center" href="knowledge-base.html"><i class="fa-solid fa-book-open w-5 mr-2"></i>知识库</a>
+        <a class="mx-3 mb-1 h-10 px-4 rounded-lg bg-blue-600 text-white flex items-center" href="knowledge-base.html"><i class="fa-solid fa-book-open w-5 mr-2"></i>问一问</a>
         <details class="mx-3 mb-1 group">
           <summary class="list-none cursor-pointer h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center justify-between text-slate-200 [&::-webkit-details-marker]:hidden">
             <span class="flex items-center"><i class="fa-solid fa-file-signature w-5 mr-2"></i>合同订单</span>
@@ -254,7 +254,7 @@
         { id: 'd9', title: '平台操作手册（线索篇）', type: 'pdf', dept: 'sales', content: '<h2 class="text-2xl font-semibold mb-4 text-slate-900">平台操作手册（线索篇）</h2><p>线索录入、分配、跟进与转化全流程操作。</p>' }
       ];
       var qaList = [
-        { q: '如何提升自己的销售能力？', a: '销售能力的提升核心在于标准动作执行：会前预判、过程控节奏、会后及时复盘。', time: '2026-04-17', likes: 228, dept: 'sales', author: '周芳林', assignee: '', publishedAt: '2026-04-05 12:23', needsAnswer: true },
+        { q: '如何提升自己的销售能力？', a: '', time: '2026-04-17', likes: 0, dept: 'sales', author: '周芳林', assignee: '', publishedAt: '2026-04-05 12:23', needsAnswer: true },
         { q: '顶级销售都是怎么说话的？', a: '先听后说，先复述再给方案，最后确认下一步行动。避免“泛表达”，多用“业务场景化表达”。同时在沟通中加入场景化案例，持续校准客户关注点，形成可执行的下一步计划。', time: '2026-04-17', likes: 22, dept: 'sales', author: '王磊', assignee: '马时笑', expandable: true },
         { q: '销售的最高境界是让客户说服自己', a: '通过提问引导客户明确痛点，再让客户自己说出目标与价值，成交会更顺畅。', time: '2026-04-17', likes: 22, dept: 'sales', author: '周芳林', assignee: '' },
         { q: '小规模纳税人申报有哪些注意事项？', a: '关注申报期限、发票额度与优惠政策适用条件，按月完成增值税及附加税费申报。', time: '2026-04-16', likes: 18, dept: 'accounting', author: '许悦', assignee: '' },
@@ -337,10 +337,15 @@
             : '';
           var metaLine = deptName(item.dept) + '-' + (item.author || '周芳林') + ' 发布于' + (item.publishedAt || item.time);
           var answerHtml = '';
-          if (item.a) {
+          if (!item.needsAnswer && item.a) {
             answerHtml = item.expandable
               ? '<p class="text-sm leading-7 text-slate-600">' + item.a + '<span class="ml-1 inline-block max-w-[360px] overflow-hidden text-ellipsis whitespace-nowrap align-middle text-slate-600">另外可从客户异议处理、需求确认话术和复盘方法三个维度继续深化。</span><button type="button" class="ml-1 text-sky-500 hover:underline text-xs align-middle cursor-pointer">展开阅读</button></p>'
               : '<p class="text-sm leading-7 text-slate-600">' + item.a + '</p>';
+          }
+          var footerHtml = '';
+          if (!item.needsAnswer) {
+            footerHtml = '<div class="mt-2 text-xs text-slate-400 clearfix">' + (item.author || '周芳林') + ' · 更新于：' + item.time +
+              '<span class="float-right text-sky-500 cursor-pointer"><i class="fa-solid fa-thumbs-up mr-1"></i>' + item.likes + '人觉得有用</span></div>';
           }
           return '<div class="border-b border-slate-200 pb-4">' +
             '<div class="flex flex-wrap items-center gap-2 mb-2">' +
@@ -348,10 +353,9 @@
             assigneeTag +
             '</div>' +
             '<p class="text-base text-slate-800 mb-2">' + item.q + '</p>' +
-            (item.needsAnswer ? '<button type="button" class="js-open-answer h-7 px-3 rounded-md bg-sky-500 text-white text-xs hover:bg-sky-600 cursor-pointer mb-2">去回答</button><p class="text-xs text-slate-400 mb-2 pb-2 border-b border-slate-200">' + metaLine + '</p>' : '') +
+            (item.needsAnswer ? '<button type="button" class="js-open-answer h-7 px-3 rounded-md bg-sky-500 text-white text-xs hover:bg-sky-600 cursor-pointer mb-2">去回答</button><p class="text-xs text-slate-400 mb-2">' + metaLine + '</p>' : '') +
             answerHtml +
-            '<div class="mt-2 text-xs text-slate-400 clearfix">' + (item.author || '周芳林') + ' · 更新于：' + item.time +
-            '<span class="float-right text-sky-500 cursor-pointer"><i class="fa-solid fa-thumbs-up mr-1"></i>' + item.likes + '人觉得有用</span></div>' +
+            footerHtml +
             '</div>';
         }).join('');
       }
