@@ -133,10 +133,10 @@
               <span class="text-sm font-medium text-slate-700">筛选条件</span>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 items-end">
-              <label class="text-xs text-slate-500 sm:col-span-2 lg:col-span-1">企业名称
-                <input type="text" id="filter-company" class="addr-filter-input mt-1 h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700 placeholder:text-slate-400" placeholder="请输入企业名称">
+              <label class="text-xs text-slate-500 sm:col-span-2 lg:col-span-1">项目名称
+                <input type="text" id="filter-project" class="addr-filter-input mt-1 h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700 placeholder:text-slate-400" placeholder="请输入项目名称">
               </label>
-              <label class="text-xs text-slate-500">注册地址
+              <label class="text-xs text-slate-500">项目地址
                 <select id="filter-address" class="addr-filter-input mt-1 h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-600 cursor-pointer">
                   <option value="">全部</option>
                   <option>江苏省苏州市工业园区沧海大厦</option>
@@ -152,23 +152,42 @@
                   <option>苏州市吴中区</option>
                 </select>
               </label>
-              <label class="text-xs text-slate-500">所属部门
-                <select id="filter-dept" class="addr-filter-input mt-1 h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-600 cursor-pointer">
+              <label class="text-xs text-slate-500">地址来源
+                <select id="filter-source" class="addr-filter-input mt-1 h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-600 cursor-pointer">
                   <option value="">全部</option>
-                  <option>网销一组</option>
-                  <option>网销二组</option>
-                  <option>常熟组</option>
+                  <option>内部</option>
+                  <option>外部</option>
                 </select>
               </label>
-              <label class="text-xs text-slate-500">归属人员
-                <select id="filter-sales" class="addr-filter-input mt-1 h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-600 cursor-pointer">
+              <label class="text-xs text-slate-500">创建人
+                <select id="filter-creator" class="addr-filter-input mt-1 h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-600 cursor-pointer">
                   <option value="">全部</option>
                   <option>周芳林</option>
                   <option>陈莉</option>
                   <option>陆琴</option>
                 </select>
               </label>
-              <div class="addr-filter-actions flex flex-wrap items-center justify-start gap-2 sm:col-span-2 lg:col-span-3">
+              <label class="text-xs text-slate-500">创建时间
+                <div class="relative mt-1">
+                  <select id="filter-create-time" class="addr-filter-input w-full h-9 pl-3 pr-8 rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-600 cursor-pointer appearance-none">
+                    <option value="">请选择</option>
+                    <option value="week">本周</option>
+                    <option value="month">本月</option>
+                    <option value="lastMonth">上月</option>
+                    <option value="custom">自定义</option>
+                  </select>
+                  <i class="fa-solid fa-angle-down absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 pointer-events-none"></i>
+                </div>
+              </label>
+              <label id="filter-create-time-custom" class="text-xs text-slate-500 hidden sm:col-span-2">
+                <span class="invisible">自定义区间</span>
+                <div class="mt-1 flex items-center gap-1.5">
+                  <input type="date" id="filter-create-start" class="addr-filter-input h-9 flex-1 min-w-0 rounded-md border border-slate-200 bg-white px-2.5 text-sm">
+                  <span class="text-slate-400 text-xs shrink-0">至</span>
+                  <input type="date" id="filter-create-end" class="addr-filter-input h-9 flex-1 min-w-0 rounded-md border border-slate-200 bg-white px-2.5 text-sm">
+                </div>
+              </label>
+              <div class="addr-filter-actions flex flex-wrap items-center justify-start gap-2 sm:col-span-2 lg:col-span-2">
                 <button type="submit" id="btn-search" class="h-9 px-5 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 cursor-pointer inline-flex items-center gap-1.5 shrink-0"><i class="fa-solid fa-magnifying-glass text-xs"></i>查询</button>
                 <button type="reset" id="btn-reset" class="h-9 px-4 rounded-md border border-slate-200 bg-white text-sm text-slate-600 hover:bg-slate-50 cursor-pointer shrink-0">重置</button>
                 <button type="button" id="btn-open-add-address" class="h-9 px-4 rounded-md bg-blue-600 text-sm text-white hover:bg-blue-700 cursor-pointer inline-flex items-center gap-1.5 shrink-0"><i class="fa-solid fa-plus text-xs"></i>新增地址</button>
@@ -177,34 +196,36 @@
           </form>
 
           <div class="overflow-x-auto rounded-lg border border-slate-200">
-            <table class="w-full min-w-[1000px] text-sm">
+            <table class="w-full min-w-[1100px] text-sm">
               <thead class="bg-slate-50 text-slate-600">
                 <tr>
-                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">企业名称</th>
-                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">注册地址</th>
+                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">项目名称</th>
+                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">项目地址</th>
                   <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">所属区域</th>
-                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">收费金额</th>
-                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">租期</th>
-                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">所属部门</th>
-                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">归属人员</th>
+                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">地址来源</th>
+                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">月租金</th>
+                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">创建人</th>
+                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">创建时间</th>
                   <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">查看详情</th>
                   <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">操作</th>
                 </tr>
               </thead>
               <tbody class="text-slate-700" id="addr-table-body">
                 <tr class="hover:bg-slate-50 addr-row"
-                    data-company="苏州美的信息科技有限公司"
+                    data-project="沧海大厦挂靠项目"
                     data-address="江苏省苏州市工业园区沧海大厦"
                     data-region="苏州工业园区"
-                    data-dept="网销一组"
-                    data-sales="周芳林">
-                  <td class="px-3 py-3 border-b border-slate-100">苏州美的信息科技有限公司</td>
+                    data-source="内部"
+                    data-rent="300"
+                    data-creator="周芳林"
+                    data-created="2026-08-24 09:12">
+                  <td class="px-3 py-3 border-b border-slate-100">沧海大厦挂靠项目</td>
                   <td class="px-3 py-3 border-b border-slate-100">江苏省苏州市工业园区沧海大厦</td>
                   <td class="px-3 py-3 border-b border-slate-100">苏州工业园区</td>
-                  <td class="px-3 py-3 border-b border-slate-100">¥ 3,600/年</td>
-                  <td class="px-3 py-3 border-b border-slate-100">1年</td>
-                  <td class="px-3 py-3 border-b border-slate-100">网销一组</td>
+                  <td class="px-3 py-3 border-b border-slate-100">内部</td>
+                  <td class="px-3 py-3 border-b border-slate-100">¥ 300/月</td>
                   <td class="px-3 py-3 border-b border-slate-100">周芳林</td>
+                  <td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap">2026-08-24 09:12</td>
                   <td class="px-3 py-3 border-b border-slate-100"><button type="button" class="js-view-detail text-blue-600 hover:text-blue-700 hover:underline cursor-pointer">查看详情</button></td>
                   <td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap">
                     <button type="button" class="js-edit-address text-blue-600 hover:text-blue-700 hover:underline cursor-pointer">编辑</button>
@@ -213,18 +234,20 @@
                   </td>
                 </tr>
                 <tr class="hover:bg-slate-50 addr-row"
-                    data-company="苏州怡启尔科技有限公司"
+                    data-project="红海大厦挂靠项目"
                     data-address="苏州市吴中区红海大厦"
                     data-region="苏州市吴中区"
-                    data-dept="网销二组"
-                    data-sales="陈莉">
-                  <td class="px-3 py-3 border-b border-slate-100">苏州怡启尔科技有限公司</td>
+                    data-source="外部"
+                    data-rent="250"
+                    data-creator="陈莉"
+                    data-created="2026-08-05 14:30">
+                  <td class="px-3 py-3 border-b border-slate-100">红海大厦挂靠项目</td>
                   <td class="px-3 py-3 border-b border-slate-100">苏州市吴中区红海大厦</td>
                   <td class="px-3 py-3 border-b border-slate-100">苏州市吴中区</td>
-                  <td class="px-3 py-3 border-b border-slate-100">¥ 2,800/年</td>
-                  <td class="px-3 py-3 border-b border-slate-100">1年</td>
-                  <td class="px-3 py-3 border-b border-slate-100">网销二组</td>
+                  <td class="px-3 py-3 border-b border-slate-100">外部</td>
+                  <td class="px-3 py-3 border-b border-slate-100">¥ 250/月</td>
                   <td class="px-3 py-3 border-b border-slate-100">陈莉</td>
+                  <td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap">2026-08-05 14:30</td>
                   <td class="px-3 py-3 border-b border-slate-100"><button type="button" class="js-view-detail text-blue-600 hover:text-blue-700 hover:underline cursor-pointer">查看详情</button></td>
                   <td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap">
                     <button type="button" class="js-edit-address text-blue-600 hover:text-blue-700 hover:underline cursor-pointer">编辑</button>
@@ -233,18 +256,20 @@
                   </td>
                 </tr>
                 <tr class="hover:bg-slate-50 addr-row"
-                    data-company="苏州没得食品公司"
+                    data-project="星海街88号项目"
                     data-address="苏州工业园区星海街88号"
                     data-region="苏州工业园区"
-                    data-dept="常熟组"
-                    data-sales="陆琴">
-                  <td class="px-3 py-3 border-b border-slate-100">苏州没得食品公司</td>
+                    data-source="内部"
+                    data-rent="200"
+                    data-creator="陆琴"
+                    data-created="2026-07-18 10:05">
+                  <td class="px-3 py-3 border-b border-slate-100">星海街88号项目</td>
                   <td class="px-3 py-3 border-b border-slate-100">苏州工业园区星海街88号</td>
                   <td class="px-3 py-3 border-b border-slate-100">苏州工业园区</td>
-                  <td class="px-3 py-3 border-b border-slate-100">¥ 2,400/年</td>
-                  <td class="px-3 py-3 border-b border-slate-100">1年</td>
-                  <td class="px-3 py-3 border-b border-slate-100">常熟组</td>
+                  <td class="px-3 py-3 border-b border-slate-100">内部</td>
+                  <td class="px-3 py-3 border-b border-slate-100">¥ 200/月</td>
                   <td class="px-3 py-3 border-b border-slate-100">陆琴</td>
+                  <td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap">2026-07-18 10:05</td>
                   <td class="px-3 py-3 border-b border-slate-100"><button type="button" class="js-view-detail text-blue-600 hover:text-blue-700 hover:underline cursor-pointer">查看详情</button></td>
                   <td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap">
                     <button type="button" class="js-edit-address text-blue-600 hover:text-blue-700 hover:underline cursor-pointer">编辑</button>
@@ -253,18 +278,20 @@
                   </td>
                 </tr>
                 <tr class="hover:bg-slate-50 addr-row"
-                    data-company="苏州范尔科技有限公司"
+                    data-project="沧海大厦二期项目"
                     data-address="江苏省苏州市工业园区沧海大厦"
                     data-region="苏州工业园区"
-                    data-dept="网销一组"
-                    data-sales="周芳林">
-                  <td class="px-3 py-3 border-b border-slate-100">苏州范尔科技有限公司</td>
+                    data-source="外部"
+                    data-rent="280"
+                    data-creator="周芳林"
+                    data-created="2026-04-22 16:40">
+                  <td class="px-3 py-3 border-b border-slate-100">沧海大厦二期项目</td>
                   <td class="px-3 py-3 border-b border-slate-100">江苏省苏州市工业园区沧海大厦</td>
                   <td class="px-3 py-3 border-b border-slate-100">苏州工业园区</td>
-                  <td class="px-3 py-3 border-b border-slate-100">¥ 3,200/年</td>
-                  <td class="px-3 py-3 border-b border-slate-100">2年</td>
-                  <td class="px-3 py-3 border-b border-slate-100">网销一组</td>
+                  <td class="px-3 py-3 border-b border-slate-100">外部</td>
+                  <td class="px-3 py-3 border-b border-slate-100">¥ 280/月</td>
                   <td class="px-3 py-3 border-b border-slate-100">周芳林</td>
+                  <td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap">2026-04-22 16:40</td>
                   <td class="px-3 py-3 border-b border-slate-100"><button type="button" class="js-view-detail text-blue-600 hover:text-blue-700 hover:underline cursor-pointer">查看详情</button></td>
                   <td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap">
                     <button type="button" class="js-edit-address text-blue-600 hover:text-blue-700 hover:underline cursor-pointer">编辑</button>
@@ -296,13 +323,13 @@
       </div>
       <div class="px-6 py-5 space-y-4 text-sm overflow-y-auto flex-1">
         <div class="grid grid-cols-1 sm:grid-cols-[7.5rem_1fr] items-center gap-x-4 gap-y-3">
-          <label class="text-right text-slate-600 shrink-0 sm:pt-0">企业名称 <span class="text-red-500">*</span></label>
-          <input type="text" id="form-company" class="h-9 w-full rounded-md border border-slate-200 px-3 text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="请输入企业名称">
+          <label class="text-right text-slate-600 shrink-0 sm:pt-0">项目名称 <span class="text-red-500">*</span></label>
+          <input type="text" id="form-project" class="h-9 w-full rounded-md border border-slate-200 px-3 text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="请输入项目名称">
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-[7.5rem_1fr] items-center gap-x-4 gap-y-3">
-          <label class="text-right text-slate-600 shrink-0">注册地址 <span class="text-red-500">*</span></label>
+          <label class="text-right text-slate-600 shrink-0">项目地址 <span class="text-red-500">*</span></label>
           <select id="form-address" class="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-slate-700 cursor-pointer focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-            <option value="">请选择注册地址</option>
+            <option value="">请选择项目地址</option>
             <option>江苏省苏州市工业园区沧海大厦</option>
             <option>苏州市吴中区红海大厦</option>
             <option>苏州工业园区星海街88号</option>
@@ -318,36 +345,16 @@
           </select>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-[7.5rem_1fr] items-center gap-x-4 gap-y-3">
-          <label class="text-right text-slate-600 shrink-0">租期</label>
-          <select id="form-lease" class="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-slate-700 cursor-pointer focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-            <option value="">请选择租期</option>
-            <option>半年</option>
-            <option>1年</option>
-            <option>2年</option>
-            <option>3年</option>
+          <label class="text-right text-slate-600 shrink-0">地址来源 <span class="text-red-500">*</span></label>
+          <select id="form-source" class="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-slate-700 cursor-pointer focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+            <option value="">请选择地址来源</option>
+            <option>内部</option>
+            <option>外部</option>
           </select>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-[7.5rem_1fr] items-center gap-x-4 gap-y-3">
-          <label class="text-right text-slate-600 shrink-0">收费金额</label>
-          <input type="text" id="form-fee" class="h-9 w-full rounded-md border border-slate-200 px-3 text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="请输入收费金额，如 3600">
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-[7.5rem_1fr] items-center gap-x-4 gap-y-3">
-          <label class="text-right text-slate-600 shrink-0">所属部门</label>
-          <select id="form-dept" class="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-slate-700 cursor-pointer focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-            <option value="">请选择所属部门</option>
-            <option>网销一组</option>
-            <option>网销二组</option>
-            <option>常熟组</option>
-          </select>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-[7.5rem_1fr] items-center gap-x-4 gap-y-3">
-          <label class="text-right text-slate-600 shrink-0">归属人员</label>
-          <select id="form-sales" class="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-slate-700 cursor-pointer focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-            <option value="">请选择归属人员</option>
-            <option>周芳林</option>
-            <option>陈莉</option>
-            <option>陆琴</option>
-          </select>
+          <label class="text-right text-slate-600 shrink-0">月租金</label>
+          <input type="text" id="form-rent" class="h-9 w-full rounded-md border border-slate-200 px-3 text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="请输入月租金，如 300">
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-[7.5rem_1fr] items-start gap-x-4 gap-y-3">
           <label class="text-right text-slate-600 shrink-0 sm:pt-2">附件上传</label>
@@ -391,17 +398,17 @@
       function openAddressModal(mode, row) {
         if (titleEl) titleEl.textContent = mode === 'edit' ? '编辑地址' : '新增地址';
         if (mode === 'edit' && row) {
-          document.getElementById('form-company').value = row.dataset.company || '';
+          document.getElementById('form-project').value = row.dataset.project || '';
           document.getElementById('form-address').value = row.dataset.address || '';
           document.getElementById('form-region').value = row.dataset.region || '';
-          document.getElementById('form-dept').value = row.dataset.dept || '';
-          document.getElementById('form-sales').value = row.dataset.sales || '';
+          document.getElementById('form-source').value = row.dataset.source || '';
+          document.getElementById('form-rent').value = row.dataset.rent || '';
         } else {
-          ['form-company', 'form-fee'].forEach(function (id) {
+          ['form-project', 'form-rent'].forEach(function (id) {
             var el = document.getElementById(id);
             if (el) el.value = '';
           });
-          ['form-address', 'form-region', 'form-lease', 'form-dept', 'form-sales'].forEach(function (id) {
+          ['form-address', 'form-region', 'form-source'].forEach(function (id) {
             var el = document.getElementById(id);
             if (el) el.selectedIndex = 0;
           });
@@ -433,20 +440,64 @@
         delModal.classList.remove('flex');
       }
 
+      function startOfDay(date) {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+      }
+
+      function endOfDay(date) {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59, 999).getTime();
+      }
+
+      function parseRowTime(value) {
+        if (!value) return NaN;
+        return new Date(String(value).replace(' ', 'T')).getTime();
+      }
+
+      function matchCreateTime(rowTime, preset, startVal, endVal) {
+        if (!preset) return true;
+        var t = parseRowTime(rowTime);
+        if (isNaN(t)) return false;
+        var now = new Date();
+        var start = null;
+        var end = null;
+        if (preset === 'week') {
+          var weekday = now.getDay() || 7;
+          start = startOfDay(new Date(now.getFullYear(), now.getMonth(), now.getDate() - weekday + 1));
+          end = endOfDay(new Date(now.getFullYear(), now.getMonth(), now.getDate() + (7 - weekday)));
+        } else if (preset === 'month') {
+          start = startOfDay(new Date(now.getFullYear(), now.getMonth(), 1));
+          end = endOfDay(new Date(now.getFullYear(), now.getMonth() + 1, 0));
+        } else if (preset === 'lastMonth') {
+          start = startOfDay(new Date(now.getFullYear(), now.getMonth() - 1, 1));
+          end = endOfDay(new Date(now.getFullYear(), now.getMonth(), 0));
+        } else if (preset === 'custom') {
+          if (startVal) start = startOfDay(new Date(startVal));
+          if (endVal) end = endOfDay(new Date(endVal));
+          if (start === null && end === null) return true;
+        }
+        if (start !== null && t < start) return false;
+        if (end !== null && t > end) return false;
+        return true;
+      }
+
       function applyFilter() {
-        var company = (document.getElementById('filter-company').value || '').trim().toLowerCase();
+        var project = (document.getElementById('filter-project').value || '').trim().toLowerCase();
         var address = document.getElementById('filter-address').value;
         var region = document.getElementById('filter-region').value;
-        var dept = document.getElementById('filter-dept').value;
-        var sales = document.getElementById('filter-sales').value;
+        var source = document.getElementById('filter-source').value;
+        var creator = document.getElementById('filter-creator').value;
+        var createPreset = document.getElementById('filter-create-time').value;
+        var createStart = document.getElementById('filter-create-start').value;
+        var createEnd = document.getElementById('filter-create-end').value;
 
         document.querySelectorAll('.addr-row').forEach(function (row) {
           var show = true;
-          if (company && (row.dataset.company || '').toLowerCase().indexOf(company) === -1) show = false;
+          if (project && (row.dataset.project || '').toLowerCase().indexOf(project) === -1) show = false;
           if (address && row.dataset.address !== address) show = false;
           if (region && row.dataset.region !== region) show = false;
-          if (dept && row.dataset.dept !== dept) show = false;
-          if (sales && row.dataset.sales !== sales) show = false;
+          if (source && row.dataset.source !== source) show = false;
+          if (creator && row.dataset.creator !== creator) show = false;
+          if (!matchCreateTime(row.dataset.created, createPreset, createStart, createEnd)) show = false;
           row.style.display = show ? '' : 'none';
         });
       }
@@ -489,11 +540,21 @@
 
       document.getElementById('btn-reset').addEventListener('click', function () {
         setTimeout(function () {
+          var custom = document.getElementById('filter-create-time-custom');
+          if (custom) custom.classList.add('hidden');
           document.querySelectorAll('.addr-row').forEach(function (row) {
             row.style.display = '';
           });
         }, 0);
       });
+
+      var createTimePreset = document.getElementById('filter-create-time');
+      var createTimeCustom = document.getElementById('filter-create-time-custom');
+      if (createTimePreset && createTimeCustom) {
+        createTimePreset.addEventListener('change', function () {
+          createTimeCustom.classList.toggle('hidden', createTimePreset.value !== 'custom');
+        });
+      }
 
       var fileInput = document.getElementById('form-attachment');
       var fileNameEl = document.getElementById('form-attachment-name');
