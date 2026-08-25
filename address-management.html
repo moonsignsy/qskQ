@@ -328,12 +328,7 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-[7.5rem_1fr] items-center gap-x-4 gap-y-3">
           <label class="text-right text-slate-600 shrink-0">项目地址 <span class="text-red-500">*</span></label>
-          <select id="form-address" class="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-slate-700 cursor-pointer focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-            <option value="">请选择项目地址</option>
-            <option>江苏省苏州市工业园区沧海大厦</option>
-            <option>苏州市吴中区红海大厦</option>
-            <option>苏州工业园区星海街88号</option>
-          </select>
+          <input type="text" id="form-address" class="h-9 w-full rounded-md border border-slate-200 px-3 text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="请输入项目地址">
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-[7.5rem_1fr] items-center gap-x-4 gap-y-3">
           <label class="text-right text-slate-600 shrink-0">所属区域</label>
@@ -404,11 +399,11 @@
           document.getElementById('form-source').value = row.dataset.source || '';
           document.getElementById('form-rent').value = row.dataset.rent || '';
         } else {
-          ['form-project', 'form-rent'].forEach(function (id) {
+          ['form-project', 'form-address', 'form-rent'].forEach(function (id) {
             var el = document.getElementById(id);
             if (el) el.value = '';
           });
-          ['form-address', 'form-region', 'form-source'].forEach(function (id) {
+          ['form-region', 'form-source'].forEach(function (id) {
             var el = document.getElementById(id);
             if (el) el.selectedIndex = 0;
           });
