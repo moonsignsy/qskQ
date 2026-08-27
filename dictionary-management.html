@@ -206,10 +206,14 @@
             </div>
           </div>
           <div>
-            <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center justify-between mb-2 gap-2">
               <span class="text-slate-700 font-medium">其他所需信息</span>
-              <button type="button" id="btn-gov-add-checklist-item" class="h-8 px-3 rounded-md border border-blue-200 bg-blue-50 text-blue-600 text-xs hover:bg-blue-100 cursor-pointer"><i class="fa-solid fa-plus mr-1"></i>添加资料项</button>
+              <div class="flex items-center gap-2 shrink-0">
+                <button type="button" id="btn-gov-add-checklist-item" class="h-8 px-3 rounded-md border border-blue-200 bg-blue-50 text-blue-600 text-xs hover:bg-blue-100 cursor-pointer"><i class="fa-solid fa-plus mr-1"></i>添加资料项</button>
+                <button type="button" id="btn-gov-upload-template" class="h-8 px-3 rounded-md border border-slate-200 bg-white text-slate-600 text-xs hover:bg-slate-50 cursor-pointer"><i class="fa-solid fa-upload mr-1"></i>上传模板</button>
+              </div>
             </div>
+            <p id="gov-template-file-name" class="hidden text-xs text-slate-500 mb-2"></p>
             <p class="text-xs text-slate-500 mb-3">选填。每项填写资料名称及可选值说明，例如：税务注销情况 — 已完成 / 未完成（或者有/无《清税证明》）</p>
             <div id="gov-checklist-wrap" class="space-y-2"></div>
           </div>
@@ -234,6 +238,7 @@
   </div>
 
   <input type="file" id="gov-batch-import-file" class="hidden" accept=".xlsx,.xls,.csv">
+  <input type="file" id="gov-template-file" class="hidden" accept=".xlsx,.xls,.doc,.docx,.pdf,.zip">
 
   <div id="dict-toast" class="fixed top-6 left-1/2 z-[200] hidden -translate-x-1/2 rounded-lg bg-slate-800 px-5 py-2.5 text-sm text-white shadow-lg">提交成功</div>
 
@@ -257,6 +262,8 @@
       var govBizPackageNoteInput = document.getElementById('gov-biz-package-note');
       var govBizPackageNoteCount = document.getElementById('gov-biz-package-note-count');
       var govChecklistWrap = document.getElementById('gov-checklist-wrap');
+      var govTemplateFileInput = document.getElementById('gov-template-file');
+      var govTemplateFileName = document.getElementById('gov-template-file-name');
       var govFilterType = null;
       var govEditingId = null;
       var pendingDeleteGovId = null;
@@ -564,8 +571,21 @@
         }
         var items = row && row.materials ? row.materials : [];
         renderChecklistItems(items);
+        resetGovTemplateFile(row && row.templateFile ? row.templateFile : '');
         govBizModal.classList.remove('hidden');
         govBizModal.classList.add('flex');
+      }
+
+      function resetGovTemplateFile(fileName) {
+        if (govTemplateFileInput) govTemplateFileInput.value = '';
+        if (!govTemplateFileName) return;
+        if (fileName) {
+          govTemplateFileName.textContent = '已选模板：' + fileName;
+          govTemplateFileName.classList.remove('hidden');
+        } else {
+          govTemplateFileName.textContent = '';
+          govTemplateFileName.classList.add('hidden');
+        }
       }
 
       function closeGovBusinessModal() {
@@ -746,6 +766,22 @@
         govChecklistWrap.appendChild(createChecklistItemEl({ name: '', options: '' }, count));
       });
 
+      var btnGovUploadTemplate = document.getElementById('btn-gov-upload-template');
+      if (btnGovUploadTemplate && govTemplateFileInput) {
+        btnGovUploadTemplate.addEventListener('click', function () {
+          govTemplateFileInput.click();
+        });
+        govTemplateFileInput.addEventListener('change', function () {
+          var file = govTemplateFileInput.files && govTemplateFileInput.files[0];
+          if (!file) return;
+          if (govTemplateFileName) {
+            govTemplateFileName.textContent = '已选模板：' + file.name;
+            govTemplateFileName.classList.remove('hidden');
+          }
+          showToast('模板已上传');
+        });
+      }
+
       if (govBizPackageNoteInput) {
         govBizPackageNoteInput.addEventListener('input', updatePackageNoteCount);
       }
@@ -774,12 +810,18 @@
             showToast('请完善每项资料的名称与选项配置');
             return;
           }
+          var templateFile = govTemplateFileInput && govTemplateFileInput.files && govTemplateFileInput.files[0]
+            ? govTemplateFileInput.files[0].name
+            : (govTemplateFileName && !govTemplateFileName.classList.contains('hidden')
+              ? govTemplateFileName.textContent.replace(/^已选模板：/, '')
+              : '');
           if (govEditingId) {
             var existing = govBusinessRows.find(function (r) { return r.id === govEditingId; });
             if (existing) {
               existing.type = name;
               existing.packageNote = packageNote;
               existing.materials = materials;
+              if (templateFile) existing.templateFile = templateFile;
             }
             showToast('保存成功');
           } else {
@@ -788,6 +830,7 @@
               type: name,
               packageNote: packageNote,
               materials: materials,
+              templateFile: templateFile,
               createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
               creator: '祝哥'
             });

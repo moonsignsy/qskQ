@@ -461,13 +461,20 @@
                   </div>
                 </label>
                 <label class="gov-filter-field">
-                  <span class="gov-filter-label">办件方式</span>
+                  <span class="gov-filter-label">办理状态</span>
                   <div class="gov-filter-control">
-                    <select id="filter-handle-method" name="handle-method" class="gov-filter-input">
+                    <select id="filter-progress-status" name="progress-status" class="gov-filter-input">
                       <option value="">全部</option>
-                      <option>线上</option>
-                      <option>线下</option>
-                      <option>线上/下</option>
+                      <option>工商已提交</option>
+                      <option>税务已提交</option>
+                      <option>客户签字中</option>
+                      <option>材料已完成</option>
+                      <option>公示中</option>
+                      <option>已派件</option>
+                      <option>已完成</option>
+                      <option>已退件</option>
+                      <option>会计部-已登表</option>
+                      <option>其他</option>
                     </select>
                     <i class="fa-solid fa-angle-down gov-filter-chevron" aria-hidden="true"></i>
                   </div>
@@ -500,10 +507,10 @@
 
               <div class="gov-filter-row-2">
                 <label class="gov-filter-field">
-                  <span class="gov-filter-label">派单时间</span>
+                  <span class="gov-filter-label">确认时间</span>
                   <div class="gov-filter-time-inline">
                     <div class="gov-filter-control">
-                      <select class="gov-time-preset gov-filter-input" aria-label="派单时间范围">
+                      <select class="gov-time-preset gov-filter-input" aria-label="确认时间范围">
                         <option value="week">本周</option>
                         <option value="month" selected>本月</option>
                         <option value="last-month">上月</option>
@@ -512,9 +519,9 @@
                       <i class="fa-solid fa-angle-down gov-filter-chevron" aria-hidden="true"></i>
                     </div>
                     <div class="gov-time-custom gov-filter-time-custom hidden">
-                      <input type="date" class="gov-filter-input" aria-label="派单开始日期">
+                      <input type="date" class="gov-filter-input" aria-label="确认开始日期">
                       <span class="text-slate-400 shrink-0 text-xs">至</span>
-                      <input type="date" class="gov-filter-input" aria-label="派单结束日期">
+                      <input type="date" class="gov-filter-input" aria-label="确认结束日期">
                     </div>
                   </div>
                 </label>
@@ -571,6 +578,7 @@
                   <div class="gov-filter-actions">
                     <button type="submit" class="gov-filter-btn gov-filter-btn-primary"><i class="fa-solid fa-magnifying-glass text-xs" aria-hidden="true"></i>查询</button>
                     <button type="reset" class="gov-filter-btn gov-filter-btn-ghost">重置</button>
+                    <button type="button" id="btn-gov-export" class="gov-filter-btn gov-filter-btn-ghost"><i class="fa-solid fa-file-export text-xs text-slate-400" aria-hidden="true"></i>导出</button>
                     <span class="gov-filter-actions-divider" aria-hidden="true"></span>
                     <button type="button" id="btn-open-new-order" class="gov-filter-btn gov-filter-btn-primary"><i class="fa-solid fa-plus text-xs" aria-hidden="true"></i>新增政务工单</button>
                     <button type="button" id="btn-open-transfer" class="gov-filter-btn gov-filter-btn-ghost"><i class="fa-solid fa-right-left text-xs text-slate-400" aria-hidden="true"></i>移交</button>
@@ -594,12 +602,11 @@
                   <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">企业名称</th>
                   <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">业务类型</th>
                   <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">办事区域</th>
-                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">客户资料</th>
-                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">资料确认时间</th>
+                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">办理状态</th>
                   <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">工商专员</th>
                   <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">办件方式</th>
                   <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">已办理天数</th>
-                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">派单时间</th>
+                  <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">确认时间</th>
                   <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">完成日期</th>
                   <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">销售顾问</th>
                   <th class="text-left px-3 py-3 border-b border-slate-200 font-medium whitespace-nowrap">所属部门</th>
@@ -612,13 +619,14 @@
                     data-id="gov-1"
                     data-company="苏州美药科技有限公司"
                     data-service="解地址异常、资料补正"
-                    data-days="7"
-                    data-days-level="overdue"
+                    data-days=""
+                    data-days-level=""
                     data-region="苏州工业园区"
                     data-sales="周芳林"
                     data-dept="网销一组"
                     data-agent="许月"
                     data-material="驳回"
+                    data-progress-status=""
                     data-handle-method=""
                     data-material-confirm=""
                     data-start="2026-04-10"
@@ -626,17 +634,16 @@
                   <td class="px-3 py-3 border-b border-slate-100">苏州美药科技有限公司</td>
                   <td class="px-3 py-3 border-b border-slate-100">解地址异常、资料补正</td>
                   <td class="px-3 py-3 border-b border-slate-100">苏州工业园区</td>
-                  <td class="px-3 py-3 border-b border-slate-100"><span class="text-red-600">驳回</span></td>
                   <td class="px-3 py-3 border-b border-slate-100 text-slate-400">—</td>
                   <td class="px-3 py-3 border-b border-slate-100">许月</td>
                   <td class="px-3 py-3 border-b border-slate-100 text-slate-400">—</td>
-                  <td class="px-3 py-3 border-b border-slate-100"><span class="gov-days-badge gov-days-overdue">7天</span></td>
+                  <td class="px-3 py-3 border-b border-slate-100 text-slate-400">—</td>
                   <td class="px-3 py-3 border-b border-slate-100 text-slate-400">—</td>
                   <td class="px-3 py-3 border-b border-slate-100 text-slate-400">—</td>
                   <td class="px-3 py-3 border-b border-slate-100">周芳林</td>
                   <td class="px-3 py-3 border-b border-slate-100">网销一组</td>
                   <td class="px-3 py-3 border-b border-slate-100"><a class="text-blue-600 hover:underline" href="government-affairs-detail.html?id=gov-1">查看详情</a></td>
-                  <td class="px-3 py-3 border-b border-slate-100 text-slate-400">—</td>
+                  <td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap"><button type="button" class="text-blue-600 hover:underline js-ack-confirm">确认</button></td>
                 </tr>
                 <tr class="hover:bg-slate-50 gov-row" data-status="doing"
                     data-id="gov-2"
@@ -649,6 +656,7 @@
                     data-dept="网销一组"
                     data-agent="许月"
                     data-material="待确认"
+                    data-progress-status="客户签字中"
                     data-handle-method=""
                     data-material-confirm=""
                     data-start="2026-04-14"
@@ -656,8 +664,7 @@
                   <td class="px-3 py-3 border-b border-slate-100">苏州维尔因科技有限公司</td>
                   <td class="px-3 py-3 border-b border-slate-100">解除地址异常、工商变更</td>
                   <td class="px-3 py-3 border-b border-slate-100">苏州吴中区</td>
-                  <td class="px-3 py-3 border-b border-slate-100"><span class="text-amber-600">待确认</span></td>
-                  <td class="px-3 py-3 border-b border-slate-100 text-slate-400">—</td>
+                  <td class="px-3 py-3 border-b border-slate-100">客户签字中</td>
                   <td class="px-3 py-3 border-b border-slate-100">许月</td>
                   <td class="px-3 py-3 border-b border-slate-100 text-slate-400">—</td>
                   <td class="px-3 py-3 border-b border-slate-100"><span class="gov-days-badge gov-days-warning">5天</span></td>
@@ -679,6 +686,7 @@
                     data-dept="网销二组"
                     data-agent="许月"
                     data-material="已确认"
+                    data-progress-status="工商已提交"
                     data-handle-method="线上"
                     data-material-confirm="2026-04-12 09:45"
                     data-start="2026-04-14"
@@ -686,8 +694,7 @@
                   <td class="px-3 py-3 border-b border-slate-100">苏州美的信息科技有限公司</td>
                   <td class="px-3 py-3 border-b border-slate-100">解除地址异常、税务注销</td>
                   <td class="px-3 py-3 border-b border-slate-100">苏州昆山市</td>
-                  <td class="px-3 py-3 border-b border-slate-100"><span class="text-emerald-600">已确认</span></td>
-                  <td class="px-3 py-3 border-b border-slate-100">2026-04-12 09:45</td>
+                  <td class="px-3 py-3 border-b border-slate-100">工商已提交</td>
                   <td class="px-3 py-3 border-b border-slate-100">许月</td>
                   <td class="px-3 py-3 border-b border-slate-100">线上</td>
                   <td class="px-3 py-3 border-b border-slate-100"><span class="gov-days-badge gov-days-normal">3天</span></td>
@@ -703,12 +710,13 @@
                     data-company="昆山示例贸易有限公司"
                     data-service="工商变更、税务备案"
                     data-days="28"
-                    data-days-level="normal"
+                    data-days-level="overdue"
                     data-region="苏州昆山市"
                     data-sales="周芳林"
                     data-dept="网销一组"
                     data-agent="许月"
                     data-material="已交接"
+                    data-progress-status="已完成"
                     data-handle-method="线上/下"
                     data-material-confirm="2026-03-05 14:00"
                     data-start="2026-03-01"
@@ -716,11 +724,10 @@
                   <td class="px-3 py-3 border-b border-slate-100">昆山示例贸易有限公司</td>
                   <td class="px-3 py-3 border-b border-slate-100">工商变更、税务备案</td>
                   <td class="px-3 py-3 border-b border-slate-100">苏州昆山市</td>
-                  <td class="px-3 py-3 border-b border-slate-100">已交接</td>
-                  <td class="px-3 py-3 border-b border-slate-100">2026-03-05 14:00</td>
+                  <td class="px-3 py-3 border-b border-slate-100"><span class="text-emerald-600">已完成</span></td>
                   <td class="px-3 py-3 border-b border-slate-100">许月</td>
                   <td class="px-3 py-3 border-b border-slate-100">线上/下</td>
-                  <td class="px-3 py-3 border-b border-slate-100"><span class="gov-days-badge gov-days-normal">28天</span></td>
+                  <td class="px-3 py-3 border-b border-slate-100"><span class="gov-days-badge gov-days-overdue">28天</span></td>
                   <td class="px-3 py-3 border-b border-slate-100">2026-03-01 09:00</td>
                   <td class="px-3 py-3 border-b border-slate-100">2026-03-28</td>
                   <td class="px-3 py-3 border-b border-slate-100">周芳林</td>
@@ -897,29 +904,37 @@
         <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600" data-close-progress><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
       <div class="px-6 py-5 space-y-4 text-sm">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-slate-600 mb-2">进度节点 <span class="text-red-500">*</span></label>
-            <input type="text" id="progress-node" class="h-9 w-full rounded-md border border-slate-200 px-3 text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="请输入进度节点">
-          </div>
-          <div>
-            <label class="block text-slate-600 mb-2">办理状态 <span class="text-red-500">*</span></label>
-            <select id="progress-status" class="h-9 w-full rounded-md border border-slate-200 px-3 bg-white cursor-pointer focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-              <option value="">请选择办理状态</option>
-              <option value="办理中">办理中</option>
-              <option value="已通过">已通过</option>
-              <option value="已驳回">已驳回</option>
-              <option value="已完成">已完成</option>
-            </select>
+        <div>
+          <label class="block text-slate-600 mb-2">进度节点 <span class="text-red-500">*</span></label>
+          <select id="progress-node" class="h-9 w-full rounded-md border border-slate-200 px-3 bg-white cursor-pointer focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+            <option value="">请选择进度节点</option>
+            <option value="工商已提交">工商已提交</option>
+            <option value="税务已提交">税务已提交</option>
+            <option value="客户签字中">客户签字中</option>
+            <option value="材料已完成">材料已完成</option>
+            <option value="公示中">公示中</option>
+            <option value="已派件">已派件</option>
+            <option value="已完成">已完成</option>
+            <option value="已退件">已退件</option>
+            <option value="会计部-已登表">会计部-已登表</option>
+            <option value="其他">其他</option>
+          </select>
+        </div>
+        <div id="progress-finish-time-wrap" class="hidden">
+          <label class="block text-slate-600 mb-2">完成时间 <span class="text-red-500">*</span></label>
+          <input type="date" id="progress-finish-time" class="h-9 w-full rounded-md border border-slate-200 px-3 bg-white text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" aria-label="完成时间">
+        </div>
+        <div id="progress-publicity-wrap" class="hidden">
+          <label class="block text-slate-600 mb-2">公示期 <span class="text-red-500">*</span></label>
+          <div class="flex items-center gap-2">
+            <input type="date" id="progress-publicity-start" class="h-9 min-w-0 flex-1 rounded-md border border-slate-200 px-3 bg-white text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" aria-label="公示期开始日期">
+            <span class="text-slate-400 shrink-0 text-xs">至</span>
+            <input type="date" id="progress-publicity-end" class="h-9 min-w-0 flex-1 rounded-md border border-slate-200 px-3 bg-white text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" aria-label="公示期结束日期">
           </div>
         </div>
-        <div id="progress-reject-wrap" class="hidden">
-          <label class="block text-slate-600 mb-2">驳回说明 <span class="text-red-500">*</span></label>
-          <textarea id="progress-reject-note" class="w-full h-24 rounded border border-slate-200 px-3 py-2 resize-none placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="请填写驳回说明"></textarea>
-        </div>
-        <div id="progress-done-wrap" class="hidden">
-          <label class="block text-slate-600 mb-2">完成说明 <span class="text-red-500">*</span></label>
-          <textarea id="progress-done-note" class="w-full h-24 rounded border border-slate-200 px-3 py-2 resize-none placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="请填写完成说明"></textarea>
+        <div id="progress-deliver-wrap" class="hidden">
+          <label class="block text-slate-600 mb-2">交付时间 <span class="text-red-500">*</span></label>
+          <input type="date" id="progress-deliver-time" class="h-9 w-full rounded-md border border-slate-200 px-3 bg-white text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" aria-label="交付时间">
         </div>
       </div>
       <div class="flex justify-center gap-3 border-t border-slate-100 px-5 py-4">
@@ -943,10 +958,16 @@
       </div>
       <div class="shrink-0 border-t border-slate-100 bg-white px-5 py-4">
         <div id="material-footer-default" class="material-footer-mode is-active">
-          <div class="flex flex-wrap justify-center gap-3">
-            <button type="button" id="btn-material-reject" class="h-9 min-w-[100px] px-4 rounded-md border border-red-200 bg-white text-sm text-red-600 hover:bg-red-50 cursor-pointer">资料驳回</button>
-            <button type="button" id="btn-material-dispatch" class="h-9 min-w-[100px] px-4 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 cursor-pointer">确认并派单</button>
-            <button type="button" class="h-9 min-w-[90px] px-4 rounded-md border border-slate-300 bg-white text-sm text-slate-600 hover:bg-slate-50 cursor-pointer" data-close-material-confirm>取消</button>
+          <div class="grid grid-cols-3 items-center gap-3">
+            <div class="flex justify-center">
+              <button type="button" class="h-9 min-w-[90px] px-4 rounded-md border border-slate-300 bg-white text-sm text-slate-600 hover:bg-slate-50 cursor-pointer" data-close-material-confirm>取消</button>
+            </div>
+            <div class="flex justify-center">
+              <button type="button" id="btn-material-reject" class="h-9 min-w-[100px] px-4 rounded-md border border-red-200 bg-white text-sm text-red-600 hover:bg-red-50 cursor-pointer">资料驳回</button>
+            </div>
+            <div class="flex justify-center">
+              <button type="button" id="btn-material-dispatch" class="h-9 min-w-[100px] px-4 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 cursor-pointer">确认</button>
+            </div>
           </div>
         </div>
         <div id="material-footer-reject" class="material-footer-mode space-y-3">
@@ -978,10 +999,11 @@
               <option>线上</option>
               <option>线下</option>
               <option>线上/下</option>
+              <option>外包</option>
             </select>
           </div>
           <div class="grid grid-cols-[88px_1fr] items-center gap-3">
-            <label class="text-right text-slate-600"><span class="text-red-500">*</span> 工商专员</label>
+            <label id="material-dispatch-assignee-label" class="text-right text-slate-600"><span class="text-red-500">*</span> <span id="material-dispatch-assignee-name">工商专员</span></label>
             <select id="material-dispatch-agent" class="h-9 rounded-md border border-slate-200 px-3 bg-white text-slate-700 text-sm cursor-pointer">
               <option>许月</option>
               <option>许悦</option>
@@ -993,7 +1015,7 @@
             <input type="date" id="material-dispatch-end" class="h-9 rounded-md border border-slate-200 px-3 bg-white text-slate-700 text-sm">
           </div>
           <div class="flex flex-wrap justify-center gap-3 pt-1">
-            <button type="button" id="btn-submit-material-dispatch" class="h-9 min-w-[90px] px-4 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 cursor-pointer">确认派单</button>
+            <button type="button" id="btn-submit-material-dispatch" class="h-9 min-w-[90px] px-4 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 cursor-pointer">确认</button>
             <button type="button" class="h-9 min-w-[90px] px-4 rounded-md border border-slate-300 bg-white text-sm text-slate-600 hover:bg-slate-50 cursor-pointer" data-material-back>返回</button>
           </div>
         </div>
@@ -1112,7 +1134,10 @@
       var materialDispatchRegion = document.getElementById('material-dispatch-region');
       var materialDispatchMethod = document.getElementById('material-dispatch-method');
       var materialDispatchAgent = document.getElementById('material-dispatch-agent');
+      var materialDispatchAssigneeName = document.getElementById('material-dispatch-assignee-name');
       var materialDispatchEnd = document.getElementById('material-dispatch-end');
+      var materialAgentOptions = ['许月', '许悦', '周芳林'];
+      var materialSupplierOptions = ['苏州一舟电子商务有限公司', '苏州沧海商务服务有限公司', '昆山智政代办中心'];
       var currentMaterialRow = null;
       var modalTransferGov = document.getElementById('modal-transfer-gov');
       var modalCollaborate = document.getElementById('modal-gov-collaborate');
@@ -1218,10 +1243,52 @@
           '</div>';
       }
 
+      function setSelectOptions(sel, values, placeholder) {
+        if (!sel) return;
+        sel.innerHTML = '';
+        if (placeholder) {
+          var emptyOpt = document.createElement('option');
+          emptyOpt.value = '';
+          emptyOpt.textContent = placeholder;
+          sel.appendChild(emptyOpt);
+        }
+        values.forEach(function (name) {
+          var opt = document.createElement('option');
+          opt.value = name;
+          opt.textContent = name;
+          sel.appendChild(opt);
+        });
+      }
+
+      function isOutsourceDispatch() {
+        return materialDispatchMethod && materialDispatchMethod.value === '外包';
+      }
+
+      function syncMaterialDispatchAssignee(preferredValue) {
+        var outsource = isOutsourceDispatch();
+        if (materialDispatchAssigneeName) {
+          materialDispatchAssigneeName.textContent = outsource ? '供应商' : '工商专员';
+        }
+        if (outsource) {
+          setSelectOptions(materialDispatchAgent, materialSupplierOptions, '请选择');
+        } else {
+          setSelectOptions(materialDispatchAgent, materialAgentOptions);
+        }
+        if (materialDispatchAgent && preferredValue) {
+          var exists = Array.prototype.some.call(materialDispatchAgent.options, function (opt) {
+            return opt.value === preferredValue;
+          });
+          if (exists) materialDispatchAgent.value = preferredValue;
+        }
+      }
+
       function setMaterialFooterMode(mode) {
         [materialFooterDefault, materialFooterReject, materialFooterDispatch].forEach(function (el) {
           if (el) el.classList.toggle('is-active', el.id === 'material-footer-' + mode);
         });
+        if (mode === 'dispatch') {
+          syncMaterialDispatchAssignee(materialDispatchAgent ? materialDispatchAgent.value : '');
+        }
       }
 
       document.querySelectorAll('.gov-time-preset').forEach(function (sel) {
@@ -1285,6 +1352,7 @@
       var searchForm = document.getElementById('gov-search-form');
       if (searchForm) {
         searchForm.addEventListener('submit', function () {
+          applyGovListFilter();
           showToast('查询成功');
         });
         searchForm.addEventListener('reset', function () {
@@ -1295,7 +1363,15 @@
               if (customWrap) customWrap.classList.add('hidden');
             });
             setCaseStatusSeg('');
+            applyGovListFilter();
           }, 0);
+        });
+      }
+
+      var btnGovExport = document.getElementById('btn-gov-export');
+      if (btnGovExport) {
+        btnGovExport.addEventListener('click', function () {
+          showToast('导出成功');
         });
       }
 
@@ -1364,9 +1440,6 @@
             }
           }
         }
-        if (materialDispatchAgent && row) {
-          materialDispatchAgent.value = row.getAttribute('data-agent') || '许月';
-        }
         if (materialDispatchEnd && row) {
           materialDispatchEnd.value = row.getAttribute('data-end') || '';
         }
@@ -1379,6 +1452,7 @@
           var method = row ? (row.getAttribute('data-handle-method') || '') : '';
           materialDispatchMethod.value = method && method !== '—' ? method : '';
         }
+        syncMaterialDispatchAssignee(row ? (row.getAttribute('data-agent') || '') : '');
         setMaterialFooterMode('default');
         modalMaterialConfirm.classList.remove('hidden');
         modalMaterialConfirm.classList.add('flex');
@@ -1391,6 +1465,12 @@
         modalMaterialConfirm.classList.add('hidden');
         modalMaterialConfirm.classList.remove('flex');
       }
+
+      document.querySelectorAll('.js-ack-confirm').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          showToast('已确认');
+        });
+      });
 
       document.querySelectorAll('.js-material-confirm').forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -1412,6 +1492,11 @@
         if (btnMaterialDispatch) {
           btnMaterialDispatch.addEventListener('click', function () {
             setMaterialFooterMode('dispatch');
+          });
+        }
+        if (materialDispatchMethod) {
+          materialDispatchMethod.addEventListener('change', function () {
+            syncMaterialDispatchAssignee();
           });
         }
         modalMaterialConfirm.querySelectorAll('[data-material-back]').forEach(function (el) {
@@ -1446,7 +1531,7 @@
               return;
             }
             if (!materialDispatchAgent || !materialDispatchAgent.value) {
-              showToast('请选择工商专员');
+              showToast(isOutsourceDispatch() ? '请选择供应商' : '请选择工商专员');
               return;
             }
             if (!materialDispatchEnd || !materialDispatchEnd.value) {
@@ -1458,11 +1543,12 @@
               currentMaterialRow.setAttribute('data-handle-method', materialDispatchMethod.value);
               currentMaterialRow.setAttribute('data-region', materialDispatchRegion.value.trim());
               currentMaterialRow.setAttribute('data-material', '已确认');
+              currentMaterialRow.setAttribute('data-progress-status', '已派件');
               var cells = currentMaterialRow.querySelectorAll('td');
               if (cells[2]) cells[2].textContent = materialDispatchRegion.value.trim();
-              if (cells[3]) cells[3].innerHTML = '<span class="text-emerald-600">已确认</span>';
-              if (cells[5]) cells[5].textContent = materialDispatchAgent.value;
-              if (cells[6]) cells[6].textContent = materialDispatchMethod.value;
+              if (cells[3]) cells[3].innerHTML = progressStatusHtml('已派件');
+              if (cells[4]) cells[4].textContent = materialDispatchAgent.value;
+              if (cells[5]) cells[5].textContent = materialDispatchMethod.value;
             }
             closeMaterialConfirmModal();
             showToast('资料已确认并派单');
@@ -1470,8 +1556,10 @@
         }
       }
 
+      var currentProgressRow = null;
       document.querySelectorAll('.js-progress').forEach(function (btn) {
         btn.addEventListener('click', function () {
+          currentProgressRow = btn.closest('tr');
           resetProgressForm();
           modalProgress.classList.remove('hidden');
           modalProgress.classList.add('flex');
@@ -1479,48 +1567,76 @@
       });
 
       function syncProgressNoteVisibility() {
-        var statusEl = document.getElementById('progress-status');
-        var rejectWrap = document.getElementById('progress-reject-wrap');
-        var doneWrap = document.getElementById('progress-done-wrap');
-        var status = statusEl ? statusEl.value : '';
-        if (rejectWrap) rejectWrap.classList.toggle('hidden', status !== '已驳回');
-        if (doneWrap) doneWrap.classList.toggle('hidden', status !== '已完成');
+        var nodeEl = document.getElementById('progress-node');
+        var finishWrap = document.getElementById('progress-finish-time-wrap');
+        var publicityWrap = document.getElementById('progress-publicity-wrap');
+        var deliverWrap = document.getElementById('progress-deliver-wrap');
+        var node = nodeEl ? nodeEl.value : '';
+        var showFinish = node === '工商已提交' || node === '税务已提交';
+        if (finishWrap) finishWrap.classList.toggle('hidden', !showFinish);
+        if (publicityWrap) publicityWrap.classList.toggle('hidden', node !== '公示中');
+        if (deliverWrap) deliverWrap.classList.toggle('hidden', node !== '已完成');
       }
 
       function resetProgressForm() {
         var nodeEl = document.getElementById('progress-node');
-        var statusEl = document.getElementById('progress-status');
-        var rejectNote = document.getElementById('progress-reject-note');
-        var doneNote = document.getElementById('progress-done-note');
+        var finishTime = document.getElementById('progress-finish-time');
+        var publicityStart = document.getElementById('progress-publicity-start');
+        var publicityEnd = document.getElementById('progress-publicity-end');
+        var deliverTime = document.getElementById('progress-deliver-time');
         if (nodeEl) nodeEl.value = '';
-        if (statusEl) statusEl.value = '';
-        if (rejectNote) rejectNote.value = '';
-        if (doneNote) doneNote.value = '';
+        if (finishTime) finishTime.value = '';
+        if (publicityStart) publicityStart.value = '';
+        if (publicityEnd) publicityEnd.value = '';
+        if (deliverTime) deliverTime.value = '';
         syncProgressNoteVisibility();
       }
 
-      var progressStatusEl = document.getElementById('progress-status');
-      if (progressStatusEl) progressStatusEl.addEventListener('change', syncProgressNoteVisibility);
+      var progressNodeEl = document.getElementById('progress-node');
+      if (progressNodeEl) progressNodeEl.addEventListener('change', syncProgressNoteVisibility);
       var progressOkBtn = document.getElementById('btn-progress-ok');
       if (progressOkBtn) {
         progressOkBtn.addEventListener('click', function () {
           var nodeEl = document.getElementById('progress-node');
-          var statusEl = document.getElementById('progress-status');
-          var rejectNote = document.getElementById('progress-reject-note');
-          var doneNote = document.getElementById('progress-done-note');
-          var node = nodeEl ? nodeEl.value.trim() : '';
-          var status = statusEl ? statusEl.value : '';
-          if (!node) { showToast('请填写进度节点'); if (nodeEl) nodeEl.focus(); return; }
-          if (!status) { showToast('请选择办理状态'); if (statusEl) statusEl.focus(); return; }
-          if (status === '已驳回' && !(rejectNote && rejectNote.value.trim())) {
-            showToast('请填写驳回说明');
-            if (rejectNote) rejectNote.focus();
+          var finishTime = document.getElementById('progress-finish-time');
+          var publicityStart = document.getElementById('progress-publicity-start');
+          var publicityEnd = document.getElementById('progress-publicity-end');
+          var deliverTime = document.getElementById('progress-deliver-time');
+          var node = nodeEl ? nodeEl.value : '';
+          if (!node) { showToast('请选择进度节点'); if (nodeEl) nodeEl.focus(); return; }
+          if ((node === '工商已提交' || node === '税务已提交') && !(finishTime && finishTime.value)) {
+            showToast('请选择完成时间');
+            if (finishTime) finishTime.focus();
             return;
           }
-          if (status === '已完成' && !(doneNote && doneNote.value.trim())) {
-            showToast('请填写完成说明');
-            if (doneNote) doneNote.focus();
+          if (node === '公示中') {
+            if (!(publicityStart && publicityStart.value)) {
+              showToast('请选择公示期开始日期');
+              if (publicityStart) publicityStart.focus();
+              return;
+            }
+            if (!(publicityEnd && publicityEnd.value)) {
+              showToast('请选择公示期结束日期');
+              if (publicityEnd) publicityEnd.focus();
+              return;
+            }
+            if (publicityStart.value > publicityEnd.value) {
+              showToast('公示期结束日期不能早于开始日期');
+              if (publicityEnd) publicityEnd.focus();
+              return;
+            }
+          }
+          if (node === '已完成' && !(deliverTime && deliverTime.value)) {
+            showToast('请选择交付时间');
+            if (deliverTime) deliverTime.focus();
             return;
+          }
+          if (currentProgressRow) {
+            currentProgressRow.setAttribute('data-progress-status', node);
+            var progressCells = currentProgressRow.querySelectorAll('td');
+            if (progressCells[3]) progressCells[3].innerHTML = progressStatusHtml(node);
+            if (node === '已完成') currentProgressRow.setAttribute('data-status', 'done');
+            applyGovListFilter();
           }
           modalProgress.classList.add('hidden');
           modalProgress.classList.remove('flex');
@@ -1635,25 +1751,39 @@
         if (!level || !days) return;
         var cells = row.querySelectorAll('td');
         if (!cells.length) return;
-        var daysCell = cells[7];
+        var daysCell = cells[6];
         if (!daysCell || daysCell.querySelector('.gov-days-badge')) return;
         var cls = daysLevelClass[level] || daysLevelClass.normal;
         daysCell.innerHTML = '<span class="gov-days-badge ' + cls + '">' + days + '天</span>';
       });
 
+      function progressStatusHtml(node) {
+        if (node === '已退件') return '<span class="text-red-600">' + node + '</span>';
+        if (node === '已完成') return '<span class="text-emerald-600">' + node + '</span>';
+        return node;
+      }
+
+      function applyGovListFilter() {
+        var tab = document.querySelector('#gov-tabs .gov-tab-active');
+        var f = tab ? tab.getAttribute('data-filter') : 'doing';
+        var progressSel = document.getElementById('filter-progress-status');
+        var progress = progressSel ? progressSel.value : '';
+        document.querySelectorAll('.gov-row').forEach(function (row) {
+          var st = row.getAttribute('data-status');
+          var ps = row.getAttribute('data-progress-status') || '';
+          var matchTab = f === 'all' || st === f;
+          var matchProgress = !progress || ps === progress;
+          row.classList.toggle('hidden', !(matchTab && matchProgress));
+        });
+      }
+
       var tabs = document.querySelectorAll('#gov-tabs [data-filter]');
-      var rows = document.querySelectorAll('.gov-row');
       tabs.forEach(function (tab) {
         tab.addEventListener('click', function () {
-          var f = tab.getAttribute('data-filter');
           tabs.forEach(function (t) {
             t.classList.toggle('gov-tab-active', t === tab);
           });
-          rows.forEach(function (row) {
-            var st = row.getAttribute('data-status');
-            if (f === 'all') row.classList.remove('hidden');
-            else row.classList.toggle('hidden', st !== f);
-          });
+          applyGovListFilter();
         });
       });
 

@@ -225,29 +225,37 @@
         <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600" data-close-pd><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
       <div class="px-6 py-5 space-y-4 text-sm">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-slate-600 mb-2">进度节点 <span class="text-red-500">*</span></label>
-            <input type="text" id="pd-progress-node" class="h-9 w-full rounded-md border border-slate-200 px-3 text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="请输入进度节点">
-          </div>
-          <div>
-            <label class="block text-slate-600 mb-2">办理状态 <span class="text-red-500">*</span></label>
-            <select id="pd-progress-status" class="h-9 w-full rounded-md border border-slate-200 px-3 bg-white cursor-pointer focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-              <option value="">请选择办理状态</option>
-              <option value="办理中">办理中</option>
-              <option value="已通过">已通过</option>
-              <option value="已驳回">已驳回</option>
-              <option value="已完成">已完成</option>
-            </select>
+        <div>
+          <label class="block text-slate-600 mb-2">进度节点 <span class="text-red-500">*</span></label>
+          <select id="pd-progress-node" class="h-9 w-full rounded-md border border-slate-200 px-3 bg-white cursor-pointer focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+            <option value="">请选择进度节点</option>
+            <option value="工商已提交">工商已提交</option>
+            <option value="税务已提交">税务已提交</option>
+            <option value="客户签字中">客户签字中</option>
+            <option value="材料已完成">材料已完成</option>
+            <option value="公示中">公示中</option>
+            <option value="已派件">已派件</option>
+            <option value="已完成">已完成</option>
+            <option value="已退件">已退件</option>
+            <option value="会计部-已登表">会计部-已登表</option>
+            <option value="其他">其他</option>
+          </select>
+        </div>
+        <div id="pd-progress-finish-time-wrap" class="hidden">
+          <label class="block text-slate-600 mb-2">完成时间 <span class="text-red-500">*</span></label>
+          <input type="date" id="pd-progress-finish-time" class="h-9 w-full rounded-md border border-slate-200 px-3 bg-white text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" aria-label="完成时间">
+        </div>
+        <div id="pd-progress-publicity-wrap" class="hidden">
+          <label class="block text-slate-600 mb-2">公示期 <span class="text-red-500">*</span></label>
+          <div class="flex items-center gap-2">
+            <input type="date" id="pd-progress-publicity-start" class="h-9 min-w-0 flex-1 rounded-md border border-slate-200 px-3 bg-white text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" aria-label="公示期开始日期">
+            <span class="text-slate-400 shrink-0 text-xs">至</span>
+            <input type="date" id="pd-progress-publicity-end" class="h-9 min-w-0 flex-1 rounded-md border border-slate-200 px-3 bg-white text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" aria-label="公示期结束日期">
           </div>
         </div>
-        <div id="pd-progress-reject-wrap" class="hidden">
-          <label class="block text-slate-600 mb-2">驳回说明 <span class="text-red-500">*</span></label>
-          <textarea id="pd-progress-reject-note" class="w-full h-24 rounded border border-slate-200 px-3 py-2 resize-none placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="请填写驳回说明"></textarea>
-        </div>
-        <div id="pd-progress-done-wrap" class="hidden">
-          <label class="block text-slate-600 mb-2">完成说明 <span class="text-red-500">*</span></label>
-          <textarea id="pd-progress-done-note" class="w-full h-24 rounded border border-slate-200 px-3 py-2 resize-none placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="请填写完成说明"></textarea>
+        <div id="pd-progress-deliver-wrap" class="hidden">
+          <label class="block text-slate-600 mb-2">交付时间 <span class="text-red-500">*</span></label>
+          <input type="date" id="pd-progress-deliver-time" class="h-9 w-full rounded-md border border-slate-200 px-3 bg-white text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" aria-label="交付时间">
         </div>
       </div>
       <div class="flex justify-center gap-3 border-t border-slate-100 px-5 py-4">
@@ -513,22 +521,27 @@
 
       var modalPd = document.getElementById('modal-progress-detail');
       function syncPdProgressNoteVisibility() {
-        var statusEl = document.getElementById('pd-progress-status');
-        var rejectWrap = document.getElementById('pd-progress-reject-wrap');
-        var doneWrap = document.getElementById('pd-progress-done-wrap');
-        var status = statusEl ? statusEl.value : '';
-        if (rejectWrap) rejectWrap.classList.toggle('hidden', status !== '已驳回');
-        if (doneWrap) doneWrap.classList.toggle('hidden', status !== '已完成');
+        var nodeEl = document.getElementById('pd-progress-node');
+        var finishWrap = document.getElementById('pd-progress-finish-time-wrap');
+        var publicityWrap = document.getElementById('pd-progress-publicity-wrap');
+        var deliverWrap = document.getElementById('pd-progress-deliver-wrap');
+        var node = nodeEl ? nodeEl.value : '';
+        var showFinish = node === '工商已提交' || node === '税务已提交';
+        if (finishWrap) finishWrap.classList.toggle('hidden', !showFinish);
+        if (publicityWrap) publicityWrap.classList.toggle('hidden', node !== '公示中');
+        if (deliverWrap) deliverWrap.classList.toggle('hidden', node !== '已完成');
       }
       function resetPdProgressForm() {
         var nodeEl = document.getElementById('pd-progress-node');
-        var statusEl = document.getElementById('pd-progress-status');
-        var rejectNote = document.getElementById('pd-progress-reject-note');
-        var doneNote = document.getElementById('pd-progress-done-note');
+        var finishTime = document.getElementById('pd-progress-finish-time');
+        var publicityStart = document.getElementById('pd-progress-publicity-start');
+        var publicityEnd = document.getElementById('pd-progress-publicity-end');
+        var deliverTime = document.getElementById('pd-progress-deliver-time');
         if (nodeEl) nodeEl.value = '';
-        if (statusEl) statusEl.value = '';
-        if (rejectNote) rejectNote.value = '';
-        if (doneNote) doneNote.value = '';
+        if (finishTime) finishTime.value = '';
+        if (publicityStart) publicityStart.value = '';
+        if (publicityEnd) publicityEnd.value = '';
+        if (deliverTime) deliverTime.value = '';
         syncPdProgressNoteVisibility();
       }
       function closePdModal() {
@@ -540,27 +553,43 @@
         modalPd.classList.remove('hidden');
         modalPd.classList.add('flex');
       });
-      var pdStatusEl = document.getElementById('pd-progress-status');
-      if (pdStatusEl) pdStatusEl.addEventListener('change', syncPdProgressNoteVisibility);
+      var pdNodeEl = document.getElementById('pd-progress-node');
+      if (pdNodeEl) pdNodeEl.addEventListener('change', syncPdProgressNoteVisibility);
       var pdOkBtn = document.getElementById('btn-pd-progress-ok');
       if (pdOkBtn) {
         pdOkBtn.addEventListener('click', function () {
           var nodeEl = document.getElementById('pd-progress-node');
-          var statusEl = document.getElementById('pd-progress-status');
-          var rejectNote = document.getElementById('pd-progress-reject-note');
-          var doneNote = document.getElementById('pd-progress-done-note');
-          var node = nodeEl ? nodeEl.value.trim() : '';
-          var status = statusEl ? statusEl.value : '';
-          if (!node) { alert('请填写进度节点'); if (nodeEl) nodeEl.focus(); return; }
-          if (!status) { alert('请选择办理状态'); if (statusEl) statusEl.focus(); return; }
-          if (status === '已驳回' && !(rejectNote && rejectNote.value.trim())) {
-            alert('请填写驳回说明');
-            if (rejectNote) rejectNote.focus();
+          var finishTime = document.getElementById('pd-progress-finish-time');
+          var publicityStart = document.getElementById('pd-progress-publicity-start');
+          var publicityEnd = document.getElementById('pd-progress-publicity-end');
+          var deliverTime = document.getElementById('pd-progress-deliver-time');
+          var node = nodeEl ? nodeEl.value : '';
+          if (!node) { alert('请选择进度节点'); if (nodeEl) nodeEl.focus(); return; }
+          if ((node === '工商已提交' || node === '税务已提交') && !(finishTime && finishTime.value)) {
+            alert('请选择完成时间');
+            if (finishTime) finishTime.focus();
             return;
           }
-          if (status === '已完成' && !(doneNote && doneNote.value.trim())) {
-            alert('请填写完成说明');
-            if (doneNote) doneNote.focus();
+          if (node === '公示中') {
+            if (!(publicityStart && publicityStart.value)) {
+              alert('请选择公示期开始日期');
+              if (publicityStart) publicityStart.focus();
+              return;
+            }
+            if (!(publicityEnd && publicityEnd.value)) {
+              alert('请选择公示期结束日期');
+              if (publicityEnd) publicityEnd.focus();
+              return;
+            }
+            if (publicityStart.value > publicityEnd.value) {
+              alert('公示期结束日期不能早于开始日期');
+              if (publicityEnd) publicityEnd.focus();
+              return;
+            }
+          }
+          if (node === '已完成' && !(deliverTime && deliverTime.value)) {
+            alert('请选择交付时间');
+            if (deliverTime) deliverTime.focus();
             return;
           }
           closePdModal();
