@@ -1,0 +1,823 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>官网维护 - 企税康协同工作平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="./assets/responsive.css">
+  <script src="./assets/responsive.js" defer></script>
+  <link rel="stylesheet" href="./assets/design-system.css">
+  <style>
+    body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; }
+    .emp-tab { border-bottom: 2px solid transparent; color: #64748b; padding-bottom: 0.5rem; margin-bottom: -1px; }
+    .emp-tab:hover { color: #334155; }
+    .emp-tab-active { border-bottom-color: #2563eb; color: #2563eb; font-weight: 600; }
+    #modal-content:not(.hidden), #modal-video:not(.hidden), #modal-delete:not(.hidden) { display: flex; }
+    #filter-content:not(.hidden), #filter-video:not(.hidden) { display: flex; }
+    .field-req::before { content: "* "; color: #ef4444; }
+    .upload-zone.is-dragover { border-color: #93c5fd; background: #eff6ff; }
+  </style>
+</head>
+<body class="bg-[#f5f7fa] text-slate-700">
+  <div id="sidebar-backdrop" class="fixed inset-0 z-[150] bg-slate-900/40 hidden lg:hidden"></div>
+  <div class="min-h-screen w-full flex flex-col lg:flex-row relative">
+    <aside id="app-sidebar" class="w-64 max-w-[min(18rem,88vw)] bg-slate-900 text-slate-200 flex flex-col shrink-0 fixed lg:static inset-y-0 left-0 z-[160] h-screen lg:h-auto -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-out overflow-y-auto lg:overflow-visible shadow-xl lg:shadow-none">
+      <div class="h-16 px-3 flex items-center border-b border-slate-800">
+        <div class="w-full rounded-lg bg-white px-2 py-1.5 flex items-center justify-center">
+          <img src="./assets/qishuikang-logo.png" alt="企税康Logo" class="h-8 w-full max-h-8 object-contain object-center mix-blend-multiply">
+        </div>
+      </div>
+      <nav class="flex-1 py-4 text-sm overflow-y-auto">
+        <a class="mx-3 mb-1 h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center" href="index.html"><i class="fa-solid fa-table-columns w-5 mr-2"></i>工作台</a>
+        <details class="mx-3 mb-1 group">
+          <summary class="list-none cursor-pointer h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center justify-between text-slate-200 [&::-webkit-details-marker]:hidden">
+            <span class="flex items-center"><i class="fa-solid fa-chart-line w-5 mr-2"></i>销售中心</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="mt-1 ml-2 pl-3 border-l border-slate-700 space-y-0.5">
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="sales-target.html">销售目标</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="lead-management.html">线索管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="opportunity-management.html">商机管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="customer-management.html">客户管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="sales-performance.html">销售业绩</a>
+          </div>
+        </details>
+        <details class="mx-3 mb-1 group">
+          <summary class="list-none cursor-pointer h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center justify-between text-slate-200 [&::-webkit-details-marker]:hidden">
+            <span class="flex items-center"><i class="fa-solid fa-building-user w-5 mr-2"></i>客户中心</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="mt-1 ml-2 pl-3 border-l border-slate-700 space-y-0.5">
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="government-affairs.html">政务服务</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="accounting-customer-management.html">代账服务</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="address-management.html">地址管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="customer-items.html">客户物品</a>
+          </div>
+        </details>
+        <a class="mx-3 mb-1 h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center" href="supply-chain-management.html"><i class="fa-solid fa-truck-fast w-5 mr-2"></i>供应链中心</a>
+        <a class="mx-3 mb-1 h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center" href="knowledge-base.html"><i class="fa-solid fa-book-open w-5 mr-2"></i>问一问</a>
+        <details class="mx-3 mb-1 group">
+          <summary class="list-none cursor-pointer h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center justify-between text-slate-200 [&::-webkit-details-marker]:hidden">
+            <span class="flex items-center"><i class="fa-solid fa-file-signature w-5 mr-2"></i>合同订单</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="mt-1 ml-2 pl-3 border-l border-slate-700 space-y-0.5">
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="contract-management.html">合同管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="order-management.html">订单管理</a>
+          </div>
+        </details>
+        <details class="mx-3 mb-1 group" open>
+          <summary class="list-none cursor-pointer h-10 px-4 rounded-lg bg-slate-800/80 flex items-center justify-between text-white [&::-webkit-details-marker]:hidden">
+            <span class="flex items-center"><i class="fa-solid fa-wallet w-5 mr-2"></i>运营中心</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="mt-1 ml-2 pl-3 border-l border-slate-700 space-y-0.5">
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="payment-request.html">财务报销</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="financial-reports.html">经营报表</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="hr-request.html">人事管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="salary-management.html">薪资管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="department-employees.html">员工管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm bg-blue-600 text-white font-medium" href="website-maintenance.html">官网维护</a>
+          </div>
+        </details>
+        <details class="mx-3 mb-1 group">
+          <summary class="list-none cursor-pointer h-10 px-4 rounded-lg hover:bg-slate-800 flex items-center justify-between text-slate-200 [&::-webkit-details-marker]:hidden">
+            <span class="flex items-center"><i class="fa-solid fa-gear w-5 mr-2"></i>系统管理</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="mt-1 ml-2 pl-3 border-l border-slate-700 space-y-0.5">
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="role-permissions.html">角色权限</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="dictionary-management.html">字典管理</a>
+            <a class="block py-2 px-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white" href="menu-management.html">菜单管理</a>
+          </div>
+        </details>
+      </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col min-w-0 w-full">
+      <header class="h-16 bg-white border-b border-slate-200 px-4 sm:px-6 gap-2 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2 min-w-0 flex-1">
+          <button type="button" id="btn-sidebar-toggle" class="lg:hidden shrink-0 w-10 h-10 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 flex items-center justify-center" aria-expanded="false" aria-controls="app-sidebar" aria-label="打开导航菜单"><i class="fa-solid fa-bars text-lg"></i></button>
+          <div class="text-sm text-slate-500 min-w-0 truncate">运营中心 / <span class="text-slate-700 font-medium">官网维护</span></div>
+        </div>
+        <div class="flex items-center gap-3 shrink-0">
+          <button type="button" class="w-9 h-9 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200" aria-label="通知"><i class="fa-regular fa-bell"></i></button>
+          <div class="flex items-center">
+            <img class="w-9 h-9 rounded-full object-cover" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=80&q=80" alt="用户头像">
+            <div class="ml-2 hidden sm:block">
+              <p class="text-sm font-medium text-slate-700">朱总</p>
+              <p class="text-xs text-slate-400">企业端</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="p-4 sm:p-6 flex-1 min-h-0">
+        <div class="text-sm text-slate-500 mb-3">运营中心 / 官网维护</div>
+        <div class="rounded-xl border border-slate-200 bg-white shadow-sm min-h-[calc(100vh-8.5rem)] flex flex-col overflow-hidden">
+          <div class="px-4 pt-4 pb-3 border-b border-slate-100">
+            <div id="filter-content" class="flex flex-wrap items-end gap-3">
+              <div class="w-52">
+                <label class="block text-xs text-slate-500 mb-1" for="filter-content-keyword">内容标题</label>
+                <input id="filter-content-keyword" type="text" class="h-9 w-full rounded-md border border-slate-200 px-3 text-sm" placeholder="请输入标题关键词">
+              </div>
+              <div>
+                <label class="block text-xs text-slate-500 mb-1">发布时间</label>
+                <div class="flex items-center gap-2">
+                  <input id="filter-content-from" type="date" class="h-9 w-36 rounded-md border border-slate-200 px-2 text-sm">
+                  <span class="text-slate-400">-</span>
+                  <input id="filter-content-to" type="date" class="h-9 w-36 rounded-md border border-slate-200 px-2 text-sm">
+                </div>
+              </div>
+              <button type="button" id="btn-content-search" class="h-9 rounded-md bg-blue-600 px-4 text-sm text-white hover:bg-blue-700">查询</button>
+              <button type="button" id="btn-content-reset" class="h-9 rounded-md border border-slate-200 bg-white px-4 text-sm text-slate-600 hover:bg-slate-50">重置</button>
+            </div>
+            <div id="filter-video" class="hidden flex flex-wrap items-end gap-3">
+              <div class="w-52">
+                <label class="block text-xs text-slate-500 mb-1" for="filter-video-keyword">视频标题</label>
+                <input id="filter-video-keyword" type="text" class="h-9 w-full rounded-md border border-slate-200 px-3 text-sm" placeholder="请输入标题关键词">
+              </div>
+              <div class="w-40">
+                <label class="block text-xs text-slate-500 mb-1" for="filter-video-category">视频分类</label>
+                <select id="filter-video-category" class="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-sm">
+                  <option value="">全部</option>
+                  <option>企业文化</option>
+                  <option>团队活动</option>
+                  <option>客户见证</option>
+                  <option>办公环境</option>
+                  <option>企业新闻</option>
+                  <option>员工风采</option>
+                </select>
+              </div>
+              <button type="button" id="btn-video-search" class="h-9 rounded-md bg-blue-600 px-4 text-sm text-white hover:bg-blue-700">查询</button>
+              <button type="button" id="btn-video-reset" class="h-9 rounded-md border border-slate-200 bg-white px-4 text-sm text-slate-600 hover:bg-slate-50">重置</button>
+            </div>
+          </div>
+
+          <div class="shrink-0 flex items-end justify-between gap-3 border-b border-slate-200 px-4 bg-white">
+            <div class="flex gap-8">
+              <button type="button" class="emp-tab emp-tab-active text-sm py-3" data-site-tab="content">内容中心</button>
+              <button type="button" class="emp-tab text-sm py-3" data-site-tab="video">企业风采</button>
+            </div>
+            <button type="button" id="btn-primary-action" class="mb-2 h-8 rounded-md bg-blue-600 px-4 text-xs font-medium text-white hover:bg-blue-700">上传内容</button>
+          </div>
+
+          <div class="flex-1 min-h-0 overflow-x-auto overflow-y-auto p-4" id="panel-content">
+            <table class="w-full min-w-[960px] text-sm">
+              <thead class="bg-slate-50 text-slate-600">
+                <tr>
+                  <th class="text-left px-3 py-3 font-medium border-b border-slate-200">内容标题</th>
+                  <th class="text-left px-3 py-3 font-medium border-b border-slate-200">内容简介</th>
+                  <th class="text-left px-3 py-3 font-medium border-b border-slate-200">上传文档</th>
+                  <th class="text-left px-3 py-3 font-medium border-b border-slate-200 whitespace-nowrap">发布时间</th>
+                  <th class="text-left px-3 py-3 font-medium border-b border-slate-200 whitespace-nowrap">阅读数量</th>
+                  <th class="text-left px-3 py-3 font-medium border-b border-slate-200 whitespace-nowrap">状态</th>
+                  <th class="text-left px-3 py-3 font-medium border-b border-slate-200 whitespace-nowrap">操作</th>
+                </tr>
+              </thead>
+              <tbody class="text-slate-700" id="content-tbody"></tbody>
+            </table>
+          </div>
+
+          <div class="flex-1 min-h-0 overflow-x-auto overflow-y-auto p-4 hidden" id="panel-video">
+            <table class="w-full min-w-[880px] text-sm">
+              <thead class="bg-slate-50 text-slate-600">
+                <tr>
+                  <th class="text-left px-3 py-3 font-medium border-b border-slate-200">视频标题</th>
+                  <th class="text-left px-3 py-3 font-medium border-b border-slate-200">视频简介</th>
+                  <th class="text-left px-3 py-3 font-medium border-b border-slate-200 whitespace-nowrap">视频分类</th>
+                  <th class="text-left px-3 py-3 font-medium border-b border-slate-200">视频文件</th>
+                  <th class="text-left px-3 py-3 font-medium border-b border-slate-200 whitespace-nowrap">发布时间</th>
+                  <th class="text-left px-3 py-3 font-medium border-b border-slate-200 whitespace-nowrap">状态</th>
+                  <th class="text-left px-3 py-3 font-medium border-b border-slate-200 whitespace-nowrap">操作</th>
+                </tr>
+              </thead>
+              <tbody class="text-slate-700" id="video-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="modal-content" class="fixed inset-0 z-[130] hidden items-center justify-center bg-slate-900/45 p-4" aria-hidden="true" role="dialog" aria-labelledby="modal-content-title">
+    <div class="absolute inset-0" data-close-content></div>
+    <div class="relative w-full max-w-lg rounded-xl border border-slate-200 bg-white shadow-xl max-h-[90vh] flex flex-col overflow-hidden">
+      <div class="relative shrink-0 border-b border-slate-200 px-5 py-4">
+        <h3 id="modal-content-title" class="text-center text-base font-semibold text-slate-800">上传内容</h3>
+        <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600" data-close-content aria-label="关闭"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <div class="flex-1 overflow-y-auto px-5 py-5 text-sm">
+        <div class="space-y-4">
+          <div class="grid grid-cols-[5.5rem_1fr] sm:grid-cols-[88px_1fr] items-center gap-3">
+            <label class="text-right text-slate-600 shrink-0" for="content-title"><span class="field-req">内容标题</span></label>
+            <input type="text" id="content-title" maxlength="50" class="h-9 w-full rounded-md border border-slate-200 px-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="请输入内容标题">
+          </div>
+          <div class="grid grid-cols-[5.5rem_1fr] sm:grid-cols-[88px_1fr] items-start gap-3">
+            <label class="text-right text-slate-600 shrink-0 pt-2" for="content-intro"><span class="field-req">内容简介</span></label>
+            <div>
+              <textarea id="content-intro" rows="3" maxlength="200" class="w-full rounded-md border border-slate-200 px-3 py-2 resize-none focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="请输入内容简介，将展示在官网内容中心"></textarea>
+              <p class="mt-1 text-xs text-slate-400 text-right"><span id="content-intro-count">0</span>/200</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-[5.5rem_1fr] sm:grid-cols-[88px_1fr] items-center gap-3">
+            <label class="text-right text-slate-600 shrink-0" for="content-publish"><span class="field-req">发布时间</span></label>
+            <input type="date" id="content-publish" class="h-9 w-full rounded-md border border-slate-200 px-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+          </div>
+          <div class="grid grid-cols-[5.5rem_1fr] sm:grid-cols-[88px_1fr] items-center gap-3">
+            <label class="text-right text-slate-600 shrink-0" for="content-reads">阅读数量</label>
+            <input type="number" id="content-reads" min="0" step="1" class="h-9 w-full rounded-md border border-slate-200 px-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="默认 0，发布后随访问累加">
+          </div>
+          <div class="grid grid-cols-[5.5rem_1fr] sm:grid-cols-[88px_1fr] items-start gap-3">
+            <label class="text-right text-slate-600 shrink-0 pt-2"><span class="field-req">上传文档</span></label>
+            <div>
+              <input type="file" id="content-file" class="hidden" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx">
+              <div id="content-upload-zone" class="upload-zone rounded-lg border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-center cursor-pointer hover:border-blue-300 hover:bg-blue-50/40">
+                <i class="fa-solid fa-cloud-arrow-up text-2xl text-slate-400 mb-2"></i>
+                <p class="text-sm text-slate-600">点击或拖拽文档到此处上传</p>
+                <p class="text-xs text-slate-400 mt-1">支持 PDF、Word、PPT、Excel，单文件不超过 20MB</p>
+              </div>
+              <p id="content-file-name" class="hidden mt-2 text-xs text-slate-600"><i class="fa-regular fa-file-lines mr-1 text-blue-500"></i><span></span><button type="button" id="btn-clear-content-file" class="ml-2 text-slate-400 hover:text-red-600">移除</button></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex shrink-0 justify-center gap-3 border-t border-slate-100 px-5 py-4">
+        <button type="button" id="btn-content-confirm" class="h-9 min-w-[100px] rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700">确认</button>
+        <button type="button" class="h-9 min-w-[100px] rounded-md border border-slate-300 bg-white px-4 text-sm text-slate-600 hover:bg-slate-50" data-close-content>取消</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-video" class="fixed inset-0 z-[130] hidden items-center justify-center bg-slate-900/45 p-4" aria-hidden="true" role="dialog" aria-labelledby="modal-video-title">
+    <div class="absolute inset-0" data-close-video></div>
+    <div class="relative w-full max-w-lg rounded-xl border border-slate-200 bg-white shadow-xl max-h-[90vh] flex flex-col overflow-hidden">
+      <div class="relative shrink-0 border-b border-slate-200 px-5 py-4">
+        <h3 id="modal-video-title" class="text-center text-base font-semibold text-slate-800">发布视频</h3>
+        <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600" data-close-video aria-label="关闭"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <div class="flex-1 overflow-y-auto px-5 py-5 text-sm">
+        <div class="space-y-4">
+          <div class="grid grid-cols-[5.5rem_1fr] sm:grid-cols-[88px_1fr] items-center gap-3">
+            <label class="text-right text-slate-600 shrink-0" for="video-title"><span class="field-req">视频标题</span></label>
+            <input type="text" id="video-title" maxlength="50" class="h-9 w-full rounded-md border border-slate-200 px-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="请输入视频标题">
+          </div>
+          <div class="grid grid-cols-[5.5rem_1fr] sm:grid-cols-[88px_1fr] items-start gap-3">
+            <label class="text-right text-slate-600 shrink-0 pt-2" for="video-intro"><span class="field-req">视频简介</span></label>
+            <div>
+              <textarea id="video-intro" rows="3" maxlength="200" class="w-full rounded-md border border-slate-200 px-3 py-2 resize-none focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="请输入视频简介，将展示在官网企业风采"></textarea>
+              <p class="mt-1 text-xs text-slate-400 text-right"><span id="video-intro-count">0</span>/200</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-[5.5rem_1fr] sm:grid-cols-[88px_1fr] items-center gap-3">
+            <label class="text-right text-slate-600 shrink-0" for="video-category"><span class="field-req">视频分类</span></label>
+            <select id="video-category" class="h-9 w-full rounded-md border border-slate-200 bg-white px-3 cursor-pointer focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+              <option value="">请选择视频分类</option>
+              <option>企业文化</option>
+              <option>团队活动</option>
+              <option>客户见证</option>
+              <option>办公环境</option>
+              <option>企业新闻</option>
+              <option>员工风采</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-[5.5rem_1fr] sm:grid-cols-[88px_1fr] items-start gap-3">
+            <label class="text-right text-slate-600 shrink-0 pt-2"><span class="field-req">上传视频</span></label>
+            <div>
+              <input type="file" id="video-file" class="hidden" accept="video/mp4,video/webm,video/quicktime,.mp4,.mov,.webm,.avi">
+              <div id="video-upload-zone" class="upload-zone rounded-lg border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-center cursor-pointer hover:border-blue-300 hover:bg-blue-50/40">
+                <i class="fa-solid fa-film text-2xl text-slate-400 mb-2"></i>
+                <p class="text-sm text-slate-600">点击或拖拽视频到此处上传</p>
+                <p class="text-xs text-slate-400 mt-1">支持 MP4、MOV、WebM，单文件不超过 200MB</p>
+              </div>
+              <p id="video-file-name" class="hidden mt-2 text-xs text-slate-600"><i class="fa-regular fa-file-video mr-1 text-blue-500"></i><span></span><button type="button" id="btn-clear-video-file" class="ml-2 text-slate-400 hover:text-red-600">移除</button></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex shrink-0 justify-center gap-3 border-t border-slate-100 px-5 py-4">
+        <button type="button" id="btn-video-confirm" class="h-9 min-w-[100px] rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700">确认</button>
+        <button type="button" class="h-9 min-w-[100px] rounded-md border border-slate-300 bg-white px-4 text-sm text-slate-600 hover:bg-slate-50" data-close-video>取消</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-delete" class="fixed inset-0 z-[130] hidden items-center justify-center bg-slate-900/45 p-4" aria-hidden="true">
+    <div class="absolute inset-0" data-close-delete></div>
+    <div class="relative w-full max-w-sm rounded-xl border border-slate-200 bg-white shadow-xl p-6">
+      <p class="text-sm text-slate-700 text-center" id="delete-message">确定删除该内容吗？删除后官网对应内容将同步下线。</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button type="button" id="btn-delete-confirm" class="h-9 min-w-[88px] rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700">确定</button>
+        <button type="button" class="h-9 min-w-[88px] rounded-md border border-slate-300 bg-white px-4 text-sm text-slate-600 hover:bg-slate-50" data-close-delete>取消</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="site-toast" class="fixed top-6 left-1/2 z-[200] hidden -translate-x-1/2 rounded-lg bg-slate-800 px-5 py-2.5 text-sm text-white shadow-lg">提交成功</div>
+
+  <script>
+    (function () {
+      var CONTENT_KEY = 'qsk-website-content-v1';
+      var VIDEO_KEY = 'qsk-website-video-v1';
+      var VIDEO_CATEGORIES = ['企业文化', '团队活动', '客户见证', '办公环境', '企业新闻', '员工风采'];
+      var DOC_EXT = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'];
+      var VIDEO_EXT = ['mp4', 'mov', 'webm', 'avi'];
+      var DOC_MAX = 20 * 1024 * 1024;
+      var VIDEO_MAX = 200 * 1024 * 1024;
+
+      var defaultContents = [
+        { id: 'c1', title: '2026 年小微企业税费优惠政策解读', intro: '梳理最新小微企业增值税、企业所得税减免政策要点，便于客户快速对照适用条件。', publishAt: '2026-08-12', reads: 1286, fileName: '小微税费优惠解读.pdf' },
+        { id: 'c2', title: '公司注册全流程指南', intro: '从核名、提交材料到领取执照的办理步骤与注意事项，适合首次创业客户阅读。', publishAt: '2026-07-28', reads: 864, fileName: '公司注册全流程指南.docx' },
+        { id: 'c3', title: '代账服务常见问题解答', intro: '覆盖报税周期、资料交接、发票管理等高频问题，帮助客户了解代账服务边界。', publishAt: '2026-06-15', reads: 532, fileName: '代账服务FAQ.pdf' }
+      ];
+      var defaultVideos = [
+        { id: 'v1', title: '走进企税康：我们的办公日常', intro: '记录团队日常协作与专业服务场景，展示企税康的企业文化与工作氛围。', category: '企业文化', publishAt: '2026-08-08', fileName: '走进企税康.mp4' },
+        { id: 'v2', title: '团队团建：太湖一日游', intro: '部门团建活动花絮，呈现同事之间的协作与默契。', category: '团队活动', publishAt: '2026-07-20', fileName: '太湖团建.mp4' },
+        { id: 'v3', title: '客户说：三年代账合作心得', intro: '长期合作客户分享代账服务体验与经营变化。', category: '客户见证', publishAt: '2026-05-30', fileName: '客户见证-代账.mp4' }
+      ];
+
+      var contents = loadList(CONTENT_KEY, defaultContents);
+      var videos = loadList(VIDEO_KEY, defaultVideos);
+      var contentFilter = { keyword: '', from: '', to: '' };
+      var videoFilter = { keyword: '', category: '' };
+      var currentTab = 'content';
+      var editingContentId = null;
+      var editingVideoId = null;
+      var pendingContentFile = null;
+      var pendingVideoFile = null;
+      var contentFileCleared = false;
+      var videoFileCleared = false;
+      var deleteTarget = null;
+
+      var modalContent = document.getElementById('modal-content');
+      var modalVideo = document.getElementById('modal-video');
+      var modalDelete = document.getElementById('modal-delete');
+      var toastEl = document.getElementById('site-toast');
+      var toastTimer;
+
+      function loadList(key, fallback) {
+        try {
+          var raw = localStorage.getItem(key);
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) return parsed;
+          }
+        } catch (e) { /* ignore */ }
+        return fallback.slice();
+      }
+
+      function saveList(key, list) {
+        try { localStorage.setItem(key, JSON.stringify(list)); } catch (e) { /* ignore */ }
+      }
+
+      function escapeHtml(s) {
+        return String(s == null ? '' : s)
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      function todayStr() {
+        var d = new Date();
+        var m = String(d.getMonth() + 1).padStart(2, '0');
+        var day = String(d.getDate()).padStart(2, '0');
+        return d.getFullYear() + '-' + m + '-' + day;
+      }
+
+      function formatReads(n) {
+        var num = Number(n) || 0;
+        return num.toLocaleString('zh-CN');
+      }
+
+      function showToast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.remove('hidden');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toastEl.classList.add('hidden'); }, 2000);
+      }
+
+      function openModal(el) {
+        el.classList.remove('hidden');
+        el.classList.add('flex');
+        el.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeModal(el) {
+        el.classList.add('hidden');
+        el.classList.remove('flex');
+        el.setAttribute('aria-hidden', 'true');
+      }
+
+      function fileExt(name) {
+        var i = String(name || '').lastIndexOf('.');
+        return i >= 0 ? name.slice(i + 1).toLowerCase() : '';
+      }
+
+      function bindUploadZone(zone, input, onFile) {
+        zone.addEventListener('click', function () { input.click(); });
+        zone.addEventListener('dragover', function (e) {
+          e.preventDefault();
+          zone.classList.add('is-dragover');
+        });
+        zone.addEventListener('dragleave', function () { zone.classList.remove('is-dragover'); });
+        zone.addEventListener('drop', function (e) {
+          e.preventDefault();
+          zone.classList.remove('is-dragover');
+          var file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+          if (file) onFile(file);
+        });
+        input.addEventListener('change', function () {
+          var file = input.files && input.files[0];
+          if (file) onFile(file);
+          input.value = '';
+        });
+      }
+
+      function setFileHint(el, fileName) {
+        var span = el.querySelector('span');
+        if (fileName) {
+          span.textContent = fileName;
+          el.classList.remove('hidden');
+        } else {
+          span.textContent = '';
+          el.classList.add('hidden');
+        }
+      }
+
+      function switchTab(key) {
+        currentTab = key;
+        document.getElementById('panel-content').classList.toggle('hidden', key !== 'content');
+        document.getElementById('panel-video').classList.toggle('hidden', key !== 'video');
+        document.getElementById('filter-content').classList.toggle('hidden', key !== 'content');
+        document.getElementById('filter-video').classList.toggle('hidden', key !== 'video');
+        document.querySelectorAll('[data-site-tab]').forEach(function (t) {
+          t.classList.toggle('emp-tab-active', t.getAttribute('data-site-tab') === key);
+        });
+        var btn = document.getElementById('btn-primary-action');
+        btn.textContent = key === 'content' ? '上传内容' : '发布视频';
+        if (key === 'content') renderContents();
+        else renderVideos();
+      }
+
+      function filteredContents() {
+        return contents.filter(function (item) {
+          var kw = contentFilter.keyword.trim();
+          if (kw && item.title.indexOf(kw) === -1 && item.intro.indexOf(kw) === -1) return false;
+          if (contentFilter.from && item.publishAt < contentFilter.from) return false;
+          if (contentFilter.to && item.publishAt > contentFilter.to) return false;
+          return true;
+        });
+      }
+
+      function filteredVideos() {
+        return videos.filter(function (item) {
+          var kw = videoFilter.keyword.trim();
+          if (kw && item.title.indexOf(kw) === -1 && item.intro.indexOf(kw) === -1) return false;
+          if (videoFilter.category && item.category !== videoFilter.category) return false;
+          return true;
+        });
+      }
+
+      function renderContents() {
+        var list = filteredContents();
+        var tbody = document.getElementById('content-tbody');
+        if (!list.length) {
+          tbody.innerHTML = '<tr><td colspan="7" class="px-3 py-16 text-center text-slate-400">暂无内容，点击「上传内容」同步至官网内容中心</td></tr>';
+          return;
+        }
+        tbody.innerHTML = list.map(function (item) {
+          return '<tr class="hover:bg-slate-50">' +
+            '<td class="px-3 py-3 border-b border-slate-100 font-medium text-slate-800">' + escapeHtml(item.title) + '</td>' +
+            '<td class="px-3 py-3 border-b border-slate-100 max-w-xs"><p class="line-clamp-2 text-slate-600">' + escapeHtml(item.intro) + '</p></td>' +
+            '<td class="px-3 py-3 border-b border-slate-100"><span class="inline-flex items-center gap-1 text-blue-600"><i class="fa-regular fa-file-lines"></i>' + escapeHtml(item.fileName || '--') + '</span></td>' +
+            '<td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap">' + escapeHtml(item.publishAt) + '</td>' +
+            '<td class="px-3 py-3 border-b border-slate-100">' + formatReads(item.reads) + '</td>' +
+            '<td class="px-3 py-3 border-b border-slate-100"><span class="inline-flex rounded-full bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700">已发布</span></td>' +
+            '<td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap">' +
+              '<button type="button" class="text-blue-600 hover:underline js-edit-content" data-id="' + escapeHtml(item.id) + '">编辑</button>' +
+              '<span class="text-slate-300 mx-1">|</span>' +
+              '<button type="button" class="text-blue-600 hover:underline js-del-content" data-id="' + escapeHtml(item.id) + '">删除</button>' +
+            '</td></tr>';
+        }).join('');
+      }
+
+      function renderVideos() {
+        var list = filteredVideos();
+        var tbody = document.getElementById('video-tbody');
+        if (!list.length) {
+          tbody.innerHTML = '<tr><td colspan="7" class="px-3 py-16 text-center text-slate-400">暂无视频，点击「发布视频」同步至官网企业风采</td></tr>';
+          return;
+        }
+        tbody.innerHTML = list.map(function (item) {
+          return '<tr class="hover:bg-slate-50">' +
+            '<td class="px-3 py-3 border-b border-slate-100 font-medium text-slate-800">' + escapeHtml(item.title) + '</td>' +
+            '<td class="px-3 py-3 border-b border-slate-100 max-w-xs"><p class="line-clamp-2 text-slate-600">' + escapeHtml(item.intro) + '</p></td>' +
+            '<td class="px-3 py-3 border-b border-slate-100"><span class="inline-flex rounded bg-blue-50 px-2 py-0.5 text-xs text-blue-700">' + escapeHtml(item.category) + '</span></td>' +
+            '<td class="px-3 py-3 border-b border-slate-100"><span class="inline-flex items-center gap-1 text-blue-600"><i class="fa-regular fa-file-video"></i>' + escapeHtml(item.fileName || '--') + '</span></td>' +
+            '<td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap">' + escapeHtml(item.publishAt) + '</td>' +
+            '<td class="px-3 py-3 border-b border-slate-100"><span class="inline-flex rounded-full bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700">已发布</span></td>' +
+            '<td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap">' +
+              '<button type="button" class="text-blue-600 hover:underline js-edit-video" data-id="' + escapeHtml(item.id) + '">编辑</button>' +
+              '<span class="text-slate-300 mx-1">|</span>' +
+              '<button type="button" class="text-blue-600 hover:underline js-del-video" data-id="' + escapeHtml(item.id) + '">删除</button>' +
+            '</td></tr>';
+        }).join('');
+      }
+
+      function resetContentForm() {
+        editingContentId = null;
+        pendingContentFile = null;
+        contentFileCleared = false;
+        document.getElementById('modal-content-title').textContent = '上传内容';
+        document.getElementById('content-title').value = '';
+        document.getElementById('content-intro').value = '';
+        document.getElementById('content-intro-count').textContent = '0';
+        document.getElementById('content-publish').value = todayStr();
+        document.getElementById('content-reads').value = '';
+        setFileHint(document.getElementById('content-file-name'), '');
+      }
+
+      function resetVideoForm() {
+        editingVideoId = null;
+        pendingVideoFile = null;
+        videoFileCleared = false;
+        document.getElementById('modal-video-title').textContent = '发布视频';
+        document.getElementById('video-title').value = '';
+        document.getElementById('video-intro').value = '';
+        document.getElementById('video-intro-count').textContent = '0';
+        document.getElementById('video-category').value = '';
+        setFileHint(document.getElementById('video-file-name'), '');
+      }
+
+      function fillContentForm(item) {
+        editingContentId = item.id;
+        pendingContentFile = null;
+        contentFileCleared = false;
+        document.getElementById('modal-content-title').textContent = '编辑内容';
+        document.getElementById('content-title').value = item.title;
+        document.getElementById('content-intro').value = item.intro;
+        document.getElementById('content-intro-count').textContent = String(item.intro.length);
+        document.getElementById('content-publish').value = item.publishAt;
+        document.getElementById('content-reads').value = item.reads;
+        setFileHint(document.getElementById('content-file-name'), item.fileName);
+      }
+
+      function fillVideoForm(item) {
+        editingVideoId = item.id;
+        pendingVideoFile = null;
+        videoFileCleared = false;
+        document.getElementById('modal-video-title').textContent = '编辑视频';
+        document.getElementById('video-title').value = item.title;
+        document.getElementById('video-intro').value = item.intro;
+        document.getElementById('video-intro-count').textContent = String(item.intro.length);
+        document.getElementById('video-category').value = item.category;
+        setFileHint(document.getElementById('video-file-name'), item.fileName);
+      }
+
+      function acceptContentFile(file) {
+        var ext = fileExt(file.name);
+        if (DOC_EXT.indexOf(ext) === -1) {
+          showToast('请上传 PDF、Word、PPT 或 Excel 文档');
+          return;
+        }
+        if (file.size > DOC_MAX) {
+          showToast('文档大小不能超过 20MB');
+          return;
+        }
+        pendingContentFile = file;
+        contentFileCleared = false;
+        setFileHint(document.getElementById('content-file-name'), file.name);
+      }
+
+      function acceptVideoFile(file) {
+        var ext = fileExt(file.name);
+        if (VIDEO_EXT.indexOf(ext) === -1) {
+          showToast('请上传 MP4、MOV、WebM 或 AVI 视频');
+          return;
+        }
+        if (file.size > VIDEO_MAX) {
+          showToast('视频大小不能超过 200MB');
+          return;
+        }
+        pendingVideoFile = file;
+        videoFileCleared = false;
+        setFileHint(document.getElementById('video-file-name'), file.name);
+      }
+
+      function submitContent() {
+        var title = document.getElementById('content-title').value.trim();
+        var intro = document.getElementById('content-intro').value.trim();
+        var publishAt = document.getElementById('content-publish').value;
+        var readsRaw = document.getElementById('content-reads').value;
+        var reads = readsRaw === '' ? 0 : Number(readsRaw);
+        var existing = editingContentId ? contents.filter(function (x) { return x.id === editingContentId; })[0] : null;
+        var fileName = pendingContentFile ? pendingContentFile.name : (contentFileCleared ? '' : (existing && existing.fileName));
+
+        if (!title) { showToast('请填写内容标题'); return; }
+        if (!intro) { showToast('请填写内容简介'); return; }
+        if (!publishAt) { showToast('请选择发布时间'); return; }
+        if (!Number.isFinite(reads) || reads < 0 || reads % 1 !== 0) {
+          showToast('阅读数量须为大于等于 0 的整数');
+          return;
+        }
+        if (!fileName) { showToast('请上传文档'); return; }
+
+        if (existing) {
+          existing.title = title;
+          existing.intro = intro;
+          existing.publishAt = publishAt;
+          existing.reads = reads;
+          existing.fileName = fileName;
+          showToast('内容已更新，将同步至官网内容中心');
+        } else {
+          contents.unshift({
+            id: 'c' + Date.now(),
+            title: title,
+            intro: intro,
+            publishAt: publishAt,
+            reads: reads,
+            fileName: fileName
+          });
+          showToast('内容已上传至官网内容中心');
+        }
+        saveList(CONTENT_KEY, contents);
+        closeModal(modalContent);
+        renderContents();
+      }
+
+      function submitVideo() {
+        var title = document.getElementById('video-title').value.trim();
+        var intro = document.getElementById('video-intro').value.trim();
+        var category = document.getElementById('video-category').value;
+        var existing = editingVideoId ? videos.filter(function (x) { return x.id === editingVideoId; })[0] : null;
+        var fileName = pendingVideoFile ? pendingVideoFile.name : (videoFileCleared ? '' : (existing && existing.fileName));
+
+        if (!title) { showToast('请填写视频标题'); return; }
+        if (!intro) { showToast('请填写视频简介'); return; }
+        if (!category || VIDEO_CATEGORIES.indexOf(category) === -1) { showToast('请选择视频分类'); return; }
+        if (!fileName) { showToast('请上传视频'); return; }
+
+        if (existing) {
+          existing.title = title;
+          existing.intro = intro;
+          existing.category = category;
+          existing.fileName = fileName;
+          showToast('视频已更新，将同步至官网企业风采');
+        } else {
+          videos.unshift({
+            id: 'v' + Date.now(),
+            title: title,
+            intro: intro,
+            category: category,
+            publishAt: todayStr(),
+            fileName: fileName
+          });
+          showToast('视频已发布至官网企业风采');
+        }
+        saveList(VIDEO_KEY, videos);
+        closeModal(modalVideo);
+        renderVideos();
+      }
+
+      document.querySelectorAll('[data-site-tab]').forEach(function (t) {
+        t.addEventListener('click', function () { switchTab(t.getAttribute('data-site-tab')); });
+      });
+
+      document.getElementById('btn-primary-action').addEventListener('click', function () {
+        if (currentTab === 'content') {
+          resetContentForm();
+          openModal(modalContent);
+          document.getElementById('content-title').focus();
+        } else {
+          resetVideoForm();
+          openModal(modalVideo);
+          document.getElementById('video-title').focus();
+        }
+      });
+
+      document.getElementById('btn-content-search').addEventListener('click', function () {
+        contentFilter.keyword = document.getElementById('filter-content-keyword').value;
+        contentFilter.from = document.getElementById('filter-content-from').value;
+        contentFilter.to = document.getElementById('filter-content-to').value;
+        if (contentFilter.from && contentFilter.to && contentFilter.from > contentFilter.to) {
+          showToast('开始日期不能晚于结束日期');
+          return;
+        }
+        renderContents();
+      });
+      document.getElementById('btn-content-reset').addEventListener('click', function () {
+        document.getElementById('filter-content-keyword').value = '';
+        document.getElementById('filter-content-from').value = '';
+        document.getElementById('filter-content-to').value = '';
+        contentFilter = { keyword: '', from: '', to: '' };
+        renderContents();
+      });
+      document.getElementById('btn-video-search').addEventListener('click', function () {
+        videoFilter.keyword = document.getElementById('filter-video-keyword').value;
+        videoFilter.category = document.getElementById('filter-video-category').value;
+        renderVideos();
+      });
+      document.getElementById('btn-video-reset').addEventListener('click', function () {
+        document.getElementById('filter-video-keyword').value = '';
+        document.getElementById('filter-video-category').value = '';
+        videoFilter = { keyword: '', category: '' };
+        renderVideos();
+      });
+
+      document.getElementById('content-intro').addEventListener('input', function () {
+        document.getElementById('content-intro-count').textContent = String(this.value.length);
+      });
+      document.getElementById('video-intro').addEventListener('input', function () {
+        document.getElementById('video-intro-count').textContent = String(this.value.length);
+      });
+
+      bindUploadZone(document.getElementById('content-upload-zone'), document.getElementById('content-file'), acceptContentFile);
+      bindUploadZone(document.getElementById('video-upload-zone'), document.getElementById('video-file'), acceptVideoFile);
+
+      document.getElementById('btn-clear-content-file').addEventListener('click', function (e) {
+        e.preventDefault();
+        pendingContentFile = null;
+        contentFileCleared = true;
+        setFileHint(document.getElementById('content-file-name'), '');
+      });
+      document.getElementById('btn-clear-video-file').addEventListener('click', function (e) {
+        e.preventDefault();
+        pendingVideoFile = null;
+        videoFileCleared = true;
+        setFileHint(document.getElementById('video-file-name'), '');
+      });
+
+      document.getElementById('btn-content-confirm').addEventListener('click', submitContent);
+      document.getElementById('btn-video-confirm').addEventListener('click', submitVideo);
+      modalContent.querySelectorAll('[data-close-content]').forEach(function (el) {
+        el.addEventListener('click', function () { closeModal(modalContent); });
+      });
+      modalVideo.querySelectorAll('[data-close-video]').forEach(function (el) {
+        el.addEventListener('click', function () { closeModal(modalVideo); });
+      });
+      modalDelete.querySelectorAll('[data-close-delete]').forEach(function (el) {
+        el.addEventListener('click', function () { closeModal(modalDelete); deleteTarget = null; });
+      });
+
+      document.getElementById('panel-content').addEventListener('click', function (e) {
+        var editBtn = e.target.closest('.js-edit-content');
+        var delBtn = e.target.closest('.js-del-content');
+        if (editBtn) {
+          var item = contents.filter(function (x) { return x.id === editBtn.getAttribute('data-id'); })[0];
+          if (!item) return;
+          fillContentForm(item);
+          openModal(modalContent);
+        }
+        if (delBtn) {
+          deleteTarget = { type: 'content', id: delBtn.getAttribute('data-id') };
+          document.getElementById('delete-message').textContent = '确定删除该内容吗？删除后官网内容中心对应文章将同步下线。';
+          openModal(modalDelete);
+        }
+      });
+
+      document.getElementById('panel-video').addEventListener('click', function (e) {
+        var editBtn = e.target.closest('.js-edit-video');
+        var delBtn = e.target.closest('.js-del-video');
+        if (editBtn) {
+          var item = videos.filter(function (x) { return x.id === editBtn.getAttribute('data-id'); })[0];
+          if (!item) return;
+          fillVideoForm(item);
+          openModal(modalVideo);
+        }
+        if (delBtn) {
+          deleteTarget = { type: 'video', id: delBtn.getAttribute('data-id') };
+          document.getElementById('delete-message').textContent = '确定删除该视频吗？删除后官网企业风采对应视频将同步下线。';
+          openModal(modalDelete);
+        }
+      });
+
+      document.getElementById('btn-delete-confirm').addEventListener('click', function () {
+        if (!deleteTarget) return;
+        if (deleteTarget.type === 'content') {
+          contents = contents.filter(function (x) { return x.id !== deleteTarget.id; });
+          saveList(CONTENT_KEY, contents);
+          renderContents();
+          showToast('内容已删除');
+        } else {
+          videos = videos.filter(function (x) { return x.id !== deleteTarget.id; });
+          saveList(VIDEO_KEY, videos);
+          renderVideos();
+          showToast('视频已删除');
+        }
+        deleteTarget = null;
+        closeModal(modalDelete);
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape') return;
+        if (!modalDelete.classList.contains('hidden')) { closeModal(modalDelete); deleteTarget = null; return; }
+        if (!modalContent.classList.contains('hidden')) closeModal(modalContent);
+        if (!modalVideo.classList.contains('hidden')) closeModal(modalVideo);
+      });
+
+      switchTab('content');
+    })();
+  </script>
+  <script src="./assets/app-shell.js"></script>
+</body>
+</html>
