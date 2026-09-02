@@ -56,7 +56,7 @@
 
     { id: 'supply-chain', type: 'link', name: '供应链中心', icon: 'fa-truck-fast', href: 'supply-chain-management.html', enabled: true, sort: 4 },
 
-    { id: 'knowledge', type: 'link', name: '知识库', icon: 'fa-book-open', href: 'knowledge-base.html', enabled: true, sort: 5 },
+    { id: 'knowledge', type: 'link', name: '问一问', icon: 'fa-book-open', href: 'knowledge-base.html', enabled: true, sort: 5 },
 
     { id: 'contract-order', type: 'link', name: '合同订单', icon: 'fa-file-signature', href: 'contract-management.html', enabled: true, sort: 6 },
 
@@ -74,7 +74,9 @@
 
         { id: 'salary-mgmt', type: 'link', name: '薪资管理', icon: '', href: 'salary-management.html', enabled: true, sort: 4 },
 
-        { id: 'employee-mgmt', type: 'link', name: '员工管理', icon: '', href: 'department-employees.html', enabled: true, sort: 5 }
+        { id: 'employee-mgmt', type: 'link', name: '员工管理', icon: '', href: 'department-employees.html', enabled: true, sort: 5 },
+
+        { id: 'website-maintain', type: 'link', name: '官网维护', icon: '', href: 'website-maintenance.html', enabled: true, sort: 6 }
 
       ]
 
@@ -151,7 +153,18 @@
 
       var raw = localStorage.getItem(STORAGE_KEY);
 
-      if (raw) return mergeMenusWithDefaults(JSON.parse(raw));
+      if (raw) {
+        var menus = mergeMenusWithDefaults(JSON.parse(raw));
+        var changed = false;
+        menus.forEach(function (item) {
+          if (item.id === 'knowledge' && item.name === '知识库') {
+            item.name = '问一问';
+            changed = true;
+          }
+        });
+        if (changed) saveMenus(menus);
+        return menus;
+      }
 
     } catch (e) { /* ignore */ }
 
