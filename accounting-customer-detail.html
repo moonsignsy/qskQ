@@ -96,6 +96,11 @@
       margin-top: 0.5rem;
       line-height: 1.5;
     }
+    .svc-phase { font-size: 0.8125rem; color: #64748b; line-height: 1.6; }
+    .svc-phase .done { color: #64748b; }
+    .svc-phase .current { color: #2563eb; font-weight: 600; background: #eff6ff; padding: 0.1rem 0.4rem; border-radius: 0.25rem; }
+    .svc-handlers { font-size: 0.8125rem; color: #475569; line-height: 1.75; }
+    .svc-handlers span + span::before { content: "；"; color: #cbd5e1; }
     .attach-tile { aspect-ratio: 4/3; border-radius: 0.5rem; border: 1px dashed #cbd5e1; background: #f8fafc; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 0.75rem; color: #94a3b8; }
     .first-call-field {
       border: 1px solid #e2e8f0;
@@ -299,6 +304,33 @@
                 <h3 class="text-sm font-semibold text-slate-800 mb-3">工单信息</h3>
                 <div id="order-info" class="text-sm"></div>
               </div>
+
+              <div class="service-card" id="addon-service-card">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 min-w-0">
+                    <h3 class="text-sm font-semibold text-slate-800">增值服务 · 公司注册</h3>
+                    <span class="text-xs text-emerald-700">服务中</span>
+                    <span class="text-xs text-slate-400">· <span id="addon-svc-company">苏州美的信息科技有限公司</span></span>
+                  </div>
+                  <a href="contract-management.html" class="text-sm text-blue-600 hover:text-blue-700 shrink-0">查看合同</a>
+                </div>
+                <p class="svc-phase mb-3">
+                  <span class="text-slate-500">服务进程：</span>
+                  <span class="done">签约</span> →
+                  <span class="current">工商注册</span>
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2 text-sm mb-3">
+                  <p><span class="text-slate-500">签订日期：</span><span class="text-slate-800">2026年04月10日</span></p>
+                  <p><span class="text-slate-500">预计完成：</span><span class="text-slate-800">2026年05月15日</span></p>
+                  <p><span class="text-slate-500">已办理天数：</span><span class="text-slate-800">15天</span></p>
+                </div>
+                <p class="text-xs text-slate-500 mb-1">服务部门对接人</p>
+                <p class="svc-handlers">
+                  <span>工商专员 许悦</span>
+                  <span>销售顾问 周方林</span>
+                </p>
+              </div>
+
               <div class="info-card">
                 <div class="flex items-center justify-between gap-3 mb-3">
                   <h3 class="text-sm font-semibold text-slate-800">客户维护</h3>
@@ -651,6 +683,8 @@
           salesEl.textContent = sales;
         }
         if (taxEl) taxEl.textContent = order['企业类型'] || '—';
+        var addonCompany = document.getElementById('addon-svc-company');
+        if (addonCompany) addonCompany.textContent = order['企业名称'] || '—';
       }
 
       function renderOrderInfo(order, rec) {

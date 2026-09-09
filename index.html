@@ -19,6 +19,8 @@
     .brief-item { border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; background: #fff; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }
     .filter-btn { height: 2.25rem; padding: 0 0.75rem; border-radius: 0.375rem; border: 1px solid #e2e8f0; background: #fff; font-size: 0.875rem; color: #475569; transition: background-color 0.15s, border-color 0.15s; cursor: pointer; display: inline-flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
     .filter-btn:hover { background: #f8fafc; border-color: #cbd5e1; }
+    .filter-select { height: 2.25rem; padding: 0 1.75rem 0 0.75rem; border-radius: 0.375rem; border: 1px solid #e2e8f0; background-color: #fff; font-size: 0.875rem; color: #475569; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2394a3b8' viewBox='0 0 20 20'%3E%3Cpath d='M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.6rem center; background-size: 10px; transition: background-color 0.15s, border-color 0.15s; }
+    .filter-select:hover { background-color: #f8fafc; border-color: #cbd5e1; }
     .dash-tab { padding-bottom: 0.625rem; border-bottom: 2px solid transparent; color: #64748b; font-size: 0.875rem; transition: color 0.15s, border-color 0.15s; cursor: pointer; }
     .dash-tab:hover { color: #334155; }
     .dash-tab.tab-active { color: #2563eb; border-bottom-color: #2563eb; font-weight: 600; }
@@ -284,12 +286,17 @@
               <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
                 <h2 class="sec-title mb-0">数据概览</h2>
                 <div class="flex flex-wrap items-center gap-2">
+                  <select id="overview-role" class="filter-select min-w-32" aria-label="岗位类型">
+                    <option value="sales" selected>销售顾问</option>
+                    <option value="advisor">财税顾问</option>
+                  </select>
                   <button type="button" class="filter-btn min-w-28"><span>园区</span><i class="fa-solid fa-angle-down text-slate-400 text-xs"></i></button>
-                  <button type="button" class="filter-btn min-w-32"><span>周方林</span><i class="fa-solid fa-angle-down text-slate-400 text-xs"></i></button>
+                  <button type="button" class="filter-btn min-w-32"><span id="overview-person-label">周方林</span><i class="fa-solid fa-angle-down text-slate-400 text-xs"></i></button>
                   <button type="button" class="filter-btn min-w-24"><span>本月</span><i class="fa-solid fa-angle-down text-slate-400 text-xs"></i></button>
                 </div>
               </div>
-              <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <!-- 按岗位切换指标：销售顾问看业绩/户数/线索转化，财税顾问看续费进度/百元转化率 -->
+              <div id="overview-stats-sales" class="grid grid-cols-2 lg:grid-cols-3 gap-3">
                 <div class="stat-tile">
                   <div class="flex items-center justify-between">
                     <p class="text-xs text-slate-500">业绩进度</p>
@@ -308,6 +315,16 @@
                 </div>
                 <div class="stat-tile">
                   <div class="flex items-center justify-between">
+                    <p class="text-xs text-slate-500">线索转化</p>
+                    <div class="w-11 h-11 rounded-full" style="background:conic-gradient(#22c55e 0 65%, #dcfce7 65% 100%);"></div>
+                  </div>
+                  <p class="text-2xl font-semibold text-slate-800 mt-2">65%</p>
+                  <p class="text-xs text-slate-500 mt-1">已成单 39 / 60</p>
+                </div>
+              </div>
+              <div id="overview-stats-advisor" class="hidden grid grid-cols-2 gap-3">
+                <div class="stat-tile">
+                  <div class="flex items-center justify-between">
                     <p class="text-xs text-slate-500">续费进度</p>
                     <div class="w-11 h-11 rounded-full" style="background:conic-gradient(#ef4444 0 81%, #fee2e2 81% 100%);"></div>
                   </div>
@@ -316,11 +333,11 @@
                 </div>
                 <div class="stat-tile">
                   <div class="flex items-center justify-between">
-                    <p class="text-xs text-slate-500">线索转化</p>
-                    <div class="w-11 h-11 rounded-full" style="background:conic-gradient(#22c55e 0 65%, #dcfce7 65% 100%);"></div>
+                    <p class="text-xs text-slate-500">百元转化率</p>
+                    <div class="w-11 h-11 rounded-full" style="background:conic-gradient(#f59e0b 0 87%, #fef3c7 87% 100%);"></div>
                   </div>
-                  <p class="text-2xl font-semibold text-slate-800 mt-2">65%</p>
-                  <p class="text-xs text-slate-500 mt-1">已成单 39 / 60</p>
+                  <p class="text-2xl font-semibold text-slate-800 mt-2">13%</p>
+                  <p class="text-xs text-slate-500 mt-1">目标 15%，已完成 87%</p>
                 </div>
               </div>
             </section>
@@ -1029,6 +1046,26 @@
   <script src="./assets/create-contract-modal.js"></script>
   <script>
     (function () {
+      (function initOverviewRole() {
+        var roleSelect = document.getElementById('overview-role');
+        var salesPanel = document.getElementById('overview-stats-sales');
+        var advisorPanel = document.getElementById('overview-stats-advisor');
+        var personLabel = document.getElementById('overview-person-label');
+        if (!roleSelect || !salesPanel || !advisorPanel) return;
+
+        function applyOverviewRole(role) {
+          var isSales = role !== 'advisor';
+          salesPanel.classList.toggle('hidden', !isSales);
+          advisorPanel.classList.toggle('hidden', isSales);
+          if (personLabel) personLabel.textContent = isSales ? '周方林' : '马时笑';
+        }
+
+        roleSelect.addEventListener('change', function () {
+          applyOverviewRole(roleSelect.value);
+        });
+        applyOverviewRole(roleSelect.value);
+      })();
+
       var tabPersonal = document.getElementById('ranking-tab-personal');
       var tabTeam = document.getElementById('ranking-tab-team');
       var panelPersonal = document.getElementById('ranking-panel-personal');

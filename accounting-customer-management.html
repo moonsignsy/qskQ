@@ -18,11 +18,25 @@
     #modal-add-accounting:not(.hidden),
     #modal-dispatch-accounting:not(.hidden),
     #modal-add-maintain:not(.hidden),
-    #modal-transfer-accounting:not(.hidden) { display: flex; }
+    #modal-transfer-accounting:not(.hidden),
+    #modal-stop-report:not(.hidden) { display: flex; }
     .deadline-badge { display: inline-block; padding: 0.125rem 0.5rem; font-size: 0.8125rem; line-height: 1.25rem; border-radius: 0.25rem; white-space: nowrap; }
     .deadline-normal { background: #dcfce7; color: #166534; }
     .deadline-warning { background: #ffedd5; color: #c2410c; }
     .deadline-overdue { background: #fee2e2; color: #dc2626; }
+    .deadline-stopped { background: #e2e8f0; color: #64748b; }
+    .acc-fee-stopped { background: #f1f5f9; }
+    .acc-upload-zone {
+      border: 1px dashed #cbd5e1;
+      border-radius: 0.5rem;
+      background: #f8fafc;
+      padding: 1rem 0.75rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+    .acc-upload-zone:hover,
+    .acc-upload-zone.is-dragover { border-color: #3b82f6; background: #eff6ff; }
     .acc-filter-panel {
       background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
       border: 1px solid #e2e8f0;
@@ -463,7 +477,6 @@
                     <button type="submit" class="acc-filter-btn acc-filter-btn-primary"><i class="fa-solid fa-magnifying-glass text-xs"></i>查询</button>
                     <button type="reset" class="acc-filter-btn acc-filter-btn-ghost">重置</button>
                     <span class="acc-filter-actions-divider" aria-hidden="true"></span>
-                    <button type="button" id="btn-open-add-accounting" class="acc-filter-btn acc-filter-btn-primary"><i class="fa-solid fa-plus text-xs"></i>新增代账服务</button>
                     <button type="button" id="btn-open-transfer-accounting" class="acc-filter-btn acc-filter-btn-ghost"><i class="fa-solid fa-right-left text-xs text-slate-400"></i>移交</button>
                   </div>
                 </div>
@@ -500,13 +513,13 @@
                 </tr>
               </thead>
               <tbody class="text-slate-700">
-                <tr class="hover:bg-slate-50 acc-row" data-deadline="normal" data-contract-end-level="normal" data-tax="general" data-id="acc-1" data-company="苏州美的信息科技有限公司" data-contract="20260415002" data-dept="网销一组" data-service-dept="" data-sales="周方林" data-fee="333/月" data-chief="" data-adviser="" data-invoice="" data-account-start="2026-06">
+                <tr class="hover:bg-slate-50 acc-row" data-deadline="normal" data-contract-end-level="normal" data-tax="general" data-id="acc-1" data-company="苏州美的信息科技有限公司" data-contact="李川" data-phone="13816207333" data-contract="20260415002" data-dept="网销一组" data-service-dept="" data-sales="周方林" data-fee="333/月" data-chief="" data-adviser="" data-invoice="" data-account-start="2026-06">
                   <td class="px-3 py-3 border-b border-slate-100">苏州美的信息科技有限公司</td>
                   <td class="px-3 py-3 border-b border-slate-100">4000</td>
                   <td class="px-3 py-3 border-b border-slate-100">年付</td>
                   <td class="px-3 py-3 border-b border-slate-100">333</td>
                   <td class="px-3 py-3 border-b border-slate-100">2026年6月</td>
-                  <td class="px-3 py-3 border-b border-slate-100"><span class="deadline-badge deadline-normal">2027年6月</span></td>
+                  <td class="px-3 py-3 border-b border-slate-100 js-fee-deadline-cell"><span class="deadline-badge deadline-normal js-fee-deadline">2027年6月</span></td>
                   <td class="px-3 py-3 border-b border-slate-100"><span class="deadline-badge deadline-normal">2028年3月</span></td>
                   <td class="px-3 py-3 border-b border-slate-100">8个月</td>
                   <td class="px-3 py-3 border-b border-slate-100 text-slate-400">—</td>
@@ -516,15 +529,15 @@
                   <td class="px-3 py-3 border-b border-slate-100">周方林</td>
                   <td class="px-3 py-3 border-b border-slate-100">网销一组</td>
                   <td class="px-3 py-3 border-b border-slate-100"><a class="text-blue-600 hover:underline" href="accounting-customer-detail.html?id=acc-1">查看详情</a></td>
-                  <td class="px-3 py-3 border-b border-slate-100"><button type="button" class="text-blue-600 hover:underline js-dispatch">派单</button></td>
+                  <td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap"><button type="button" class="text-blue-600 hover:underline js-dispatch">派单</button><span class="px-1 text-slate-300">|</span><button type="button" class="text-blue-600 hover:underline js-open-create-contract">新增合同</button></td>
                 </tr>
-                <tr class="hover:bg-slate-50 acc-row" data-deadline="normal" data-contract-end-level="normal" data-tax="general" data-id="acc-2" data-company="苏州维的科技有限公司" data-contract="20260415002" data-dept="网销一组" data-service-dept="" data-sales="周方林" data-fee="292/月" data-chief="" data-adviser="" data-invoice="" data-account-start="2026-06">
+                <tr class="hover:bg-slate-50 acc-row" data-deadline="normal" data-contract-end-level="normal" data-tax="general" data-id="acc-2" data-company="苏州维的科技有限公司" data-contact="王某" data-phone="13700001111" data-contract="20260415002" data-dept="网销一组" data-service-dept="" data-sales="周方林" data-fee="292/月" data-chief="" data-adviser="" data-invoice="" data-account-start="2026-06">
                   <td class="px-3 py-3 border-b border-slate-100">苏州维的科技有限公司</td>
                   <td class="px-3 py-3 border-b border-slate-100">3500</td>
                   <td class="px-3 py-3 border-b border-slate-100">年付</td>
                   <td class="px-3 py-3 border-b border-slate-100">292</td>
                   <td class="px-3 py-3 border-b border-slate-100">2026年6月</td>
-                  <td class="px-3 py-3 border-b border-slate-100"><span class="deadline-badge deadline-normal">2027年6月</span></td>
+                  <td class="px-3 py-3 border-b border-slate-100 js-fee-deadline-cell"><span class="deadline-badge deadline-normal js-fee-deadline">2027年6月</span></td>
                   <td class="px-3 py-3 border-b border-slate-100"><span class="deadline-badge deadline-normal">2028年3月</span></td>
                   <td class="px-3 py-3 border-b border-slate-100">1年2个月</td>
                   <td class="px-3 py-3 border-b border-slate-100 text-slate-400">—</td>
@@ -534,15 +547,15 @@
                   <td class="px-3 py-3 border-b border-slate-100">周方林</td>
                   <td class="px-3 py-3 border-b border-slate-100">网销一组</td>
                   <td class="px-3 py-3 border-b border-slate-100"><a class="text-blue-600 hover:underline" href="accounting-customer-detail.html?id=acc-2">查看详情</a></td>
-                  <td class="px-3 py-3 border-b border-slate-100"><button type="button" class="text-blue-600 hover:underline js-dispatch">派单</button></td>
+                  <td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap"><button type="button" class="text-blue-600 hover:underline js-dispatch">派单</button><span class="px-1 text-slate-300">|</span><button type="button" class="text-blue-600 hover:underline js-open-create-contract">新增合同</button></td>
                 </tr>
-                <tr class="hover:bg-slate-50 acc-row" data-deadline="warning" data-contract-end-level="warning" data-tax="small" data-id="acc-3" data-company="苏州维的科技有限公司" data-contract="20260415003" data-dept="常熟组" data-service-dept="顾问二组" data-sales="周方林" data-fee="117/月" data-chief="" data-adviser="" data-invoice="" data-account-start="2026-06">
+                <tr class="hover:bg-slate-50 acc-row" data-deadline="warning" data-contract-end-level="warning" data-tax="small" data-id="acc-3" data-company="苏州维的科技有限公司" data-contact="周某" data-phone="13700002222" data-contract="20260415003" data-dept="常熟组" data-service-dept="顾问二组" data-sales="周方林" data-fee="117/月" data-chief="" data-adviser="" data-invoice="" data-account-start="2026-06">
                   <td class="px-3 py-3 border-b border-slate-100">苏州维的科技有限公司</td>
                   <td class="px-3 py-3 border-b border-slate-100">1400</td>
                   <td class="px-3 py-3 border-b border-slate-100">年付</td>
                   <td class="px-3 py-3 border-b border-slate-100">117</td>
                   <td class="px-3 py-3 border-b border-slate-100">2026年6月</td>
-                  <td class="px-3 py-3 border-b border-slate-100"><span class="deadline-badge deadline-warning">2026年7月</span></td>
+                  <td class="px-3 py-3 border-b border-slate-100 js-fee-deadline-cell"><span class="deadline-badge deadline-warning js-fee-deadline">2026年7月</span></td>
                   <td class="px-3 py-3 border-b border-slate-100"><span class="deadline-badge deadline-warning">2026年7月</span></td>
                   <td class="px-3 py-3 border-b border-slate-100">11个月</td>
                   <td class="px-3 py-3 border-b border-slate-100 text-slate-400">—</td>
@@ -552,15 +565,15 @@
                   <td class="px-3 py-3 border-b border-slate-100">周方林</td>
                   <td class="px-3 py-3 border-b border-slate-100">常熟组</td>
                   <td class="px-3 py-3 border-b border-slate-100"><a class="text-blue-600 hover:underline" href="accounting-customer-detail.html?id=acc-3">查看详情</a></td>
-                  <td class="px-3 py-3 border-b border-slate-100"><button type="button" class="text-blue-600 hover:underline js-add-maintain">添加维护</button></td>
+                  <td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap"><button type="button" class="text-blue-600 hover:underline js-add-maintain">添加维护</button><span class="px-1 text-slate-300">|</span><button type="button" class="text-blue-600 hover:underline js-open-create-contract">新增合同</button></td>
                 </tr>
-                <tr class="hover:bg-slate-50 acc-row" data-deadline="overdue" data-contract-end-level="overdue" data-tax="general" data-id="acc-4" data-company="万州维的科技有限公司" data-contract="20260415004" data-dept="岚诺组" data-service-dept="" data-sales="周方林" data-fee="125/月" data-chief="" data-adviser="" data-invoice="" data-account-start="2026-06">
+                <tr class="hover:bg-slate-50 acc-row" data-deadline="overdue" data-contract-end-level="overdue" data-tax="general" data-id="acc-4" data-company="万州维的科技有限公司" data-contact="赵某" data-phone="13700003333" data-contract="20260415004" data-dept="岚诺组" data-service-dept="" data-sales="周方林" data-fee="125/月" data-chief="" data-adviser="" data-invoice="" data-account-start="2026-06">
                   <td class="px-3 py-3 border-b border-slate-100">万州维的科技有限公司</td>
                   <td class="px-3 py-3 border-b border-slate-100">1500</td>
                   <td class="px-3 py-3 border-b border-slate-100">年付</td>
                   <td class="px-3 py-3 border-b border-slate-100">125</td>
                   <td class="px-3 py-3 border-b border-slate-100">2026年6月</td>
-                  <td class="px-3 py-3 border-b border-slate-100"><span class="deadline-badge deadline-overdue">2026年4月</span></td>
+                  <td class="px-3 py-3 border-b border-slate-100 js-fee-deadline-cell"><span class="deadline-badge deadline-overdue js-fee-deadline">2026年4月</span></td>
                   <td class="px-3 py-3 border-b border-slate-100"><span class="deadline-badge deadline-overdue">2026年5月</span></td>
                   <td class="px-3 py-3 border-b border-slate-100">2年3个月</td>
                   <td class="px-3 py-3 border-b border-slate-100 text-slate-400">—</td>
@@ -570,15 +583,15 @@
                   <td class="px-3 py-3 border-b border-slate-100">周方林</td>
                   <td class="px-3 py-3 border-b border-slate-100">岚诺组</td>
                   <td class="px-3 py-3 border-b border-slate-100"><a class="text-blue-600 hover:underline" href="accounting-customer-detail.html?id=acc-4">查看详情</a></td>
-                  <td class="px-3 py-3 border-b border-slate-100"><button type="button" class="text-blue-600 hover:underline js-add-maintain">添加维护</button></td>
+                  <td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap"><button type="button" class="text-blue-600 hover:underline js-add-maintain">添加维护</button><span class="px-1 text-slate-300 js-op-sep">|</span><button type="button" class="text-blue-600 hover:underline js-stop-report">停报申请</button></td>
                 </tr>
-                <tr class="hover:bg-slate-50 acc-row" data-deadline="warning" data-contract-end-level="normal" data-tax="general" data-id="acc-5" data-company="苏州维的科技有限公司" data-contract="20260415005" data-dept="网销一组" data-service-dept="顾问一组" data-sales="周方林" data-fee="325/月" data-chief="马时笑" data-adviser="马时笑" data-invoice="马时笑" data-account-start="2026-06">
+                <tr class="hover:bg-slate-50 acc-row" data-deadline="warning" data-contract-end-level="normal" data-tax="general" data-id="acc-5" data-company="苏州维的科技有限公司" data-contact="陈某" data-phone="13700004444" data-contract="20260415005" data-dept="网销一组" data-service-dept="顾问一组" data-sales="周方林" data-fee="325/月" data-chief="马时笑" data-adviser="马时笑" data-invoice="马时笑" data-account-start="2026-06">
                   <td class="px-3 py-3 border-b border-slate-100">苏州维的科技有限公司</td>
                   <td class="px-3 py-3 border-b border-slate-100">4000</td>
                   <td class="px-3 py-3 border-b border-slate-100">年付</td>
                   <td class="px-3 py-3 border-b border-slate-100">325</td>
                   <td class="px-3 py-3 border-b border-slate-100">2026年6月</td>
-                  <td class="px-3 py-3 border-b border-slate-100"><span class="deadline-badge deadline-warning">2026年8月</span></td>
+                  <td class="px-3 py-3 border-b border-slate-100 js-fee-deadline-cell"><span class="deadline-badge deadline-warning js-fee-deadline">2026年8月</span></td>
                   <td class="px-3 py-3 border-b border-slate-100"><span class="deadline-badge deadline-normal">2028年3月</span></td>
                   <td class="px-3 py-3 border-b border-slate-100">6个月</td>
                   <td class="px-3 py-3 border-b border-slate-100">马时笑</td>
@@ -589,16 +602,16 @@
                   <td class="px-3 py-3 border-b border-slate-100">网销一组</td>
                   <td class="px-3 py-3 border-b border-slate-100"><a class="text-blue-600 hover:underline" href="accounting-customer-detail.html?id=acc-5">查看详情</a></td>
                   <td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap">
-                    <button type="button" class="text-blue-600 hover:underline js-add-maintain">添加维护</button>
+                    <button type="button" class="text-blue-600 hover:underline js-add-maintain">添加维护</button><span class="px-1 text-slate-300">|</span><button type="button" class="text-blue-600 hover:underline js-open-create-contract">新增合同</button>
                   </td>
                 </tr>
-                <tr class="hover:bg-slate-50 acc-row" data-deadline="warning" data-contract-end-level="warning" data-tax="small" data-id="acc-6" data-company="苏州维的科技有限公司" data-contract="20260415006" data-dept="常熟组" data-service-dept="顾问一组" data-sales="周方林" data-fee="117/月" data-chief="马时笑" data-adviser="马时笑" data-invoice="马时笑" data-account-start="2026-06">
+                <tr class="hover:bg-slate-50 acc-row" data-deadline="warning" data-contract-end-level="warning" data-tax="small" data-id="acc-6" data-company="苏州维的科技有限公司" data-contact="孙某" data-phone="13700005555" data-contract="20260415006" data-dept="常熟组" data-service-dept="顾问一组" data-sales="周方林" data-fee="117/月" data-chief="马时笑" data-adviser="马时笑" data-invoice="马时笑" data-account-start="2026-06">
                   <td class="px-3 py-3 border-b border-slate-100">苏州维的科技有限公司</td>
                   <td class="px-3 py-3 border-b border-slate-100">6500</td>
                   <td class="px-3 py-3 border-b border-slate-100">年付</td>
                   <td class="px-3 py-3 border-b border-slate-100">117</td>
                   <td class="px-3 py-3 border-b border-slate-100">2026年6月</td>
-                  <td class="px-3 py-3 border-b border-slate-100"><span class="deadline-badge deadline-warning">2026年6月</span></td>
+                  <td class="px-3 py-3 border-b border-slate-100 js-fee-deadline-cell"><span class="deadline-badge deadline-warning js-fee-deadline">2026年6月</span></td>
                   <td class="px-3 py-3 border-b border-slate-100"><span class="deadline-badge deadline-warning">2026年8月</span></td>
                   <td class="px-3 py-3 border-b border-slate-100">1年</td>
                   <td class="px-3 py-3 border-b border-slate-100">马时笑</td>
@@ -609,7 +622,7 @@
                   <td class="px-3 py-3 border-b border-slate-100">常熟组</td>
                   <td class="px-3 py-3 border-b border-slate-100"><a class="text-blue-600 hover:underline" href="accounting-customer-detail.html?id=acc-6">查看详情</a></td>
                   <td class="px-3 py-3 border-b border-slate-100 whitespace-nowrap">
-                    <button type="button" class="text-blue-600 hover:underline js-add-maintain">添加维护</button>
+                    <button type="button" class="text-blue-600 hover:underline js-add-maintain">添加维护</button><span class="px-1 text-slate-300">|</span><button type="button" class="text-blue-600 hover:underline js-open-create-contract">新增合同</button>
                   </td>
                 </tr>
               </tbody>
@@ -752,18 +765,70 @@
     </div>
   </div>
 
+  <div id="modal-stop-report" class="hidden fixed inset-0 z-[130] items-center justify-center bg-slate-900/45 p-4" role="dialog" aria-modal="true" aria-labelledby="modal-stop-report-title">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col border border-slate-200">
+      <div class="relative flex items-center justify-center h-14 px-4 border-b border-slate-100 shrink-0">
+        <h2 id="modal-stop-report-title" class="text-lg font-semibold text-slate-800">停报申请</h2>
+        <button type="button" id="btn-close-stop-report" class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center" aria-label="关闭">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <form id="form-stop-report" class="overflow-y-auto flex-1 px-6 py-5 space-y-4 text-sm" onsubmit="return false">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <label class="w-full sm:w-28 shrink-0 text-slate-600 sm:text-right">企业名称</label>
+          <input id="stop-report-company" class="flex-1 min-w-0 h-9 px-3 rounded-md border border-slate-200 bg-slate-50 text-slate-700" readonly>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <label class="w-full sm:w-28 shrink-0 text-slate-600 sm:text-right">联系人</label>
+          <input id="stop-report-contact" class="flex-1 min-w-0 h-9 px-3 rounded-md border border-slate-200 bg-slate-50 text-slate-700" readonly>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <label class="w-full sm:w-28 shrink-0 text-slate-600 sm:text-right">联系电话</label>
+          <input id="stop-report-phone" class="flex-1 min-w-0 h-9 px-3 rounded-md border border-slate-200 bg-slate-50 text-slate-700" readonly>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
+          <label class="w-full sm:w-28 shrink-0 text-slate-600 sm:text-right pt-2">停报原因 <span class="text-red-500">*</span></label>
+          <div class="flex-1 min-w-0 relative">
+            <textarea id="stop-report-reason" maxlength="500" rows="4" placeholder="请输入停报原因" class="w-full px-3 py-2.5 pb-8 rounded-md border border-slate-200 text-sm text-slate-800 placeholder:text-slate-400 resize-y min-h-[120px] focus:outline-none focus:ring-2 focus:ring-blue-400/30 focus:border-blue-400 bg-slate-50/80"></textarea>
+            <span class="absolute bottom-2 right-3 text-xs text-slate-400 tabular-nums pointer-events-none"><span id="cnt-stop-report-reason">0</span>/500</span>
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
+          <label class="w-full sm:w-28 shrink-0 text-slate-600 sm:text-right pt-2">上传附件</label>
+          <div class="flex-1 min-w-0">
+            <label class="acc-upload-zone block cursor-pointer" for="stop-report-file">
+              <i class="fa-solid fa-cloud-arrow-up text-xl text-slate-400 mb-1.5"></i>
+              <p class="text-sm text-slate-600">点击或拖拽上传附件</p>
+              <p class="text-xs text-slate-400 mt-1">支持 jpg、png、pdf，单文件不超过 10MB</p>
+            </label>
+            <input type="file" id="stop-report-file" class="hidden" accept=".jpg,.jpeg,.png,.pdf" multiple>
+            <ul id="stop-report-file-list" class="mt-2 space-y-1.5 hidden"></ul>
+          </div>
+        </div>
+      </form>
+      <div class="flex justify-center gap-3 px-6 py-4 border-t border-slate-100 bg-slate-50/80 shrink-0">
+        <button type="button" id="btn-confirm-stop-report" class="h-9 px-8 rounded-md bg-blue-600 text-white text-sm font-medium hover:bg-blue-700">确认</button>
+        <button type="button" id="btn-cancel-stop-report" class="h-9 px-8 rounded-md border border-slate-200 bg-white text-sm text-slate-600 hover:bg-slate-50">取消</button>
+      </div>
+    </div>
+  </div>
+
   <div id="accounting-toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[140] hidden rounded bg-slate-800 px-5 py-2 text-sm text-white shadow-lg">创建成功</div>
 
+  <script src="./assets/create-contract-modal.js"></script>
   <script>
     (function () {
       var modalAdd = document.getElementById('modal-add-accounting');
       var modalDispatch = document.getElementById('modal-dispatch-accounting');
       var modalAddMaintain = document.getElementById('modal-add-maintain');
       var modalTransfer = document.getElementById('modal-transfer-accounting');
+      var modalStopReport = document.getElementById('modal-stop-report');
       var maintainContent = document.getElementById('maintain-content');
       var cntMaintainContent = document.getElementById('cnt-maintain-content');
       var toast = document.getElementById('accounting-toast');
       var toastTimer;
+      var stopReportRow = null;
+      var stopReportFiles = [];
 
       document.querySelectorAll('.acc-time-preset').forEach(function (sel) {
         var label = sel.closest('label');
@@ -813,21 +878,29 @@
         });
       }
 
-      document.getElementById('btn-open-add-accounting').addEventListener('click', function () {
-        modalAdd.classList.remove('hidden');
-        modalAdd.classList.add('flex');
-      });
-      document.getElementById('btn-confirm-add-accounting').addEventListener('click', function () {
-        modalAdd.classList.add('hidden');
-        modalAdd.classList.remove('flex');
-        showToast('创建成功');
-      });
-      modalAdd.querySelectorAll('[data-close-add]').forEach(function (el) {
-        el.addEventListener('click', function () {
+      var btnOpenAddAccounting = document.getElementById('btn-open-add-accounting');
+      if (btnOpenAddAccounting && modalAdd) {
+        btnOpenAddAccounting.addEventListener('click', function () {
+          modalAdd.classList.remove('hidden');
+          modalAdd.classList.add('flex');
+        });
+      }
+      var btnConfirmAddAccounting = document.getElementById('btn-confirm-add-accounting');
+      if (btnConfirmAddAccounting && modalAdd) {
+        btnConfirmAddAccounting.addEventListener('click', function () {
           modalAdd.classList.add('hidden');
           modalAdd.classList.remove('flex');
+          showToast('创建成功');
         });
-      });
+      }
+      if (modalAdd) {
+        modalAdd.querySelectorAll('[data-close-add]').forEach(function (el) {
+          el.addEventListener('click', function () {
+            modalAdd.classList.add('hidden');
+            modalAdd.classList.remove('flex');
+          });
+        });
+      }
 
       function openDispatch(row) {
         document.getElementById('dispatch-company').textContent = row.dataset.company || '—';
@@ -917,6 +990,164 @@
         });
       });
 
+      var stopReason = document.getElementById('stop-report-reason');
+      var cntStopReason = document.getElementById('cnt-stop-report-reason');
+      var stopFileInput = document.getElementById('stop-report-file');
+      var stopFileList = document.getElementById('stop-report-file-list');
+      var stopUploadZone = modalStopReport ? modalStopReport.querySelector('.acc-upload-zone') : null;
+
+      function renderStopFiles() {
+        if (!stopFileList) return;
+        stopFileList.innerHTML = '';
+        if (!stopReportFiles.length) {
+          stopFileList.classList.add('hidden');
+          return;
+        }
+        stopFileList.classList.remove('hidden');
+        stopReportFiles.forEach(function (file, index) {
+          var li = document.createElement('li');
+          li.className = 'flex items-center justify-between gap-2 rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-600';
+          li.innerHTML = '<span class="truncate min-w-0"><i class="fa-regular fa-file mr-1.5 text-slate-400"></i>' + file.name + '</span>';
+          var removeBtn = document.createElement('button');
+          removeBtn.type = 'button';
+          removeBtn.className = 'shrink-0 text-slate-400 hover:text-slate-600';
+          removeBtn.setAttribute('aria-label', '移除附件');
+          removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+          removeBtn.addEventListener('click', function () {
+            stopReportFiles.splice(index, 1);
+            renderStopFiles();
+          });
+          li.appendChild(removeBtn);
+          stopFileList.appendChild(li);
+        });
+      }
+
+      function addStopFiles(fileList) {
+        var allowed = ['jpg', 'jpeg', 'png', 'pdf'];
+        Array.prototype.forEach.call(fileList || [], function (file) {
+          var ext = (file.name.split('.').pop() || '').toLowerCase();
+          if (allowed.indexOf(ext) === -1) {
+            showToast('仅支持 jpg、png、pdf 文件');
+            return;
+          }
+          if (file.size > 10 * 1024 * 1024) {
+            showToast('单个附件不能超过 10MB');
+            return;
+          }
+          stopReportFiles.push(file);
+        });
+        renderStopFiles();
+      }
+
+      function resetStopReportForm() {
+        if (stopReason) stopReason.value = '';
+        if (cntStopReason) cntStopReason.textContent = '0';
+        if (stopFileInput) stopFileInput.value = '';
+        stopReportFiles = [];
+        renderStopFiles();
+      }
+
+      function closeStopReportModal() {
+        if (!modalStopReport) return;
+        modalStopReport.classList.add('hidden');
+        modalStopReport.classList.remove('flex');
+        stopReportRow = null;
+      }
+
+      function openStopReportModal(row) {
+        if (!modalStopReport || !row) return;
+        stopReportRow = row;
+        resetStopReportForm();
+        var companyIn = document.getElementById('stop-report-company');
+        var contactIn = document.getElementById('stop-report-contact');
+        var phoneIn = document.getElementById('stop-report-phone');
+        if (companyIn) companyIn.value = row.dataset.company || '';
+        if (contactIn) contactIn.value = row.dataset.contact || '';
+        if (phoneIn) phoneIn.value = row.dataset.phone || '';
+        modalStopReport.classList.remove('hidden');
+        modalStopReport.classList.add('flex');
+        if (stopReason) stopReason.focus();
+      }
+
+      function markRowStopped(row) {
+        if (!row) return;
+        row.setAttribute('data-stopped', '1');
+        var badge = row.querySelector('.js-fee-deadline');
+        if (badge) {
+          badge.classList.remove('deadline-normal', 'deadline-warning', 'deadline-overdue');
+          badge.classList.add('deadline-stopped');
+        }
+        var cell = row.querySelector('.js-fee-deadline-cell');
+        if (cell) cell.classList.add('acc-fee-stopped');
+        var btn = row.querySelector('.js-stop-report');
+        if (btn) {
+          var done = document.createElement('span');
+          done.className = 'text-slate-400';
+          done.textContent = '已停报';
+          btn.replaceWith(done);
+        }
+      }
+
+      document.querySelectorAll('.js-stop-report').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          openStopReportModal(btn.closest('tr'));
+        });
+      });
+
+      if (stopReason && cntStopReason) {
+        stopReason.addEventListener('input', function () {
+          cntStopReason.textContent = String(stopReason.value.length);
+        });
+      }
+      if (stopFileInput) {
+        stopFileInput.addEventListener('change', function () {
+          addStopFiles(stopFileInput.files);
+          stopFileInput.value = '';
+        });
+      }
+      if (stopUploadZone) {
+        ['dragenter', 'dragover'].forEach(function (evt) {
+          stopUploadZone.addEventListener(evt, function (e) {
+            e.preventDefault();
+            stopUploadZone.classList.add('is-dragover');
+          });
+        });
+        ['dragleave', 'drop'].forEach(function (evt) {
+          stopUploadZone.addEventListener(evt, function (e) {
+            e.preventDefault();
+            stopUploadZone.classList.remove('is-dragover');
+          });
+        });
+        stopUploadZone.addEventListener('drop', function (e) {
+          if (e.dataTransfer && e.dataTransfer.files) addStopFiles(e.dataTransfer.files);
+        });
+      }
+
+      var btnCloseStopReport = document.getElementById('btn-close-stop-report');
+      var btnCancelStopReport = document.getElementById('btn-cancel-stop-report');
+      var btnConfirmStopReport = document.getElementById('btn-confirm-stop-report');
+      if (btnCloseStopReport) btnCloseStopReport.addEventListener('click', closeStopReportModal);
+      if (btnCancelStopReport) btnCancelStopReport.addEventListener('click', closeStopReportModal);
+      if (modalStopReport) {
+        modalStopReport.addEventListener('click', function (e) {
+          if (e.target === modalStopReport) closeStopReportModal();
+        });
+      }
+      if (btnConfirmStopReport) {
+        btnConfirmStopReport.addEventListener('click', function () {
+          var reason = stopReason ? stopReason.value.trim() : '';
+          if (!reason) {
+            showToast('请输入停报原因');
+            if (stopReason) stopReason.focus();
+            return;
+          }
+          var row = stopReportRow;
+          closeStopReportModal();
+          markRowStopped(row);
+          showToast('停报申请已提交');
+        });
+      }
+
       var tabs = document.querySelectorAll('#accounting-tabs [data-filter]');
       tabs.forEach(function (tab) {
         tab.addEventListener('click', function () {
@@ -928,11 +1159,27 @@
 
       document.addEventListener('keydown', function (e) {
         if (e.key !== 'Escape') return;
-        modalAdd.classList.add('hidden'); modalAdd.classList.remove('flex');
+        if (modalAdd) { modalAdd.classList.add('hidden'); modalAdd.classList.remove('flex'); }
         modalDispatch.classList.add('hidden'); modalDispatch.classList.remove('flex');
         closeAddMaintainModal();
         modalTransfer.classList.add('hidden'); modalTransfer.classList.remove('flex');
+        closeStopReportModal();
       });
+
+      if (typeof window.mountCreateContractModal === 'function') {
+        window.mountCreateContractModal({
+          openSelectors: ['.js-open-create-contract'],
+          getPrefill: function (btn) {
+            var row = btn.closest('tr');
+            if (!row) return null;
+            return {
+              company: row.getAttribute('data-company') || '',
+              contact: row.getAttribute('data-contact') || '',
+              phone: row.getAttribute('data-phone') || ''
+            };
+          }
+        });
+      }
     })();
   </script>
   <script src="./assets/app-shell.js"></script>
