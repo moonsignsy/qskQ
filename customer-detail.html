@@ -301,17 +301,7 @@
                     <i class="fa-solid fa-receipt"></i>
                     <h3 class="text-sm font-semibold text-slate-800">税务信息</h3>
                   </div>
-                  <dl class="profile-dl">
-                    <div><dt>企业名称</dt><dd data-sync-company>苏州八识天科技有限公司</dd></div>
-                    <div><dt>统一社会信用代码</dt><dd>91320508MA1W****8X</dd></div>
-                    <div><dt>税务类型</dt><dd>一般纳税人</dd></div>
-                    <div><dt>企业类型</dt><dd>有限责任公司</dd></div>
-                    <div><dt>个税系统账号</dt><dd>tax_szbs_01</dd></div>
-                    <div><dt>工商年报登录方式</dt><dd>电子证照</dd></div>
-                    <div><dt>社保登录账号</dt><dd>sb_szbs_01</dd></div>
-                    <div><dt>公积金登录账号</dt><dd>gjj_szbs_01</dd></div>
-                    <div class="full"><dt>客户备注</dt><dd class="leading-relaxed">客户对资料规范要求高，需在合同签署前完成资料交接与系统账号核验。</dd></div>
-                  </dl>
+                  <div id="block-tax-info" class="tax-archive"></div>
                 </div>
 
                 <div class="profile-block">
@@ -386,15 +376,243 @@
           <button type="button" data-tab="tax" class="supp-tab border-b-2 border-blue-600 pb-2 text-sm font-medium text-blue-600">税务信息</button>
           <button type="button" data-tab="industry" class="supp-tab border-b-2 border-transparent pb-2 text-sm text-slate-500 hover:text-slate-700">工商信息</button>
         </div>
-        <div id="supp-panel-tax" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <label class="block"><span class="text-slate-600"><span class="text-red-500">*</span> 企业名称</span><input type="text" data-sync-company value="苏州八识天科技有限公司" class="mt-1 w-full h-9 px-3 rounded-md border border-slate-200"></label>
-          <label class="block"><span class="text-slate-600"><span class="text-red-500">*</span> 统一社会信用代码</span><input type="text" value="91320508MA1W****8X" class="mt-1 w-full h-9 px-3 rounded-md border border-slate-200"></label>
-          <label class="block"><span class="text-slate-600"><span class="text-red-500">*</span> 税务类型</span><input type="text" value="一般纳税人" class="mt-1 w-full h-9 px-3 rounded-md border border-slate-200"></label>
-          <label class="block"><span class="text-slate-600"><span class="text-red-500">*</span> 企业类型</span><input type="text" value="有限责任公司" class="mt-1 w-full h-9 px-3 rounded-md border border-slate-200"></label>
-          <label class="block"><span class="text-slate-600">个税系统账号</span><input type="text" value="tax_szbs_01" class="mt-1 w-full h-9 px-3 rounded-md border border-slate-200"></label>
-          <label class="block"><span class="text-slate-600">个税系统密码</span><input type="text" value="******" class="mt-1 w-full h-9 px-3 rounded-md border border-slate-200"></label>
-          <label class="block sm:col-span-2"><span class="text-slate-600">客户备注</span><textarea rows="3" class="mt-1 w-full rounded border border-slate-200 px-3 py-2 resize-y">客户对资料规范要求高，需在合同签署前完成资料交接与系统账号核验。</textarea></label>
-        </div>
+        <div id="supp-panel-tax" data-tax-grouped>
+            <div class="supp-tax-alert js-tax-alert">还有必填项未完成，请按红框提示补全后再确认。</div>
+
+            <div class="supp-tax-sec">
+              <div class="sec-title">代账身份</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <span class="field-label"><span class="text-red-500">*</span> 代账类型</span>
+                  <div class="entity-type-box">
+                    <label><input type="radio" name="supp-agency-type" class="js-tax-agency" value="new" checked> 新设</label>
+                    <label><input type="radio" name="supp-agency-type" class="js-tax-agency" value="cut"> 切户</label>
+                  </div>
+                </div>
+                <div class="js-tax-company-wrap">
+                  <span class="field-label"><span class="text-red-500">*</span> 企业名称</span>
+                  <input type="text" class="field-input js-tax-company" data-sync-company placeholder="请输入企业名称">
+                  <p class="supp-tax-hint">已从当前客户代入，可修改</p>
+                  <p class="supp-tax-err">请填写企业名称</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="supp-tax-sec hidden" data-agency="cut">
+              <div class="sec-title">财务报表</div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="supp-tax-card js-tax-doc" data-key="trialBalance" data-missing="approval" data-required="1">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <p class="text-[13px] font-medium text-slate-800"><span class="text-red-500">*</span> 最近一期科目余额表</p>
+                    <button type="button" class="supp-tax-ghost js-tax-missing" data-key="trialBalance">没有，改传审批截图</button>
+                  </div>
+                  <label class="supp-tax-drop js-tax-drop js-tax-main-drop" data-key="trialBalance">
+                    <input type="file" class="hidden js-tax-file" data-key="trialBalance" accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png,.doc,.docx">
+                    <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+                    <span class="js-tax-drop-label">点击上传，支持 pdf / 表格 / 图片</span>
+                    <span class="supp-tax-file js-tax-chip hidden"></span>
+                  </label>
+                  <p class="supp-tax-hint warn mt-2">如若没有需上传审批截图</p>
+                  <div class="js-tax-alt hidden mt-3" data-key="trialBalance">
+                    <label class="supp-tax-drop alt-mode js-tax-drop" data-key="trialBalanceApproval">
+                      <input type="file" class="hidden js-tax-file" data-key="trialBalanceApproval" accept=".pdf,.jpg,.jpeg,.png">
+                      <i class="fa-solid fa-stamp text-base"></i>
+                      <span class="js-tax-drop-label">上传审批截图</span>
+                      <span class="supp-tax-file js-tax-chip hidden"></span>
+                    </label>
+                    <button type="button" class="supp-tax-ghost muted mt-2 js-tax-missing-off" data-key="trialBalance">改回上传余额表</button>
+                  </div>
+                  <p class="supp-tax-err">此项为必填，请上传或添加说明</p>
+                </div>
+                <div class="supp-tax-card js-tax-doc" data-key="balanceSheet" data-missing="note" data-required="1">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <p class="text-[13px] font-medium text-slate-800"><span class="text-red-500">*</span> 最近一期资产负债表</p>
+                    <button type="button" class="supp-tax-ghost js-tax-missing" data-key="balanceSheet">没有该资料</button>
+                  </div>
+                  <label class="supp-tax-drop js-tax-drop js-tax-main-drop" data-key="balanceSheet">
+                    <input type="file" class="hidden js-tax-file" data-key="balanceSheet" accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png,.doc,.docx">
+                    <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+                    <span class="js-tax-drop-label">点击上传，支持 pdf / 表格 / 图片</span>
+                    <span class="supp-tax-file js-tax-chip hidden"></span>
+                  </label>
+                  <div class="js-tax-alt hidden mt-3" data-key="balanceSheet">
+                    <textarea class="field-textarea js-tax-note" data-key="balanceSheet" rows="2" placeholder="请说明暂无该资料的原因，例如新设尚无上期报表"></textarea>
+                    <button type="button" class="supp-tax-ghost muted mt-2 js-tax-missing-off" data-key="balanceSheet">改回上传</button>
+                  </div>
+                  <p class="supp-tax-err">此项为必填，请上传或添加说明</p>
+                </div>
+                <div class="supp-tax-card js-tax-doc" data-key="incomeStmt" data-missing="note" data-required="1">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <p class="text-[13px] font-medium text-slate-800"><span class="text-red-500">*</span> 最近一期利润表</p>
+                    <button type="button" class="supp-tax-ghost js-tax-missing" data-key="incomeStmt">没有该资料</button>
+                  </div>
+                  <label class="supp-tax-drop js-tax-drop js-tax-main-drop" data-key="incomeStmt">
+                    <input type="file" class="hidden js-tax-file" data-key="incomeStmt" accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png,.doc,.docx">
+                    <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+                    <span class="js-tax-drop-label">点击上传，支持 pdf / 表格 / 图片</span>
+                    <span class="supp-tax-file js-tax-chip hidden"></span>
+                  </label>
+                  <div class="js-tax-alt hidden mt-3" data-key="incomeStmt">
+                    <textarea class="field-textarea js-tax-note" data-key="incomeStmt" rows="2" placeholder="请说明暂无该资料的原因，例如新设尚无上期报表"></textarea>
+                    <button type="button" class="supp-tax-ghost muted mt-2 js-tax-missing-off" data-key="incomeStmt">改回上传</button>
+                  </div>
+                  <p class="supp-tax-err">此项为必填，请上传或添加说明</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="supp-tax-sec">
+              <div class="sec-title">法人资料</div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="supp-tax-card js-tax-doc" data-key="idFront" data-missing="note" data-required="1">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <p class="text-[13px] font-medium text-slate-800"><span class="text-red-500">*</span> 法人身份证正面</p>
+                    <button type="button" class="supp-tax-ghost js-tax-missing" data-key="idFront">没有该资料</button>
+                  </div>
+                  <label class="supp-tax-drop js-tax-drop js-tax-main-drop" data-key="idFront">
+                    <input type="file" class="hidden js-tax-file" data-key="idFront" accept=".jpg,.jpeg,.png,.pdf">
+                    <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+                    <span class="js-tax-drop-label">点击上传，支持 pdf / 表格 / 图片</span>
+                    <span class="supp-tax-file js-tax-chip hidden"></span>
+                  </label>
+                  <div class="js-tax-alt hidden mt-3" data-key="idFront">
+                    <textarea class="field-textarea js-tax-note" data-key="idFront" rows="2" placeholder="请说明暂无该资料的原因"></textarea>
+                    <button type="button" class="supp-tax-ghost muted mt-2 js-tax-missing-off" data-key="idFront">改回上传</button>
+                  </div>
+                  <p class="supp-tax-err">此项为必填，请上传或添加说明</p>
+                </div>
+                <div class="supp-tax-card js-tax-doc" data-key="idBack" data-missing="note" data-required="1">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <p class="text-[13px] font-medium text-slate-800"><span class="text-red-500">*</span> 法人身份证反面</p>
+                    <button type="button" class="supp-tax-ghost js-tax-missing" data-key="idBack">没有该资料</button>
+                  </div>
+                  <label class="supp-tax-drop js-tax-drop js-tax-main-drop" data-key="idBack">
+                    <input type="file" class="hidden js-tax-file" data-key="idBack" accept=".jpg,.jpeg,.png,.pdf">
+                    <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+                    <span class="js-tax-drop-label">点击上传，支持 pdf / 表格 / 图片</span>
+                    <span class="supp-tax-file js-tax-chip hidden"></span>
+                  </label>
+                  <div class="js-tax-alt hidden mt-3" data-key="idBack">
+                    <textarea class="field-textarea js-tax-note" data-key="idBack" rows="2" placeholder="请说明暂无该资料的原因"></textarea>
+                    <button type="button" class="supp-tax-ghost muted mt-2 js-tax-missing-off" data-key="idBack">改回上传</button>
+                  </div>
+                  <p class="supp-tax-err">此项为必填，请上传或添加说明</p>
+                </div>
+                <div class="supp-tax-card js-tax-phone-wrap justify-center">
+                  <span class="field-label"><span class="text-red-500">*</span> 法人联系方式</span>
+                  <input type="text" class="field-input js-tax-phone" placeholder="请输入法人手机号">
+                  <p class="supp-tax-hint mt-2">用于税局、社保及年报紧急联系</p>
+                  <p class="supp-tax-err">请填写法人联系方式</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="supp-tax-sec hidden" data-agency="cut">
+              <div class="sec-title">人员与个税</div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="supp-tax-card js-tax-doc" data-key="payroll" data-missing="note" data-required="1">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <p class="text-[13px] font-medium text-slate-800"><span class="text-red-500">*</span> 最近一期人员申报工资表</p>
+                    <button type="button" class="supp-tax-ghost js-tax-missing" data-key="payroll">没有该资料</button>
+                  </div>
+                  <label class="supp-tax-drop js-tax-drop js-tax-main-drop" data-key="payroll">
+                    <input type="file" class="hidden js-tax-file" data-key="payroll" accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png,.doc,.docx">
+                    <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+                    <span class="js-tax-drop-label">点击上传，支持 pdf / 表格 / 图片</span>
+                    <span class="supp-tax-file js-tax-chip hidden"></span>
+                  </label>
+                  <div class="js-tax-alt hidden mt-3" data-key="payroll">
+                    <textarea class="field-textarea js-tax-note" data-key="payroll" rows="2" placeholder="请说明暂无该资料的原因"></textarea>
+                    <button type="button" class="supp-tax-ghost muted mt-2 js-tax-missing-off" data-key="payroll">改回上传</button>
+                  </div>
+                  <p class="supp-tax-err">此项为必填，请上传或添加说明</p>
+                </div>
+                <div class="supp-tax-card js-tax-doc" data-key="staffList" data-missing="note" data-required="1">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <p class="text-[13px] font-medium text-slate-800"><span class="text-red-500">*</span> 最近一期人员信息表</p>
+                    <button type="button" class="supp-tax-ghost js-tax-missing" data-key="staffList">没有该资料</button>
+                  </div>
+                  <label class="supp-tax-drop js-tax-drop js-tax-main-drop" data-key="staffList">
+                    <input type="file" class="hidden js-tax-file" data-key="staffList" accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png,.doc,.docx">
+                    <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+                    <span class="js-tax-drop-label">点击上传，支持 pdf / 表格 / 图片</span>
+                    <span class="supp-tax-file js-tax-chip hidden"></span>
+                  </label>
+                  <div class="js-tax-alt hidden mt-3" data-key="staffList">
+                    <textarea class="field-textarea js-tax-note" data-key="staffList" rows="2" placeholder="请说明暂无该资料的原因"></textarea>
+                    <button type="button" class="supp-tax-ghost muted mt-2 js-tax-missing-off" data-key="staffList">改回上传</button>
+                  </div>
+                  <p class="supp-tax-err">此项为必填，请上传或添加说明</p>
+                </div>
+                <div class="supp-tax-card js-tax-pwd-wrap justify-center">
+                  <span class="field-label"><span class="text-red-500">*</span> 个税密码</span>
+                  <div class="supp-pwd-wrap">
+                    <input type="password" class="field-input js-tax-pwd" placeholder="请输入个税密码" autocomplete="off">
+                    <button type="button" class="supp-pwd-toggle js-tax-pwd-toggle" aria-label="显示密码"><i class="fa-regular fa-eye"></i></button>
+                  </div>
+                  <p class="supp-tax-err">请填写个税密码</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="supp-tax-sec hidden" data-agency="cut">
+              <div class="sec-title">年报与社保</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <label class="js-tax-annual-wrap">
+                  <span class="field-label"><span class="text-red-500">*</span> 工商年报联系人及联系方式</span>
+                  <input type="text" class="field-input js-tax-annual" placeholder="例如：秦伟 13876763515">
+                  <p class="supp-tax-err">请填写工商年报联系人及联系方式</p>
+                </label>
+                <div class="js-tax-social-wrap">
+                  <span class="field-label"><span class="text-red-500">*</span> 是否有社保</span>
+                  <div class="entity-type-box">
+                    <label><input type="radio" name="supp-has-social" class="js-tax-social" value="no" checked> 无</label>
+                    <label><input type="radio" name="supp-has-social" class="js-tax-social" value="yes"> 有</label>
+                  </div>
+                </div>
+                <div class="js-tax-social-pwd-wrap hidden">
+                  <span class="field-label"><span class="text-red-500">*</span> 社保密码</span>
+                  <div class="supp-pwd-wrap">
+                    <input type="password" class="field-input js-tax-social-pwd" placeholder="请输入社保密码" autocomplete="off">
+                    <button type="button" class="supp-pwd-toggle js-tax-pwd-toggle" aria-label="显示密码"><i class="fa-regular fa-eye"></i></button>
+                  </div>
+                  <p class="supp-tax-err">有社保时需填写社保密码</p>
+                </div>
+                <div class="js-tax-ca-wrap">
+                  <span class="field-label"><span class="text-red-500">*</span> 是否有社保CA</span>
+                  <div class="entity-type-box">
+                    <label><input type="radio" name="supp-has-ca" class="js-tax-ca" value="no" checked> 无</label>
+                    <label><input type="radio" name="supp-has-ca" class="js-tax-ca" value="yes"> 有</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="supp-tax-sec mb-0">
+              <div class="sec-title">其他</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
+                <label>
+                  <span class="field-label">银行账号</span>
+                  <input type="text" class="field-input js-tax-bank" placeholder="选填，对公账号">
+                </label>
+                <label>
+                  <span class="field-label">其他说明</span>
+                  <textarea class="field-textarea js-tax-other" rows="2" placeholder="选填，补充交接时需要注意的事项"></textarea>
+                </label>
+              </div>
+              <div class="supp-tax-card js-tax-doc" data-key="otherFiles" data-required="0">
+                <p class="text-[13px] font-medium text-slate-800 mb-1">其他附件</p>
+                <p class="supp-tax-hint mb-2">选填，可上传多个文件</p>
+                <label class="supp-tax-drop js-tax-drop js-tax-main-drop" data-key="otherFiles">
+                  <input type="file" class="hidden js-tax-file" data-key="otherFiles" accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png,.doc,.docx" multiple>
+                  <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+                  <span class="js-tax-drop-label">点击上传，可多选</span>
+                  <span class="supp-tax-file js-tax-chip hidden"></span>
+                </label>
+                <ul class="js-tax-file-list mt-2 space-y-1.5 hidden" data-key="otherFiles"></ul>
+              </div>
+            </div>
+          </div>
         <div id="supp-panel-industry" class="hidden text-sm">
           <div class="mb-3 flex items-center gap-2 border-b border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-800"><span class="h-4 w-1 rounded-sm bg-blue-600"></span>工商信息</div>
           <div id="supp-ic-form">
@@ -454,12 +672,13 @@
         </div>
       </div>
       <div class="sticky bottom-0 flex justify-center gap-3 border-t border-slate-100 bg-white px-6 py-4">
-        <button type="button" class="h-9 px-8 rounded-md bg-blue-600 text-sm font-medium text-white hover:bg-blue-700">确认</button>
+        <button type="button" id="btn-supplement-ok" class="h-9 px-8 rounded-md bg-blue-600 text-sm font-medium text-white hover:bg-blue-700 cursor-pointer">确认</button>
         <button type="button" class="h-9 px-8 rounded-md border border-slate-200 bg-white text-sm text-slate-600 hover:bg-slate-50" data-close="supplement">取消</button>
       </div>
     </div>
   </div>
 
+  <script src="./assets/customer-tax-archive.js"></script>
   <script>
     (function () {
       function getCustomerId() {
@@ -479,10 +698,10 @@
 
       var customers = {
         'cust-1': customerFromList('苏州怡启尔科技有限公司', '秦总', '13876763515', '陈莉'),
-        'cust-2': customerFromList('南京实耐时科技有限公司', '王经理', '13876763515', '周方林'),
-        'cust-3': customerFromList('苏州怡启尔科技有限公司', '秦总', '13876763515', '陈莉'),
-        'cust-4': customerFromList('南京莱刻科技有限公司', '王经理', '13876763515', '周方林'),
-        'cust-5': customerFromList('苏州怡启尔科技有限公司', '秦总', '13876763515', '陈莉')
+        'cust-2': customerFromList('南京实耐时科技有限公司', '王经理', '13876763516', '周方林'),
+        'cust-3': customerFromList('苏州美药科技有限公司', '李总', '13912345678', '陈莉'),
+        'cust-4': customerFromList('南京莱刻科技有限公司', '王经理', '13788889999', '周方林'),
+        'cust-5': customerFromList('昆山汇诚商贸有限公司', '赵经理', '13666667777', '周芳林')
       };
 
       var customerCosts = {
@@ -494,6 +713,13 @@
           { type: '第三方地址费', amount: 3600, remark: '工业园区挂靠地址一年' }
         ]
       };
+
+      function renderTaxArchive() {
+        var data = customers[getCustomerId()] || customers['cust-1'];
+        if (window.CustomerTaxArchive) {
+          window.CustomerTaxArchive.render(document.getElementById('block-tax-info'), data.name);
+        }
+      }
 
       function applyCustomerProfile() {
         var data = customers[getCustomerId()] || customers['cust-1'];
@@ -513,6 +739,7 @@
           if (el.tagName === 'INPUT') el.value = data.name;
           else el.textContent = data.name;
         });
+        renderTaxArchive();
       }
 
       function renderCustomerCosts() {
@@ -589,6 +816,7 @@
         });
         closeNameEdit();
         showToast('企业名称已更新');
+        renderTaxArchive();
       }
 
       if (nameEditBtn && nameEditPop && nameEditInput) {
@@ -612,7 +840,6 @@
       }
 
       var tabs = document.querySelectorAll('#left-tabs [data-tab]');
-      var openSupplementBtn = document.getElementById('btn-open-supplement');
       var panels = {
         service: document.getElementById('panel-service'),
         profile: document.getElementById('panel-profile')
@@ -631,47 +858,21 @@
       });
       switchTab('service');
 
-      var supplementModal = document.getElementById('modal-supplement');
-      var supplementTabs = document.querySelectorAll('#supplement-tabs .supp-tab');
-      var suppTaxPanel = document.getElementById('supp-panel-tax');
-      var suppIndustryPanel = document.getElementById('supp-panel-industry');
-      function switchSupplementTab(tab) {
-        supplementTabs.forEach(function (btn) {
-          var on = btn.getAttribute('data-tab') === tab;
-          btn.classList.toggle('border-blue-600', on);
-          btn.classList.toggle('text-blue-600', on);
-          btn.classList.toggle('font-medium', on);
-          btn.classList.toggle('border-transparent', !on);
-          btn.classList.toggle('text-slate-500', !on);
-        });
-        if (suppTaxPanel) suppTaxPanel.classList.toggle('hidden', tab !== 'tax');
-        if (suppIndustryPanel) suppIndustryPanel.classList.toggle('hidden', tab !== 'industry');
-      }
-      if (openSupplementBtn && supplementModal) {
-        openSupplementBtn.addEventListener('click', function () {
-          supplementModal.classList.remove('hidden');
-          switchSupplementTab('tax');
-        });
-      }
-      document.querySelectorAll('[data-close="supplement"]').forEach(function (el) {
-        el.addEventListener('click', function () { supplementModal.classList.add('hidden'); });
-      });
-      supplementTabs.forEach(function (btn) {
-        btn.addEventListener('click', function () { switchSupplementTab(btn.getAttribute('data-tab')); });
-      });
       document.addEventListener('keydown', function (e) {
         if (e.key !== 'Escape') return;
-        if (nameEditPop && !nameEditPop.classList.contains('hidden')) {
-          closeNameEdit();
-          return;
-        }
-        if (supplementModal) supplementModal.classList.add('hidden');
+        if (nameEditPop && !nameEditPop.classList.contains('hidden')) closeNameEdit();
       });
+
+      var taxArchiveEvent = (window.CustomerTaxArchive && window.CustomerTaxArchive.EVENT) || 'customer-tax-archive-saved';
+      document.addEventListener(taxArchiveEvent, function () { renderTaxArchive(); });
 
     })();
   </script>
   <div id="toast-customer" class="fixed top-6 left-1/2 -translate-x-1/2 z-[130] hidden rounded-lg bg-slate-800 px-5 py-2 text-sm text-white shadow-lg">操作成功</div>
   <script src="./assets/customer-supplement-modal.js"></script>
+  <script>
+    window.mountCustomerSupplementModal({ openSelectors: ['#btn-open-supplement'] });
+  </script>
   <script src="./assets/app-shell.js"></script>
 </body>
 </html>

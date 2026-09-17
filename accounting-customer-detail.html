@@ -356,9 +356,9 @@
                 <div class="profile-block-hd">
                   <i class="fa-solid fa-receipt"></i>
                   <h3 class="text-sm font-semibold text-slate-800">税务信息</h3>
-                  <button type="button" id="btn-open-first-call-detail" class="ml-auto text-sm text-blue-600 hover:text-blue-700 cursor-pointer"><i class="fa-solid fa-pen text-xs mr-1"></i>编辑</button>
+                  <button type="button" id="btn-open-first-call-detail" class="hidden ml-auto text-sm text-blue-600 hover:text-blue-700 cursor-pointer" aria-hidden="true"><i class="fa-solid fa-pen text-xs mr-1"></i>编辑</button>
                 </div>
-                <dl id="block-tax-info" class="tax-info-grid"></dl>
+                <div id="block-tax-info" class="tax-archive"></div>
               </div>
               <div class="profile-block">
                 <div class="profile-block-hd">
@@ -513,6 +513,7 @@
     </div>
   </div>
 
+  <script src="./assets/customer-tax-archive.js"></script>
   <script>
     (function () {
       var SCOPE = '企业管理咨询；税务咨询；代理记账；财务信息咨询。日用百货、五金交电、机械设备及配件销售。';
@@ -704,11 +705,6 @@
         el.innerHTML = '<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3">' + parts.join('') + '</div>';
       }
 
-      var ARCHIVE_ORDER = [
-        '注册日期', '实际对接人姓名', '实际对接人电话', '行业类别', '有无社保', '有无CA',
-        '核定/查账', '核定额', '是否绑定三方', '诉求点', '客户备注'
-      ];
-
       var state = { data: null, activeRecordId: null };
 
       function statusClass(key) {
@@ -779,12 +775,11 @@
         var sumContract = document.getElementById('summary-current-contract');
         if (sumContract) sumContract.textContent = contractText(rec.order);
       }
-      function renderTaxInfo(archive) {
+      function renderTaxInfo(data) {
         var el = document.getElementById('block-tax-info');
-        if (!el || !archive) return;
-        el.innerHTML = ARCHIVE_ORDER.map(function (k) {
-          return '<div class="tax-info-item"><dt>' + k + '</dt><dd>' + (archive[k] || '—') + '</dd></div>';
-        }).join('');
+        if (!el || !window.CustomerTaxArchive) return;
+        var company = ((data && data.order) || {})['企业名称'] || '';
+        window.CustomerTaxArchive.render(el, company);
       }
 
       function renderIcProfile(ic, scope) {
@@ -841,9 +836,11 @@
         renderOrderInfo(d.order);
       }
       renderMaintainList(d.maintainList);
-      renderTaxInfo(d.archive);
+      renderTaxInfo(d);
       renderIcProfile(d.ic, d.scope);
       fillFirstCallForm(d.archive);
+      var taxArchiveEvent = (window.CustomerTaxArchive && window.CustomerTaxArchive.EVENT) || 'customer-tax-archive-saved';
+      document.addEventListener(taxArchiveEvent, function () { renderTaxInfo(state.data); });
 
       var accTabs = document.querySelectorAll('#acc-tabs [data-tab]');
       var accPanels = {
@@ -921,17 +918,20 @@
       });
 
       var modalFC = document.getElementById('modal-first-call-detail');
-      document.getElementById('btn-open-first-call-detail').addEventListener('click', function () {
-        if (state.data && state.data.archive) fillFirstCallForm(state.data.archive);
-        modalFC.classList.remove('hidden');
-        modalFC.classList.add('flex');
-      });
-      modalFC.querySelectorAll('[data-close-first-call]').forEach(function (el) {
-        el.addEventListener('click', function () {
-          modalFC.classList.add('hidden');
-          modalFC.classList.remove('flex');
+      var openFcBtn = document.getElementById('btn-open-first-call-detail');
+      if (openFcBtn && modalFC) {
+        openFcBtn.addEventListener('click', function () {
+          if (state.data && state.data.archive) fillFirstCallForm(state.data.archive);
+          modalFC.classList.remove('hidden');
+          modalFC.classList.add('flex');
         });
-      });
+        modalFC.querySelectorAll('[data-close-first-call]').forEach(function (el) {
+          el.addEventListener('click', function () {
+            modalFC.classList.add('hidden');
+            modalFC.classList.remove('flex');
+          });
+        });
+      }
 
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
