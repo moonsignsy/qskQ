@@ -210,9 +210,9 @@
       '            <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="radio" name="contractTypeShared" value="增值服务合同" class="accent-blue-600 js-cc-type"><span>增值服务合同</span></label>' +
       '          </div>' +
       '          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">' +
-      '            <label class="text-sm block"><span class="text-slate-600">企业名称 <span class="text-red-500">*</span></span><input type="text" placeholder="输入企业名称" class="' + fieldClass() + '"></label>' +
-      '            <label class="text-sm block"><span class="text-slate-600">联系人 <span class="text-red-500">*</span></span><input type="text" placeholder="输入联系人姓名" class="' + fieldClass() + '"></label>' +
-      '            <label class="text-sm block"><span class="text-slate-600">联系电话 <span class="text-red-500">*</span></span><input type="text" placeholder="输入联系人手机号" class="' + fieldClass() + '"></label>' +
+      '            <label class="text-sm block"><span class="text-slate-600">企业名称 <span class="text-red-500">*</span></span><input type="text" placeholder="输入企业名称" class="' + fieldClass() + ' js-cc-company"></label>' +
+      '            <label class="text-sm block"><span class="text-slate-600">联系人 <span class="text-red-500">*</span></span><input type="text" placeholder="输入联系人姓名" class="' + fieldClass() + ' js-cc-contact"></label>' +
+      '            <label class="text-sm block"><span class="text-slate-600">联系电话 <span class="text-red-500">*</span></span><input type="text" placeholder="输入联系人手机号" class="' + fieldClass() + ' js-cc-phone"></label>' +
       '          </div>' +
       '        </div>' +
       '      </section>' +
@@ -296,7 +296,18 @@
     var toast = nodes.toast;
     var timer;
 
-    function openModal() {
+    function applyPrefill(prefill) {
+      if (!prefill) return;
+      var company = modal.querySelector('.js-cc-company');
+      var contact = modal.querySelector('.js-cc-contact');
+      var phone = modal.querySelector('.js-cc-phone');
+      if (company && prefill.company != null) company.value = prefill.company;
+      if (contact && prefill.contact != null) contact.value = prefill.contact;
+      if (phone && prefill.phone != null) phone.value = prefill.phone;
+    }
+
+    function openModal(prefill) {
+      applyPrefill(prefill);
       modal.classList.remove('hidden');
       document.body.classList.add('overflow-hidden');
     }
@@ -314,7 +325,10 @@
       document.querySelectorAll(sel).forEach(function (btn) {
         if (btn.dataset.contractModalBound === '1') return;
         btn.dataset.contractModalBound = '1';
-        btn.addEventListener('click', openModal);
+        btn.addEventListener('click', function () {
+          var prefill = typeof options.getPrefill === 'function' ? options.getPrefill(btn) : null;
+          openModal(prefill);
+        });
       });
     });
 
